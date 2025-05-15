@@ -1,6 +1,7 @@
 'use client'
 
 import { Instagram } from 'lucide-react'
+import Image from 'next/image'
 
 export function About() {
   return (
@@ -19,33 +20,45 @@ export function About() {
           <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-2">
               <div className="p-8 lg:p-12">
-                <h3 className="text-2xl font-semibold text-gray-900">
-                  BS Aesthetic Nails
-                </h3>
-                <p className="mt-6 text-gray-600 leading-relaxed">
-                  Willkommen in meinem Beauty-Studio! Als Spezialistin für Nägel und Ästhetik 
-                  widme ich mich der Bereitstellung hochwertiger Dienstleistungen und 
-                  individueller Betreuung für jeden Kunden.
-                </p>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  Mit jahrelanger Erfahrung biete ich umfassende Dienstleistungen in den Bereichen 
-                  Maniküre, Pediküre, Augenbrauendesign und ästhetische Behandlungen an, 
-                  stets unter Verwendung erstklassiger Produkte und aktueller Techniken.
-                </p>
-                
-                <a
-                  href="https://www.instagram.com/bs.aesthetic.nails?igsh=eXR0a2VqbmxqYXY0"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-[#FFC0CB] hover:text-[#FFB6C1]"
-                >
-                  <Instagram className="h-5 w-5 mr-2" />
-                  Folgen Sie mir auf Instagram
-                </a>
+                <div className="flex flex-col items-center lg:items-start">
+                  <div className="w-64 h-64 mb-8 rounded-full overflow-hidden relative bg-gradient-to-r from-[#FFC0CB] to-[#FFB6C1]">
+                    <Image
+                      src="/images/bruna-profile.jpg"
+                      alt="Bruna Silva"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      priority
+                    />
+                  </div>
+                  <h3 className="text-2xl font-semibold text-gray-900">
+                    BS Aesthetic Nails
+                  </h3>
+                  <p className="mt-6 text-gray-600 leading-relaxed">
+                    Willkommen in meinem Beauty-Studio! Als Spezialistin für Nägel und Ästhetik 
+                    widme ich mich der Bereitstellung hochwertiger Dienstleistungen und 
+                    individueller Betreuung für jeden Kunden.
+                  </p>
+                  <p className="mt-4 text-gray-600 leading-relaxed">
+                    Mit jahrelanger Erfahrung biete ich umfassende Dienstleistungen in den Bereichen 
+                    Nageldesign und ästhetische Behandlungen an. Mein Ziel ist es, Ihre natürliche Schönheit zu betonen,
+                    stets unter Verwendung erstklassiger Produkte und aktueller Techniken.
+                  </p>
+                  
+                  <a
+                    href="https://www.instagram.com/bs.aesthetic.nails?igsh=eXR0a2VqbmxqYXY0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-6 inline-flex items-center text-[#FFC0CB] hover:text-[#FFB6C1]"
+                  >
+                    <Instagram className="h-5 w-5 mr-2" />
+                    Folgen Sie mir auf Instagram
+                  </a>
+                </div>
               </div>
               <div className="relative h-64 lg:h-auto">
                 <div className="absolute inset-0 bg-gradient-to-r from-[#FFC0CB] to-[#FFB6C1] opacity-10"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="relative h-full flex items-center justify-center p-8">
                   <div className="text-center">
                     <h3 className="text-2xl font-semibold text-gray-900 mb-4">Öffnungszeiten</h3>
                     <div className="mt-4 space-y-2 text-gray-600">
