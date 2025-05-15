@@ -61,33 +61,23 @@ export function Footer() {
   return (
     <footer className="bg-gray-50">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="col-span-1">
-            <div className="flex items-center">
-              <Heart className="h-8 w-8 text-[#FFC0CB]" />
-              <span className="ml-2 text-xl font-semibold text-gray-900">Bruna Silva - Aesthetic & Nails</span>
-            </div>
-            <p className="mt-4 text-gray-600">
-              Ihr Beauty-Studio für professionelle Behandlungen und Wohlbefinden.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase">Kontakt</h3>
-            <ul className="mt-4 space-y-4">
-              <li className="flex items-center text-gray-600">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="text-center">
+            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">Kontakt</h3>
+            <ul className="space-y-4">
+              <li className="flex items-center justify-center text-gray-600">
                 <Phone className="h-5 w-5 mr-2 text-[#FFC0CB]" />
                 <a href="tel:+4915208007814" className="hover:text-[#FFC0CB] transition-colors">
                   +49 1520 800 7814
                 </a>
               </li>
-              <li className="flex items-center text-gray-600">
+              <li className="flex items-center justify-center text-gray-600">
                 <Mail className="h-5 w-5 mr-2 text-[#FFC0CB]" />
                 <a href="mailto:bs.aesthetcnails.com" className="hover:text-[#FFC0CB] transition-colors">
                   bs.aesthetcnails.com
                 </a>
               </li>
-              <li className="flex items-center text-gray-600">
+              <li className="flex items-center justify-center text-gray-600">
                 <a href="https://www.instagram.com/bs.aesthetic.nails?igsh=eXR0a2VqbmxqYXY0" 
                    target="_blank" 
                    rel="noopener noreferrer" 
@@ -95,13 +85,13 @@ export function Footer() {
                   @bs.aesthetic.nails
                 </a>
               </li>
-              <li className="flex items-start text-gray-600 group cursor-pointer">
-                <MapPin className="h-5 w-5 mr-2 mt-1 text-[#FFC0CB] group-hover:scale-110 transition-transform" />
+              <li className="flex items-center justify-center text-gray-600 group">
+                <MapPin className="h-5 w-5 mr-2 text-[#FFC0CB] group-hover:scale-110 transition-transform" />
                 <a 
                   href={googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-[#FFC0CB] transition-colors"
+                  className="hover:text-[#FFC0CB] transition-colors text-center"
                 >
                   Bei der Grodener Kirche 7<br />
                   27472 Cuxhaven<br />
@@ -111,10 +101,9 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase">Öffnungszeiten</h3>
-            <ul className="mt-4 space-y-4">
-              <li className="flex items-center text-gray-600">
+          <div className="text-center">
+            <ul className="space-y-4">
+              <li className="flex items-center justify-center text-gray-600">
                 <Clock className="h-5 w-5 mr-2 text-[#FFC0CB]" />
                 <div>
                   <p>Montag bis Freitag: 9:00 - 13:00</p>
@@ -127,6 +116,13 @@ export function Footer() {
         </div>
 
         <div className="mt-8 border-t border-gray-200 pt-8 text-center">
+          <div className="flex items-center justify-center mb-4">
+            <Heart className="h-8 w-8 text-[#FFC0CB]" />
+            <span className="ml-2 text-xl font-semibold text-gray-900">Bruna Silva - Aesthetic & Nails</span>
+          </div>
+          <p className="text-gray-600 mb-4">
+            Ihr Beauty-Studio für professionelle Behandlungen und Wohlbefinden.
+          </p>
           <p className="text-gray-400 text-sm">
             © {new Date().getFullYear()} Bruna Silva - Aesthetic & Nails. Alle Rechte vorbehalten.
           </p>

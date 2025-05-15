@@ -5,7 +5,7 @@ import emailjs from '@emailjs/browser'
 
 // Função auxiliar para formatar a data
 function formatarData(data: Date): string {
-  return data.toLocaleDateString('pt-BR', {
+  return data.toLocaleDateString('de-DE', {
     day: '2-digit',
     month: 'long',
     year: 'numeric'
@@ -14,13 +14,13 @@ function formatarData(data: Date): string {
 
 // Horários disponíveis por período
 const periodos = {
-  manha: [
+  vormittag: [
     { hora: '09:00', disponivel: true },
     { hora: '10:00', disponivel: true },
     { hora: '11:00', disponivel: false },
     { hora: '12:00', disponivel: true }
   ],
-  tarde: [
+  nachmittag: [
     { hora: '14:00', disponivel: true },
     { hora: '15:00', disponivel: true },
     { hora: '16:00', disponivel: false },
@@ -96,7 +96,6 @@ export function Scheduling() {
     }
   }
 
-  // Função para formatar a data para o input type="date"
   const formatDateForInput = (date: Date) => {
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -116,143 +115,141 @@ export function Scheduling() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <div className="mb-8">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Datum Auswählen</h3>
-              <input
-                type="date"
-                min={formatDateForInput(new Date())}
-                value={formatDateForInput(date)}
-                onChange={(e) => setDate(new Date(e.target.value))}
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
-              />
-            </div>
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              <div className="p-8 bg-gradient-to-br from-[#FFC0CB] to-[#FFB6C1]">
+                <h3 className="text-2xl font-bold text-white mb-6">Zeitauswahl</h3>
+                
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-white font-medium mb-2">Datum</label>
+                    <input
+                      type="date"
+                      min={formatDateForInput(new Date())}
+                      value={formatDateForInput(date)}
+                      onChange={(e) => setDate(new Date(e.target.value))}
+                      className="w-full p-3 rounded-lg bg-white/90 border-0 focus:ring-2 focus:ring-white"
+                    />
+                  </div>
 
-            <div className="mb-8">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Uhrzeit Auswählen</h3>
-              <div className="grid grid-cols-2 gap-4">
-                {Object.entries(periodos).map(([periodo, horarios]) => (
-                  <div key={periodo}>
-                    <h4 className="text-sm font-medium text-gray-700 mb-2">
-                      {periodo === 'manha' ? 'Vormittag' : 'Nachmittag'}
-                    </h4>
-                    <div className="space-y-2">
-                      {horarios.map((horario) => (
-                        <button
-                          key={horario.hora}
-                          onClick={() => setSelectedTime(horario.hora)}
-                          disabled={!horario.disponivel}
-                          className={`w-full py-2 px-4 rounded-md text-sm font-medium transition-colors
-                            ${
-                              selectedTime === horario.hora
-                                ? 'bg-[#FFC0CB] text-white'
-                                : horario.disponivel
-                                ? 'bg-white text-gray-700 border border-gray-300 hover:border-[#FFC0CB]'
-                                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                            }
-                          `}
-                        >
-                          {horario.hora}
-                        </button>
+                  <div>
+                    <label className="block text-white font-medium mb-2">Uhrzeit</label>
+                    <div className="grid grid-cols-2 gap-4">
+                      {Object.entries(periodos).map(([periodo, horarios]) => (
+                        <div key={periodo}>
+                          <h4 className="text-sm font-medium text-white mb-2">
+                            {periodo === 'vormittag' ? 'Vormittag' : 'Nachmittag'}
+                          </h4>
+                          <div className="space-y-2">
+                            {horarios.map((horario) => (
+                              <button
+                                key={horario.hora}
+                                onClick={() => setSelectedTime(horario.hora)}
+                                disabled={!horario.disponivel}
+                                className={`w-full py-2 px-3 rounded-lg text-sm font-medium transition-all
+                                  ${
+                                    selectedTime === horario.hora
+                                      ? 'bg-white text-[#FFC0CB]'
+                                      : horario.disponivel
+                                      ? 'bg-white/80 text-gray-700 hover:bg-white'
+                                      : 'bg-white/50 text-gray-400 cursor-not-allowed'
+                                  }
+                                `}
+                              >
+                                {horario.hora}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
                       ))}
                     </div>
                   </div>
-                ))}
+                </div>
+              </div>
+
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Persönliche Daten</h3>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Service</label>
+                    <select
+                      value={selectedService}
+                      onChange={(e) => setSelectedService(e.target.value)}
+                      className="w-full p-3 rounded-lg border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
+                      required
+                    >
+                      <option value="">Service auswählen</option>
+                      {services.map((service) => (
+                        <option key={service} value={service}>
+                          {service}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full p-3 rounded-lg border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full p-3 rounded-lg border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Telefon</label>
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="+49 XXX XXXXXXX"
+                      className="w-full p-3 rounded-lg border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
+                      required
+                    />
+                  </div>
+
+                  {error && (
+                    <div className="text-red-600 text-sm">
+                      {error}
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={!selectedTime || !selectedService || isLoading}
+                    className={`w-full py-3 px-4 rounded-lg text-white font-medium transition-all
+                      ${
+                        !selectedTime || !selectedService || isLoading
+                          ? 'bg-gray-300 cursor-not-allowed'
+                          : 'bg-[#FFC0CB] hover:bg-[#FFB6C1]'
+                      }
+                    `}
+                  >
+                    {isLoading ? 'Wird gesendet...' : 'Termin bestätigen'}
+                  </button>
+                </form>
+
+                {showSuccess && (
+                  <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                    Termin erfolgreich gebucht! Wir werden uns in Kürze bei Ihnen melden.
+                  </div>
+                )}
               </div>
             </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Service</label>
-                <select
-                  value={selectedService}
-                  onChange={(e) => setSelectedService(e.target.value)}
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-[#FFC0CB] focus:border-[#FFC0CB] rounded-md"
-                  required
-                >
-                  <option value="">Service auswählen</option>
-                  {services.map((service) => (
-                    <option key={service} value={service}>
-                      {service}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Ausgewähltes Datum und Uhrzeit
-                </label>
-                <input
-                  type="text"
-                  value={`${formatarData(date)} um ${selectedTime}`}
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
-                  disabled
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Name</label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Email</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Telefon</label>
-                <input
-                  type="tel"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+49 XXX XXXXXXX"
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
-                  required
-                />
-              </div>
-
-              {error && (
-                <div className="text-red-600 text-sm">
-                  {error}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={!selectedTime || !selectedService || isLoading}
-                className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
-                  ${
-                    !selectedTime || !selectedService || isLoading
-                      ? 'bg-gray-300 cursor-not-allowed'
-                      : 'bg-[#FFC0CB] hover:bg-[#FFB6C1] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FFC0CB]'
-                  }`}
-              >
-                {isLoading ? 'Wird gesendet...' : 'Termin bestätigen'}
-              </button>
-            </form>
-
-            {showSuccess && (
-              <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md">
-                Agendamento realizado com sucesso! Em breve entraremos em contato para confirmar.
-              </div>
-            )}
           </div>
         </div>
       </div>
