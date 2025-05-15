@@ -65,26 +65,34 @@ export function Footer() {
           <div className="col-span-1">
             <div className="flex items-center">
               <Heart className="h-8 w-8 text-[#FFC0CB]" />
-              <span className="ml-2 text-xl font-semibold text-gray-900">Estética & Bem-estar</span>
+              <span className="ml-2 text-xl font-semibold text-gray-900">Bruna Silva - Aesthetic & Nails</span>
             </div>
             <p className="mt-4 text-gray-600">
-              Seu espaço de beleza e bem-estar, onde cuidamos de você com carinho e profissionalismo.
+              Ihr Beauty-Studio für professionelle Behandlungen und Wohlbefinden.
             </p>
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase">Contato</h3>
+            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase">Kontakt</h3>
             <ul className="mt-4 space-y-4">
               <li className="flex items-center text-gray-600">
                 <Phone className="h-5 w-5 mr-2 text-[#FFC0CB]" />
-                <a href="tel:+494721123456" className="hover:text-[#FFC0CB] transition-colors">
-                  +49 4721 123456
+                <a href="tel:+4915208007814" className="hover:text-[#FFC0CB] transition-colors">
+                  +49 1520 800 7814
                 </a>
               </li>
               <li className="flex items-center text-gray-600">
                 <Mail className="h-5 w-5 mr-2 text-[#FFC0CB]" />
-                <a href="mailto:kontakt@estetica.de" className="hover:text-[#FFC0CB] transition-colors">
-                  kontakt@estetica.de
+                <a href="mailto:bs.aesthetcnails.com" className="hover:text-[#FFC0CB] transition-colors">
+                  bs.aesthetcnails.com
+                </a>
+              </li>
+              <li className="flex items-center text-gray-600">
+                <a href="https://www.instagram.com/bs.aesthetic.nails?igsh=eXR0a2VqbmxqYXY0" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   className="hover:text-[#FFC0CB] transition-colors">
+                  @bs.aesthetic.nails
                 </a>
               </li>
               <li className="flex items-start text-gray-600 group cursor-pointer">
@@ -104,13 +112,14 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase">Horário</h3>
+            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase">Öffnungszeiten</h3>
             <ul className="mt-4 space-y-4">
               <li className="flex items-center text-gray-600">
                 <Clock className="h-5 w-5 mr-2 text-[#FFC0CB]" />
                 <div>
-                  <p>Montag bis Freitag: 9:00 - 20:00</p>
-                  <p>Samstag: 9:00 - 18:00</p>
+                  <p>Montag bis Freitag: 9:00 - 13:00</p>
+                  <p>Dienstag und Donnerstag: 15:00 - 18:00</p>
+                  <p>Samstag: 9:30 - 17:00</p>
                 </div>
               </li>
             </ul>
@@ -119,7 +128,7 @@ export function Footer() {
 
         <div className="mt-8 border-t border-gray-200 pt-8 text-center">
           <p className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} Estética & Bem-estar. Todos os direitos reservados.
+            © {new Date().getFullYear()} Bruna Silva - Aesthetic & Nails. Alle Rechte vorbehalten.
           </p>
         </div>
       </div>

@@ -1,32 +1,51 @@
-import { Sparkles } from 'lucide-react'
+'use client'
+
+import Image from 'next/image'
+import { Calendar, ArrowRight } from 'lucide-react'
 
 export function Hero() {
   return (
-    <section className="relative py-24 overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#FFC0CB] rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob"></div>
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#FFE4E8] rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-0 left-1/3 w-96 h-96 bg-[#FFB6C1] rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-4000"></div>
-      </div>
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center">
-          <div className="inline-flex items-center px-4 py-1.5 mb-8 rounded-full border border-[#FFC0CB]/30 bg-[#FFC0CB]/10 text-[#333333] text-sm">
-            <Sparkles className="w-4 h-4 mr-2" />
-            <span>Seu momento de autocuidado e bem-estar</span>
-          </div>
-          
-          <h1 className="text-4xl tracking-tight font-extrabold text-[#333333] sm:text-5xl md:text-6xl">
-            <span className="block">Beleza e bem-estar</span>
-            <span className="block gradient-text">em harmonia com você</span>
-          </h1>
-          
-          <p className="mt-6 max-w-md mx-auto text-base text-gray-600 sm:text-lg md:mt-8 md:text-xl md:max-w-3xl">
-            Descubra um espaço dedicado à sua beleza e bem-estar. Oferecemos tratamentos personalizados com profissionais especializados, em um ambiente acolhedor e relaxante para você se sentir única e especial.
-          </p>
+    <div className="relative bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <div className="relative z-10 py-20 bg-white sm:py-24 md:py-32">
+          <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight">
+                <span className="block mb-2 bg-clip-text text-transparent bg-gradient-to-r from-gray-800 to-gray-600">
+                  Bruna Silva
+                </span>
+                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-[#FFC0CB] to-[#FFB6C1]">
+                  Aesthetic & Nails
+                </span>
+              </h1>
+              
+              <p className="mt-8 text-xl sm:text-2xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
+                Gönn dir eine Beauty-Auszeit! 
+                <span className="block mt-2 font-light">
+                  Professionelle Beauty- und Pflegebehandlungen für Ihr Wohlbefinden und Selbstbewusstsein.
+                </span>
+              </p>
+
+              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a
+                  href="/agendar"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-white bg-gradient-to-r from-[#FFC0CB] to-[#FFB6C1] hover:opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                >
+                  <Calendar className="w-5 h-5 mr-2" />
+                  Jetzt Termin buchen
+                </a>
+                <a
+                  href="/#servicos"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-[#FFC0CB] bg-white border-2 border-[#FFC0CB] hover:bg-[#FFC0CB] hover:text-white transition-all duration-300 transform hover:scale-105"
+                >
+                  Unsere Services
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </a>
+              </div>
+            </div>
+          </main>
         </div>
       </div>
-    </section>
+    </div>
   )
 } 

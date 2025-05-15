@@ -41,12 +41,15 @@ export function Scheduling() {
   const [error, setError] = useState('')
 
   const services = [
-    'Limpeza de Pele - R$ 120,00',
-    'Massagem Relaxante - R$ 150,00',
-    'Drenagem Linfática - R$ 130,00',
-    'Design de Sobrancelhas - R$ 50,00',
-    'Depilação - R$ 80,00',
-    'Microagulhamento - R$ 250,00'
+    'Manicure',
+    'Pedicure',
+    'Nageldesign',
+    'Gesichtspflege',
+    'Wimpernlift',
+    'Augenbrauenlifting',
+    'Hydra Lips',
+    'Fadentechnik',
+    'Haarentfernung mit Waxing'
   ]
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -55,41 +58,39 @@ export function Scheduling() {
     setError('')
 
     try {
-      // Substitua com suas credenciais do EmailJS
       const templateParams = {
         from_name: name,
         from_email: email,
-        to_name: 'Estética & Bem-estar',
+        to_name: 'BS Aesthetic Nails',
         message: `
-          Novo Agendamento:
+          Neue Terminanfrage:
           
-          Nome: ${name}
-          Telefone: ${phone}
+          Name: ${name}
+          Telefon: ${phone}
           Email: ${email}
-          Serviço: ${selectedService}
-          Data: ${formatarData(date)}
-          Horário: ${selectedTime}
+          Service: ${selectedService}
+          Datum: ${formatarData(date)}
+          Uhrzeit: ${selectedTime}
         `,
       }
 
       await emailjs.send(
-        'YOUR_SERVICE_ID', // Substitua com seu Service ID
-        'YOUR_TEMPLATE_ID', // Substitua com seu Template ID
+        'YOUR_SERVICE_ID',
+        'YOUR_TEMPLATE_ID',
         templateParams,
-        'YOUR_PUBLIC_KEY' // Substitua com sua Public Key
+        'YOUR_PUBLIC_KEY'
       )
 
       setShowSuccess(true)
       setTimeout(() => setShowSuccess(false), 3000)
       
-      // Limpa o formulário
       setSelectedTime('')
       setSelectedService('')
       setName('')
       setPhone('')
       setEmail('')
     } catch (err) {
-      setError('Ocorreu um erro ao enviar o agendamento. Por favor, tente novamente.')
+      setError('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.')
     } finally {
       setIsLoading(false)
     }
@@ -108,17 +109,17 @@ export function Scheduling() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Agende seu Horário
+            Termin Buchen
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            Escolha o serviço, data e horário de sua preferência
+            Wählen Sie Ihren gewünschten Service, Datum und Uhrzeit
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-white p-6 rounded-lg shadow-sm">
             <div className="mb-8">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Selecione uma Data</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Datum Auswählen</h3>
               <input
                 type="date"
                 min={formatDateForInput(new Date())}
@@ -128,55 +129,36 @@ export function Scheduling() {
               />
             </div>
 
-            <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Horários Disponíveis</h3>
-              
-              <div className="space-y-6">
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">Manhã</h4>
-                  <div className="grid grid-cols-2 gap-2">
-                    {periodos.manha.map((slot) => (
-                      <button
-                        key={slot.hora}
-                        onClick={() => setSelectedTime(slot.hora)}
-                        disabled={!slot.disponivel}
-                        className={`p-2 text-sm rounded-md transition-colors ${
-                          selectedTime === slot.hora
-                            ? 'bg-[#FFC0CB] text-white'
-                            : slot.disponivel
-                            ? 'bg-white border border-gray-300 text-gray-700 hover:border-[#FFC0CB]'
-                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                        }`}
-                      >
-                        {slot.hora}
-                        {!slot.disponivel && ' - Indisponível'}
-                      </button>
-                    ))}
+            <div className="mb-8">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Uhrzeit Auswählen</h3>
+              <div className="grid grid-cols-2 gap-4">
+                {Object.entries(periodos).map(([periodo, horarios]) => (
+                  <div key={periodo}>
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">
+                      {periodo === 'manha' ? 'Vormittag' : 'Nachmittag'}
+                    </h4>
+                    <div className="space-y-2">
+                      {horarios.map((horario) => (
+                        <button
+                          key={horario.hora}
+                          onClick={() => setSelectedTime(horario.hora)}
+                          disabled={!horario.disponivel}
+                          className={`w-full py-2 px-4 rounded-md text-sm font-medium transition-colors
+                            ${
+                              selectedTime === horario.hora
+                                ? 'bg-[#FFC0CB] text-white'
+                                : horario.disponivel
+                                ? 'bg-white text-gray-700 border border-gray-300 hover:border-[#FFC0CB]'
+                                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            }
+                          `}
+                        >
+                          {horario.hora}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-
-                <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">Tarde</h4>
-                  <div className="grid grid-cols-2 gap-2">
-                    {periodos.tarde.map((slot) => (
-                      <button
-                        key={slot.hora}
-                        onClick={() => setSelectedTime(slot.hora)}
-                        disabled={!slot.disponivel}
-                        className={`p-2 text-sm rounded-md transition-colors ${
-                          selectedTime === slot.hora
-                            ? 'bg-[#FFC0CB] text-white'
-                            : slot.disponivel
-                            ? 'bg-white border border-gray-300 text-gray-700 hover:border-[#FFC0CB]'
-                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                        }`}
-                      >
-                        {slot.hora}
-                        {!slot.disponivel && ' - Indisponível'}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -184,14 +166,14 @@ export function Scheduling() {
           <div className="bg-white p-6 rounded-lg shadow-sm">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Serviço</label>
+                <label className="block text-sm font-medium text-gray-700">Service</label>
                 <select
                   value={selectedService}
                   onChange={(e) => setSelectedService(e.target.value)}
                   className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-[#FFC0CB] focus:border-[#FFC0CB] rounded-md"
                   required
                 >
-                  <option value="">Selecione um serviço</option>
+                  <option value="">Service auswählen</option>
                   {services.map((service) => (
                     <option key={service} value={service}>
                       {service}
@@ -202,18 +184,18 @@ export function Scheduling() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700">
-                  Data e Horário Selecionados
+                  Ausgewähltes Datum und Uhrzeit
                 </label>
                 <input
                   type="text"
-                  value={`${formatarData(date)} às ${selectedTime}`}
+                  value={`${formatarData(date)} um ${selectedTime}`}
                   className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
                   disabled
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Nome</label>
+                <label className="block text-sm font-medium text-gray-700">Name</label>
                 <input
                   type="text"
                   value={name}
@@ -235,12 +217,12 @@ export function Scheduling() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Telefone</label>
+                <label className="block text-sm font-medium text-gray-700">Telefon</label>
                 <input
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="(11) 99999-9999"
+                  placeholder="+49 XXX XXXXXXX"
                   className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
                   required
                 />
@@ -262,7 +244,7 @@ export function Scheduling() {
                       : 'bg-[#FFC0CB] hover:bg-[#FFB6C1] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FFC0CB]'
                   }`}
               >
-                {isLoading ? 'Enviando...' : 'Confirmar Agendamento'}
+                {isLoading ? 'Wird gesendet...' : 'Termin bestätigen'}
               </button>
             </form>
 
