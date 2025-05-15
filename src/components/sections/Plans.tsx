@@ -14,7 +14,7 @@ const plans = [
       '10% Rabatt auf zusätzliche Dienstleistungen'
     ],
     details: 'Ideal für Kunden, die ihre Hände und Füße mit einer monatlichen Grundpflege gepflegt halten möchten.',
-    savings: 'bis zu 7€ Ersparnis + Extrarabatt',
+    savings: '',
     totalValue: '50'
   },
   {
@@ -31,7 +31,7 @@ const plans = [
       'Terminpriorität'
     ],
     details: 'Perfekt für alle, die immer perfekt gepflegte Nägel und Augenbrauen haben möchten.',
-    savings: 'Ersparnis bis zu 12€',
+    savings: '',
     totalValue: '77'
   },
   {
@@ -49,7 +49,7 @@ const plans = [
       'Terminpriorität'
     ],
     details: 'Für Frauen, die sich den Luxus der Pflege gönnen und ein komplettes und entspannendes Erlebnis wünschen — von den Füßen bis zum Gesicht, mit Verwöhnung und Exklusivität.',
-    savings: 'Kunden sparen bis zu 25€ + Priorität',
+    savings: '',
     totalValue: '135-140'
   }
 ]
@@ -102,7 +102,6 @@ export function Plans() {
 
                 <div className="mt-8">
                   <p className="text-sm text-gray-500 italic">{plan.details}</p>
-                  <p className="mt-2 text-sm font-medium text-[#FFC0CB]">{plan.savings}</p>
                 </div>
 
                 <a

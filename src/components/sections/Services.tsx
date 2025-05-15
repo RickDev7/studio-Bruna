@@ -63,12 +63,15 @@ export function Services() {
         </div>
 
         <div className="mt-16 text-center">
-          <p className="text-gray-500 mb-8">
-            * 25% Rabatt beim Vorzeigen dieses Flyers!
+          <p className="text-gray-500 mb-2">
+            * 25% Rabatt für Neukunden!
+          </p>
+          <p className="text-gray-400 text-sm mb-8">
+            (Nicht mit anderen Angeboten kombinierbar)
           </p>
           <a
             href="/agendar"
-            className="inline-flex items-center px-8 py-3 border border-[#FFC0CB] text-base font-medium rounded-md text-white bg-[#FFC0CB] hover:bg-[#FFB6C1] transform hover:-translate-y-1 transition-all duration-300"
+            className="inline-flex items-center px-8 py-3 border border-[#FFC0CB] text-base font-medium rounded-full text-white bg-[#FFC0CB] hover:bg-[#FFB6C1] transform hover:-translate-y-1 transition-all duration-300"
           >
             Jetzt Termin buchen
           </a>

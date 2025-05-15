@@ -5,16 +5,16 @@ import "./globals.css";
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "LaunchIn - Transforme Ideias em Lançamentos de Sucesso",
-  description: "Use o poder da IA para validar suas ideias, analisar o mercado e criar planos de lançamento eficientes para seu produto ou serviço.",
-  keywords: "lançamento de produto, inteligência artificial, validação de ideias, análise de mercado, empreendedorismo",
-  authors: [{ name: "LaunchIn" }],
+  title: "Bruna Silva - Aesthetic & Nails",
+  description: "Professionelle Beauty- und Pflegebehandlungen für Ihr Wohlbefinden und Selbstbewusstsein.",
+  keywords: "nails, aesthetic, beauty, Cuxhaven, Nageldesign, Gesichtspflege, Wimpernlift, Augenbrauenlifting",
+  authors: [{ name: "Bruna Silva" }],
   openGraph: {
-    title: "LaunchIn - Transforme Ideias em Lançamentos de Sucesso",
-    description: "Use o poder da IA para validar suas ideias, analisar o mercado e criar planos de lançamento eficientes.",
-    url: "https://launchin.com.br",
-    siteName: "LaunchIn",
-    locale: "pt_BR",
+    title: "Bruna Silva - Aesthetic & Nails",
+    description: "Professionelle Beauty- und Pflegebehandlungen für Ihr Wohlbefinden und Selbstbewusstsein.",
+    url: "https://bs-aesthetic-nails.de",
+    siteName: "BS Aesthetic Nails",
+    locale: "de_DE",
     type: "website",
   },
 };
@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR">
+    <html lang="de">
       <body className={inter.className}>
         {children}
       </body>

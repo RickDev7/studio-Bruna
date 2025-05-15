@@ -27,7 +27,7 @@ export function Navbar() {
             </Link>
             <Link
               href="/agendar"
-              className="inline-flex items-center px-4 py-2 border border-[#FFC0CB] text-sm font-medium rounded-md text-white bg-[#FFC0CB] hover:bg-[#FFB6C1] transition-colors"
+              className="inline-flex items-center px-4 py-2 border border-[#FFC0CB] text-sm font-medium rounded-full text-white bg-[#FFC0CB] hover:bg-[#FFB6C1] transition-colors"
             >
               Agendar Horário
             </Link>

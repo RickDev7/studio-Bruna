@@ -47,7 +47,7 @@ export function About() {
                 <div className="absolute inset-0 bg-gradient-to-r from-[#FFC0CB] to-[#FFB6C1] opacity-10"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <h4 className="text-xl font-semibold text-gray-900">Öffnungszeiten</h4>
+                    <h3 className="text-2xl font-semibold text-gray-900 mb-4">Öffnungszeiten</h3>
                     <div className="mt-4 space-y-2 text-gray-600">
                       <p>Montag bis Freitag: 9:00 - 13:00</p>
                       <p>Dienstag und Donnerstag: 15:00 - 18:00</p>
@@ -56,7 +56,7 @@ export function About() {
                     <div className="mt-6">
                       <a
                         href="/agendar"
-                        className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#FFC0CB] hover:bg-[#FFB6C1]"
+                        className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-[#FFC0CB] hover:bg-[#FFB6C1]"
                       >
                         Termin Buchen
                       </a>

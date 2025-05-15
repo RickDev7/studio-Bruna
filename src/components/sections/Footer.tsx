@@ -1,4 +1,4 @@
-import { Heart, Phone, Mail, MapPin, Clock } from 'lucide-react'
+import { Heart, Phone, Mail, MapPin, Clock, Instagram } from 'lucide-react'
 import Link from 'next/link'
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {
@@ -73,11 +73,12 @@ export function Footer() {
               </li>
               <li className="flex items-center justify-center text-gray-600">
                 <Mail className="h-5 w-5 mr-2 text-[#FFC0CB]" />
-                <a href="mailto:bs.aesthetcnails.com" className="hover:text-[#FFC0CB] transition-colors">
-                  bs.aesthetcnails.com
+                <a href="mailto:bs.aestheticnails@gmail.com" className="hover:text-[#FFC0CB] transition-colors">
+                  bs.aestheticnails@gmail.com
                 </a>
               </li>
               <li className="flex items-center justify-center text-gray-600">
+                <Instagram className="h-5 w-5 mr-2 text-[#FFC0CB]" />
                 <a href="https://www.instagram.com/bs.aesthetic.nails?igsh=eXR0a2VqbmxqYXY0" 
                    target="_blank" 
                    rel="noopener noreferrer" 
@@ -102,6 +103,7 @@ export function Footer() {
           </div>
 
           <div className="text-center">
+            <h3 className="text-sm font-semibold text-gray-900 tracking-wider uppercase mb-4">Öffnungszeiten</h3>
             <ul className="space-y-4">
               <li className="flex items-center justify-center text-gray-600">
                 <Clock className="h-5 w-5 mr-2 text-[#FFC0CB]" />

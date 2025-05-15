@@ -176,12 +176,12 @@ export function Scheduling() {
                     <select
                       value={selectedService}
                       onChange={(e) => setSelectedService(e.target.value)}
-                      className="w-full p-3 rounded-lg border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
+                      className="w-full p-3 rounded-full border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB] text-gray-900 bg-white"
                       required
                     >
-                      <option value="">Service auswählen</option>
+                      <option value="" className="text-gray-900">Service auswählen</option>
                       {services.map((service) => (
-                        <option key={service} value={service}>
+                        <option key={service} value={service} className="text-gray-900">
                           {service}
                         </option>
                       ))}
@@ -194,7 +194,7 @@ export function Scheduling() {
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full p-3 rounded-lg border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
+                      className="w-full p-3 rounded-full border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB] text-gray-900 bg-white"
                       required
                     />
                   </div>
@@ -205,7 +205,7 @@ export function Scheduling() {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full p-3 rounded-lg border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
+                      className="w-full p-3 rounded-full border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB] text-gray-900 bg-white"
                       required
                     />
                   </div>
@@ -217,7 +217,7 @@ export function Scheduling() {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="+49 XXX XXXXXXX"
-                      className="w-full p-3 rounded-lg border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB]"
+                      className="w-full p-3 rounded-full border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB] text-gray-900 bg-white"
                       required
                     />
                   </div>
@@ -231,11 +231,11 @@ export function Scheduling() {
                   <button
                     type="submit"
                     disabled={!selectedTime || !selectedService || isLoading}
-                    className={`w-full py-3 px-4 rounded-lg text-white font-medium transition-all
+                    className={`w-full py-3 px-4 rounded-full text-white font-medium transition-all
                       ${
                         !selectedTime || !selectedService || isLoading
-                          ? 'bg-gray-300 cursor-not-allowed'
-                          : 'bg-[#FFC0CB] hover:bg-[#FFB6C1]'
+                          ? 'bg-gray-400 cursor-not-allowed'
+                          : 'bg-[#FFC0CB] hover:bg-[#FFB6C1] shadow-lg hover:shadow-xl'
                       }
                     `}
                   >

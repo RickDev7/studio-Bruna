@@ -26,7 +26,7 @@ export function Hero() {
                 </span>
               </p>
 
-              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="/agendar"
                   className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-white bg-gradient-to-r from-[#FFC0CB] to-[#FFB6C1] hover:opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
