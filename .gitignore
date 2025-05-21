@@ -4,11 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+.yarn/install-state.gz
 
 # testing
 /coverage
@@ -24,6 +20,7 @@
 # misc
 .DS_Store
 *.pem
+Thumbs.db
 
 # debug
 npm-debug.log*
@@ -45,7 +42,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Editor directories and files
+# IDE
 .idea
 .vscode
 *.suo
@@ -54,13 +51,13 @@ next-env.d.ts
 *.sln
 *.sw?
 
-# Cache
-.cache
-.next
-.nuxt
-.temp
-.cache
-.parcel-cache
+# PWA files
+**/public/sw.js
+**/public/workbox-*.js
+**/public/worker-*.js
+**/public/sw.js.map
+**/public/workbox-*.js.map
+**/public/worker-*.js.map
 
 # Optional npm cache directory
 .npm
@@ -70,6 +67,11 @@ next-env.d.ts
 
 # Optional stylelint cache
 .stylelintcache
+
+# Supabase
+.branches
+.temp
+.supabase
 
 NEXT_PUBLIC_STRIPE_STARTUP_PRICE_ID=your_startup_price_id
 NEXT_PUBLIC_STRIPE_BUSINESS_PRICE_ID=your_business_price_id
