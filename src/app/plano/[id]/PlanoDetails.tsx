@@ -80,7 +80,7 @@ export function PlanoDetails({ plano }: PlanoDetailsProps) {
                 {/* Botões */}
                 <div className="space-y-4 pt-6">
                   <a
-                    href="/agendar"
+                    href={`/pagamento?valor=${encodeURIComponent(plano.preco)}&plano=${encodeURIComponent(plano.nome)}`}
                     className="w-full flex items-center justify-center py-3 px-4 rounded-full bg-[#FFC0CB] hover:bg-[#FFB6C1] text-white font-medium transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 group"
                   >
                     Assinar Plano

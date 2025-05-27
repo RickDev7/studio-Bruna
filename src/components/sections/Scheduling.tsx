@@ -33,6 +33,28 @@ const periodos = {
   ]
 }
 
+// Tipos para os parâmetros dos emails
+interface EmailParams extends Record<string, unknown> {
+  to_name: string;
+  to_email: string;
+  service: string;
+  date: string;
+  time: string;
+}
+
+interface ClientEmailParams extends EmailParams {
+  business_name: string;
+  business_address: string;
+  business_phone: string;
+}
+
+interface AdminEmailParams extends EmailParams {
+  from_name: string;
+  client_name: string;
+  client_email: string;
+  client_phone: string;
+}
+
 export function Scheduling() {
   const [date, setDate] = useState<Date>(new Date())
   const [selectedTime, setSelectedTime] = useState<string>('')
@@ -51,6 +73,7 @@ export function Scheduling() {
       console.log('EmailJS inicializado com sucesso')
     } catch (err) {
       console.error('Erro ao inicializar EmailJS:', err)
+      setError('Erro ao inicializar o sistema de emails. Por favor, recarregue a página.')
     }
   }, [])
 
@@ -66,53 +89,115 @@ export function Scheduling() {
     'Depilação com Cera'
   ]
 
+  const validateForm = () => {
+    if (!selectedService) return 'Por favor, selecione um serviço'
+    if (!selectedTime) return 'Por favor, selecione um horário'
+    if (!name.trim()) return 'Por favor, informe seu nome'
+    if (!email.trim()) return 'Por favor, informe seu email'
+    if (!phone.trim()) return 'Por favor, informe seu telefone'
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) return 'Por favor, informe um email válido'
+    
+    const phoneRegex = /^\+?[\d\s-]{10,}$/
+    if (!phoneRegex.test(phone)) return 'Por favor, informe um telefone válido no formato internacional'
+    
+    return null
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Validar formulário
+    const validationError = validateForm()
+    if (validationError) {
+      setError(validationError)
+      return
+    }
+
     setIsLoading(true)
     setError('')
 
     try {
       const dataFormatada = formatarData(date)
       
-      const templateParams = {
-        to_name: 'Bruna Silva',
-        from_name: name,
-        client_name: name,
-        client_email: email,
-        client_phone: phone,
+      // Parâmetros base para os emails
+      const baseParams: EmailParams = {
+        to_name: name,
+        to_email: email,
         service: selectedService,
         date: dataFormatada,
         time: selectedTime
       }
 
-      console.log('Enviando agendamento:', {
-        ...templateParams,
-        config: {
-          serviceId: emailjsConfig.serviceId,
-          templateId: emailjsConfig.adminTemplateId
+      // Parâmetros para o email do cliente
+      const clientParams: ClientEmailParams = {
+        ...baseParams,
+        business_name: emailjsConfig.businessInfo.name,
+        business_address: emailjsConfig.businessInfo.address,
+        business_phone: emailjsConfig.businessInfo.phone
+      }
+
+      // Parâmetros para o email do admin
+      const adminParams: AdminEmailParams = {
+        ...baseParams,
+        to_email: emailjsConfig.adminEmail,
+        from_name: name,
+        client_name: name,
+        client_email: email,
+        client_phone: phone
+      }
+
+      try {
+        // Enviar email para o cliente
+        const clientResponse = await emailjs.send(
+          emailjsConfig.serviceId,
+          emailjsConfig.templates.clientConfirmation,
+          clientParams,
+          emailjsConfig.publicKey
+        )
+
+        if (clientResponse.status !== 200) {
+          throw new Error('Erro ao enviar email de confirmação')
         }
-      })
 
-      const response = await emailjs.send(
-        emailjsConfig.serviceId,
-        emailjsConfig.adminTemplateId,
-        templateParams
-      )
+        // Enviar email para o administrador
+        const adminResponse = await emailjs.send(
+          emailjsConfig.serviceId,
+          emailjsConfig.templates.adminNotification,
+          adminParams,
+          emailjsConfig.publicKey
+        )
 
-      console.log('Email enviado com sucesso:', response)
-      
-      setShowSuccess(true)
-      setTimeout(() => setShowSuccess(false), 3000)
+        if (adminResponse.status !== 200) {
+          throw new Error('Erro ao enviar notificação para o administrador')
+        }
 
-      // Limpar formulário
-      setSelectedTime('')
-      setSelectedService('')
-      setName('')
-      setPhone('')
-      setEmail('')
+        setShowSuccess(true)
+        setTimeout(() => setShowSuccess(false), 3000)
+
+        // Limpar formulário
+        setSelectedTime('')
+        setSelectedService('')
+        setName('')
+        setPhone('')
+        setEmail('')
+      } catch (emailError: any) {
+        console.error('Erro detalhado do EmailJS:', {
+          error: emailError,
+          message: emailError.message,
+          text: emailError.text,
+          details: emailError.details
+        })
+        throw new Error(
+          emailError.text || 
+          emailError.message || 
+          'Erro ao enviar email. Por favor, tente novamente em alguns minutos.'
+        )
+      }
     } catch (err: any) {
-      console.error('Erro ao enviar email:', err)
-      const errorMessage = err.text || err.message || 'Ocorreu um erro ao agendar. Por favor, tente novamente.'
+      console.error('Erro completo:', err)
+      const errorMessage = err instanceof Error ? err.message : 'Ocorreu um erro ao agendar. Por favor, tente novamente.'
       setError(errorMessage)
     } finally {
       setIsLoading(false)

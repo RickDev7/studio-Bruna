@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import Image from 'next/image'
+import { Heart } from 'lucide-react'
 
 const navigation = [
   { name: 'Início', href: '/' },
@@ -45,28 +45,17 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           <div className="flex-shrink-0">
             <a href="/" className="flex items-center group">
-              <div className="relative w-12 h-12 overflow-hidden">
-                <Image
-                  src="/logo-alt.svg"
-                  alt="BS Estética & Unhas"
-                  width={48}
-                  height={48}
-                  className="transition-transform duration-300 group-hover:scale-110"
-                />
-              </div>
-              <div className="ml-3">
-                <span className="text-lg font-semibold text-gray-900 transition-colors duration-200 group-hover:text-[#FFC0CB] block leading-tight">
-                  BS Estética
-                </span>
-                <span className="text-sm text-gray-500 transition-colors duration-200 group-hover:text-[#FFB6C1]">
-                  & Unhas
+              <div className="flex items-center justify-center">
+                <Heart className="h-8 w-8 text-[#FFC0CB]" />
+                <span className="ml-2 text-xl font-semibold text-gray-900">
+                  Bruna Silva - Estética & Unhas
                 </span>
               </div>
             </a>
           </div>
 
           {/* Desktop menu */}
-          <div className="hidden md:flex md:items-center md:space-x-8">
+          <div className="hidden md:flex md:space-x-8">
             {navigation.map((item) => (
               <a
                 key={item.name}
@@ -109,21 +98,10 @@ export function Navbar() {
         <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm transform transition-transform duration-300">
           <div className="flex items-center justify-between">
             <a href="/" className="flex items-center group">
-              <div className="relative w-10 h-10 overflow-hidden">
-                <Image
-                  src="/logo-alt.svg"
-                  alt="BS Estética & Unhas"
-                  width={40}
-                  height={40}
-                  className="transition-transform duration-300 group-hover:scale-110"
-                />
-              </div>
-              <div className="ml-3">
-                <span className="text-lg font-semibold text-gray-900 transition-colors duration-200 group-hover:text-[#FFC0CB] block leading-tight">
+              <div className="flex items-center justify-center">
+                <Heart className="h-8 w-8 text-[#FFC0CB]" />
+                <span className="ml-2 text-xl font-semibold text-gray-900">
                   BS Estética
-                </span>
-                <span className="text-sm text-gray-500 transition-colors duration-200 group-hover:text-[#FFB6C1]">
-                  & Unhas
                 </span>
               </div>
             </a>
