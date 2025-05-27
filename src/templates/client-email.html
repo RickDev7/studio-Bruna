@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(to right, #FFC0CB, #FFB6C1);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+        .content {
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 0 0 10px 10px;
+        }
+        .details {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .details li {
+            margin: 10px 0;
+            list-style: none;
+        }
+        .business-info {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+        .important-note {
+            background: #fff3f3;
+            padding: 15px;
+            border-left: 4px solid #FFC0CB;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Confirmação de Agendamento - {{business_name}}</h2>
+        </div>
+        
+        <div class="content">
+            <p>Olá {{to_name}},</p>
+
+            <p>Recebemos sua solicitação de agendamento. Aqui estão os detalhes:</p>
+
+            <div class="details">
+                <ul>
+                    <li><strong>Serviço:</strong> {{service}}</li>
+                    <li><strong>Data:</strong> {{date}}</li>
+                    <li><strong>Horário:</strong> {{time}}</li>
+                </ul>
+            </div>
+
+            <div class="important-note">
+                <p><strong>Importante:</strong> Em breve entraremos em contato para confirmar seu agendamento.</p>
+            </div>
+
+            <div class="business-info">
+                <h3>{{business_name}}</h3>
+                <p>{{business_address}}</p>
+                <p>Telefone: {{business_phone}}</p>
+            </div>
+
+            <p>Caso precise reagendar ou cancelar, por favor entre em contato conosco através do telefone ou WhatsApp.</p>
+
+            <p>Agradecemos a preferência!</p>
+        </div>
+
+        <div class="footer">
+            <p>Atenciosamente,<br>
+            {{business_name}}</p>
+        </div>
+    </div>
+</body>
+</html> 

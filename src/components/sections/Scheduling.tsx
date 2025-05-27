@@ -1,26 +1,30 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import emailjs from '@emailjs/browser'
+import { emailjsConfig } from '@/config/emailjs'
 
 // Função auxiliar para formatar a data
 function formatarData(data: Date): string {
-  return data.toLocaleDateString('de-DE', {
+  const diasDaSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado']
+  const diaDaSemana = diasDaSemana[data.getDay()]
+  
+  return `${diaDaSemana}, ${data.toLocaleDateString('pt-BR', {
     day: '2-digit',
     month: 'long',
     year: 'numeric'
-  })
+  })}`
 }
 
 // Horários disponíveis por período
 const periodos = {
-  vormittag: [
+  manha: [
     { hora: '09:00', disponivel: true },
     { hora: '10:00', disponivel: true },
     { hora: '11:00', disponivel: false },
     { hora: '12:00', disponivel: true }
   ],
-  nachmittag: [
+  tarde: [
     { hora: '14:00', disponivel: true },
     { hora: '15:00', disponivel: true },
     { hora: '16:00', disponivel: false },
@@ -40,16 +44,26 @@ export function Scheduling() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // Inicializar EmailJS
+  useEffect(() => {
+    try {
+      emailjs.init(emailjsConfig.publicKey)
+      console.log('EmailJS inicializado com sucesso')
+    } catch (err) {
+      console.error('Erro ao inicializar EmailJS:', err)
+    }
+  }, [])
+
   const services = [
     'Manicure',
     'Pedicure',
-    'Nageldesign',
-    'Gesichtspflege',
-    'Wimpernlift',
-    'Augenbrauenlifting',
-    'Hydra Lips',
-    'Fadentechnik',
-    'Haarentfernung mit Waxing'
+    'Design de Unhas',
+    'Limpeza de Pele',
+    'Lifting de Cílios',
+    'Lifting de Sobrancelhas',
+    'Hidratação Labial',
+    'Técnica com Fio',
+    'Depilação com Cera'
   ]
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -58,39 +72,48 @@ export function Scheduling() {
     setError('')
 
     try {
+      const dataFormatada = formatarData(date)
+      
       const templateParams = {
+        to_name: 'Bruna Silva',
         from_name: name,
-        from_email: email,
-        to_name: 'BS Aesthetic Nails',
-        message: `
-          Neue Terminanfrage:
-          
-          Name: ${name}
-          Telefon: ${phone}
-          Email: ${email}
-          Service: ${selectedService}
-          Datum: ${formatarData(date)}
-          Uhrzeit: ${selectedTime}
-        `,
+        client_name: name,
+        client_email: email,
+        client_phone: phone,
+        service: selectedService,
+        date: dataFormatada,
+        time: selectedTime
       }
 
-      await emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
-        templateParams,
-        'YOUR_PUBLIC_KEY'
+      console.log('Enviando agendamento:', {
+        ...templateParams,
+        config: {
+          serviceId: emailjsConfig.serviceId,
+          templateId: emailjsConfig.adminTemplateId
+        }
+      })
+
+      const response = await emailjs.send(
+        emailjsConfig.serviceId,
+        emailjsConfig.adminTemplateId,
+        templateParams
       )
 
+      console.log('Email enviado com sucesso:', response)
+      
       setShowSuccess(true)
       setTimeout(() => setShowSuccess(false), 3000)
-      
+
+      // Limpar formulário
       setSelectedTime('')
       setSelectedService('')
       setName('')
       setPhone('')
       setEmail('')
-    } catch (err) {
-      setError('Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.')
+    } catch (err: any) {
+      console.error('Erro ao enviar email:', err)
+      const errorMessage = err.text || err.message || 'Ocorreu um erro ao agendar. Por favor, tente novamente.'
+      setError(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -108,10 +131,10 @@ export function Scheduling() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Termin Buchen
+            Agendar Horário
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            Wählen Sie Ihren gewünschten Service, Datum und Uhrzeit
+            Escolha o serviço, data e horário desejados
           </p>
         </div>
 
@@ -119,11 +142,11 @@ export function Scheduling() {
           <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2">
               <div className="p-8 bg-gradient-to-br from-[#FFC0CB] to-[#FFB6C1]">
-                <h3 className="text-2xl font-bold text-white mb-6">Zeitauswahl</h3>
+                <h3 className="text-2xl font-bold text-white mb-6">Escolha o Horário</h3>
                 
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-white font-medium mb-2">Datum</label>
+                    <label className="block text-white font-medium mb-2">Data</label>
                     <input
                       type="date"
                       min={formatDateForInput(new Date())}
@@ -134,12 +157,12 @@ export function Scheduling() {
                   </div>
 
                   <div>
-                    <label className="block text-white font-medium mb-2">Uhrzeit</label>
+                    <label className="block text-white font-medium mb-2">Horário</label>
                     <div className="grid grid-cols-2 gap-4">
                       {Object.entries(periodos).map(([periodo, horarios]) => (
                         <div key={periodo}>
                           <h4 className="text-sm font-medium text-white mb-2">
-                            {periodo === 'vormittag' ? 'Vormittag' : 'Nachmittag'}
+                            {periodo === 'manha' ? 'Manhã' : 'Tarde'}
                           </h4>
                           <div className="space-y-2">
                             {horarios.map((horario) => (
@@ -169,17 +192,17 @@ export function Scheduling() {
               </div>
 
               <div className="p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Persönliche Daten</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Seus Dados</h3>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Service</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Serviço</label>
                     <select
                       value={selectedService}
                       onChange={(e) => setSelectedService(e.target.value)}
                       className="w-full p-3 rounded-full border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB] text-gray-900 bg-white"
                       required
                     >
-                      <option value="" className="text-gray-900">Service auswählen</option>
+                      <option value="">Selecione um serviço</option>
                       {services.map((service) => (
                         <option key={service} value={service} className="text-gray-900">
                           {service}
@@ -189,7 +212,7 @@ export function Scheduling() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Nome</label>
                     <input
                       type="text"
                       value={name}
@@ -211,7 +234,7 @@ export function Scheduling() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Telefon</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
                     <input
                       type="tel"
                       value={phone}
@@ -239,13 +262,13 @@ export function Scheduling() {
                       }
                     `}
                   >
-                    {isLoading ? 'Wird gesendet...' : 'Termin bestätigen'}
+                    {isLoading ? 'Enviando...' : 'Confirmar Agendamento'}
                   </button>
                 </form>
 
                 {showSuccess && (
                   <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
-                    Termin erfolgreich gebucht! Wir werden uns in Kürze bei Ihnen melden.
+                    Agendamento realizado com sucesso! Você receberá um email de confirmação em breve.
                   </div>
                 )}
               </div>

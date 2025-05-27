@@ -9,10 +9,10 @@ export function About() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Über Mich
+            Sobre Mim
           </h2>
           <p className="mt-4 text-xl text-gray-600">
-            Spezialistin für Nägel und ästhetische Behandlungen
+            Especialista em Unhas e Tratamentos Estéticos
           </p>
         </div>
 
@@ -32,17 +32,17 @@ export function About() {
                     />
                   </div>
                   <h3 className="text-2xl font-semibold text-gray-900">
-                    BS Aesthetic Nails
+                    BS Estética & Unhas
                   </h3>
                   <p className="mt-6 text-gray-600 leading-relaxed">
-                    Willkommen in meinem Beauty-Studio! Als Spezialistin für Nägel und Ästhetik 
-                    widme ich mich der Bereitstellung hochwertiger Dienstleistungen und 
-                    individueller Betreuung für jeden Kunden.
+                    Bem-vinda ao meu estúdio de beleza! Como especialista em unhas e estética, 
+                    dedico-me a oferecer serviços de alta qualidade e atendimento 
+                    personalizado para cada cliente.
                   </p>
                   <p className="mt-4 text-gray-600 leading-relaxed">
-                    Mit jahrelanger Erfahrung biete ich umfassende Dienstleistungen in den Bereichen 
-                    Nageldesign und ästhetische Behandlungen an. Mein Ziel ist es, Ihre natürliche Schönheit zu betonen,
-                    stets unter Verwendung erstklassiger Produkte und aktueller Techniken.
+                    Com anos de experiência, ofereço serviços completos em design de unhas 
+                    e tratamentos estéticos. Meu objetivo é realçar sua beleza natural, 
+                    sempre utilizando produtos de primeira linha e técnicas atualizadas.
                   </p>
                   
                   <a
@@ -52,26 +52,27 @@ export function About() {
                     className="mt-6 inline-flex items-center text-[#FFC0CB] hover:text-[#FFB6C1]"
                   >
                     <Instagram className="h-5 w-5 mr-2" />
-                    Folgen Sie mir auf Instagram
+                    Me siga no Instagram
                   </a>
                 </div>
               </div>
-              <div className="relative h-64 lg:h-auto">
+              
+              <div className="relative lg:h-full bg-gray-50">
                 <div className="absolute inset-0 bg-gradient-to-r from-[#FFC0CB] to-[#FFB6C1] opacity-10"></div>
                 <div className="relative h-full flex items-center justify-center p-8">
                   <div className="text-center">
-                    <h3 className="text-2xl font-semibold text-gray-900 mb-4">Öffnungszeiten</h3>
+                    <h3 className="text-2xl font-semibold text-gray-900 mb-4">Horário de Funcionamento</h3>
                     <div className="mt-4 space-y-2 text-gray-600">
-                      <p>Montag bis Freitag: 9:00 - 13:00</p>
-                      <p>Dienstag und Donnerstag: 15:00 - 18:00</p>
-                      <p>Samstag: 9:30 - 17:00</p>
+                      <p>Segunda a Sexta: 9:00 - 13:00</p>
+                      <p>Terça e Quinta: 15:00 - 18:00</p>
+                      <p>Sábado: 9:30 - 17:00</p>
                     </div>
                     <div className="mt-6">
                       <a
                         href="/agendar"
                         className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-[#FFC0CB] hover:bg-[#FFB6C1]"
                       >
-                        Termin Buchen
+                        Agendar Horário
                       </a>
                     </div>
                   </div>

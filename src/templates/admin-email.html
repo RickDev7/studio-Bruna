@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(to right, #FFC0CB, #FFB6C1);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+        .content {
+            background: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 0 0 10px 10px;
+        }
+        .details {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .details li {
+            margin: 10px 0;
+            list-style: none;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Nova Solicitação de Agendamento</h2>
+        </div>
+        
+        <div class="content">
+            <p>Olá {{to_name}},</p>
+
+            <p>Você recebeu uma nova solicitação de agendamento com os seguintes detalhes:</p>
+
+            <div class="details">
+                <ul>
+                    <li><strong>Cliente:</strong> {{client_name}}</li>
+                    <li><strong>Email:</strong> {{client_email}}</li>
+                    <li><strong>Telefone:</strong> {{client_phone}}</li>
+                    <li><strong>Serviço:</strong> {{service}}</li>
+                    <li><strong>Data:</strong> {{date}}</li>
+                    <li><strong>Horário:</strong> {{time}}</li>
+                </ul>
+            </div>
+
+            <p>Por favor, entre em contato com o cliente para confirmar este agendamento.</p>
+
+            <p>Você pode responder diretamente a este email ou utilizar os dados de contato fornecidos acima.</p>
+        </div>
+
+        <div class="footer">
+            <p>Este é um email automático do sistema de agendamentos da BS Estética & Unhas.</p>
+        </div>
+    </div>
+</body>
+</html> 

@@ -5,16 +5,16 @@ import "./globals.css";
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Bruna Silva - Aesthetic & Nails",
-  description: "Professionelle Beauty- und Pflegebehandlungen für Ihr Wohlbefinden und Selbstbewusstsein.",
-  keywords: "nails, aesthetic, beauty, Cuxhaven, Nageldesign, Gesichtspflege, Wimpernlift, Augenbrauenlifting",
+  title: "Bruna Silva - Estética & Unhas",
+  description: "Tratamentos profissionais de beleza e cuidados para seu bem-estar e autoestima.",
+  keywords: "unhas, estética, beleza, Cuxhaven, design de unhas, cuidados faciais, lifting de cílios, design de sobrancelhas",
   authors: [{ name: "Bruna Silva" }],
   openGraph: {
-    title: "Bruna Silva - Aesthetic & Nails",
-    description: "Professionelle Beauty- und Pflegebehandlungen für Ihr Wohlbefinden und Selbstbewusstsein.",
+    title: "Bruna Silva - Estética & Unhas",
+    description: "Tratamentos profissionais de beleza e cuidados para seu bem-estar e autoestima.",
     url: "https://bs-aesthetic-nails.de",
-    siteName: "BS Aesthetic Nails",
-    locale: "de_DE",
+    siteName: "BS Estética & Unhas",
+    locale: "pt_BR",
     type: "website",
   },
 };

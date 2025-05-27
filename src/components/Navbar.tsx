@@ -1,5 +1,3 @@
-'use client'
-
 import Link from 'next/link'
 import { Heart } from 'lucide-react'
 
@@ -11,7 +9,7 @@ export function Navbar() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
               <Heart className="h-8 w-8 text-[#FFC0CB]" />
-              <span className="ml-2 text-xl font-semibold text-gray-900">Bruna Silva - Aesthetic & Nails</span>
+              <span className="ml-2 text-xl font-semibold text-gray-900">Bruna Silva - Estética & Unhas</span>
             </Link>
           </div>
 
