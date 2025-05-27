@@ -1,0 +1,166 @@
+/* Animações para os cards de planos */
+.plan-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.plan-card.animate-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.plan-card:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+/* Badge "Mais Popular" */
+.popular-badge {
+  position: relative;
+  overflow: visible;
+  animation: badgeSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+@keyframes badgeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.popular-badge::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+  transform: translateX(-100%);
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Efeitos de hover */
+.plan-card:hover .popular-badge {
+  transform: translateX(-4px);
+  transition: transform 0.3s ease;
+}
+
+/* Efeito nos preços */
+.price-tag {
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+
+.plan-card:hover .price-tag {
+  transform: scale(1.08);
+}
+
+/* Animação de entrada dos cards */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.plans-grid {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Animação de fade in para o título */
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Delays de animação */
+.animate-delay-100 {
+  transition-delay: 100ms;
+}
+
+.animate-delay-200 {
+  transition-delay: 200ms;
+}
+
+.animate-delay-300 {
+  transition-delay: 300ms;
+}
+
+/* Efeito de hover nas features */
+.feature-item {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0.5rem 0;
+}
+
+.plan-card:hover .feature-item {
+  transform: translateX(4px);
+  color: #4a5568;
+}
+
+/* Efeito do botão */
+.plan-button {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.plan-button::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(90deg, #FFC0CB, #ff758c, #FFC0CB);
+  background-size: 200% 100%;
+  animation: gradientMove 3s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -2;
+}
+
+.plan-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+.plan-button:hover::before {
+  opacity: 1;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
+} 

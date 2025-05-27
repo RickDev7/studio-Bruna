@@ -137,3 +137,35 @@ main {
 .glow:hover {
   box-shadow: 0 0 25px rgba(139, 92, 246, 0.7);
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.animate-in {
+  opacity: 1 !important;
+  transform: translateY(0) translateX(0) !important;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar customization */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FFC0CB;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFB6C1;
+}
