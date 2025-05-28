@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import emailjs from '@emailjs/browser'
 import { emailjsConfig } from '@/config/emailjs'
+import { Calendar } from '@/components/Calendar'
+import { TimeSlots } from '@/components/TimeSlots'
 
 // Função auxiliar para formatar a data
 function formatarData(data: Date): string {
@@ -14,23 +16,6 @@ function formatarData(data: Date): string {
     month: 'long',
     year: 'numeric'
   })}`
-}
-
-// Horários disponíveis por período
-const periodos = {
-  manha: [
-    { hora: '09:00', disponivel: true },
-    { hora: '10:00', disponivel: true },
-    { hora: '11:00', disponivel: false },
-    { hora: '12:00', disponivel: true }
-  ],
-  tarde: [
-    { hora: '14:00', disponivel: true },
-    { hora: '15:00', disponivel: true },
-    { hora: '16:00', disponivel: false },
-    { hora: '17:00', disponivel: true },
-    { hora: '18:00', disponivel: true }
-  ]
 }
 
 // Tipos para os parâmetros dos emails
@@ -65,6 +50,7 @@ export function Scheduling() {
   const [showSuccess, setShowSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [currentStep, setCurrentStep] = useState(1)
 
   // Inicializar EmailJS
   useEffect(() => {
@@ -148,219 +134,311 @@ export function Scheduling() {
         client_phone: phone
       }
 
-      try {
-        // Enviar email para o cliente
-        const clientResponse = await emailjs.send(
+      // Enviar emails
+      await Promise.all([
+        emailjs.send(
           emailjsConfig.serviceId,
           emailjsConfig.templates.clientConfirmation,
           clientParams,
           emailjsConfig.publicKey
-        )
-
-        if (clientResponse.status !== 200) {
-          throw new Error('Erro ao enviar email de confirmação')
-        }
-
-        // Enviar email para o administrador
-        const adminResponse = await emailjs.send(
+        ),
+        emailjs.send(
           emailjsConfig.serviceId,
           emailjsConfig.templates.adminNotification,
           adminParams,
           emailjsConfig.publicKey
         )
+      ])
 
-        if (adminResponse.status !== 200) {
-          throw new Error('Erro ao enviar notificação para o administrador')
-        }
+      setShowSuccess(true)
+      setTimeout(() => setShowSuccess(false), 3000)
 
-        setShowSuccess(true)
-        setTimeout(() => setShowSuccess(false), 3000)
-
-        // Limpar formulário
-        setSelectedTime('')
-        setSelectedService('')
-        setName('')
-        setPhone('')
-        setEmail('')
-      } catch (emailError: any) {
-        console.error('Erro detalhado do EmailJS:', {
-          error: emailError,
-          message: emailError.message,
-          text: emailError.text,
-          details: emailError.details
-        })
-        throw new Error(
-          emailError.text || 
-          emailError.message || 
-          'Erro ao enviar email. Por favor, tente novamente em alguns minutos.'
-        )
-      }
+      // Limpar formulário
+      setSelectedTime('')
+      setSelectedService('')
+      setName('')
+      setPhone('')
+      setEmail('')
+      setCurrentStep(1)
     } catch (err: any) {
-      console.error('Erro completo:', err)
-      const errorMessage = err instanceof Error ? err.message : 'Ocorreu um erro ao agendar. Por favor, tente novamente.'
-      setError(errorMessage)
+      console.error('Erro ao enviar emails:', err)
+      setError(err.message || 'Ocorreu um erro ao agendar. Por favor, tente novamente.')
     } finally {
       setIsLoading(false)
     }
   }
 
-  const formatDateForInput = (date: Date) => {
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    return `${year}-${month}-${day}`
+  const nextStep = () => {
+    if (currentStep === 1 && !selectedService) {
+      setError('Por favor, selecione um serviço')
+      return
+    }
+    if (currentStep === 2 && !selectedTime) {
+      setError('Por favor, selecione um horário')
+      return
+    }
+    setError('')
+    setCurrentStep(prev => prev + 1)
+  }
+
+  const prevStep = () => {
+    setError('')
+    setCurrentStep(prev => prev - 1)
   }
 
   return (
-    <section className="py-24 bg-white" id="agendar">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Agendar Horário
-          </h2>
-          <p className="mt-4 text-lg text-gray-600">
-            Escolha o serviço, data e horário desejados
-          </p>
+    <div className="min-h-screen bg-gradient-to-b from-pink-50 via-white to-pink-50/30">
+      <div className="max-w-5xl mx-auto px-4 py-12">
+        {/* Header com estilo delicado */}
+        <div className="text-center mb-16 pt-16">
+          <h1 className="text-4xl font-light text-gray-800 mb-2">
+            <span className="block">Agende seu</span>
+            <span className="block text-pink-300">Momento de Beleza</span>
+          </h1>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <div className="w-12 h-[1px] bg-pink-200"></div>
+            <div className="w-2 h-2 rounded-full bg-pink-200"></div>
+            <div className="w-12 h-[1px] bg-pink-200"></div>
+          </div>
+          <p className="text-gray-600 font-light">Cuide-se com quem entende de beleza</p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              <div className="p-8 bg-gradient-to-br from-[#FFC0CB] to-[#FFB6C1]">
-                <h3 className="text-2xl font-bold text-white mb-6">Escolha o Horário</h3>
-                
-                <div className="space-y-6">
-                  <div>
-                    <label className="block text-white font-medium mb-2">Data</label>
-                    <input
-                      type="date"
-                      min={formatDateForInput(new Date())}
-                      value={formatDateForInput(date)}
-                      onChange={(e) => setDate(new Date(e.target.value))}
-                      className="w-full p-3 rounded-lg bg-white/90 border-0 focus:ring-2 focus:ring-white"
-                    />
+        {/* Progress Steps com estilo suave */}
+        <div className="max-w-3xl mx-auto mb-12">
+          <div className="relative">
+            <div className="absolute left-0 top-1/2 w-full h-[1px] bg-pink-100"></div>
+            <div 
+              className="absolute left-0 top-1/2 h-[1px] bg-pink-200 transition-all duration-500"
+              style={{ width: `${((currentStep - 1) / 2) * 100}%` }}
+            ></div>
+            <div className="relative flex justify-between">
+              {['Serviço', 'Horário', 'Seus Dados'].map((step, index) => (
+                <div key={step} className="flex flex-col items-center">
+                  <div className={`
+                    w-10 h-10 rounded-full flex items-center justify-center
+                    text-base transition-all duration-300 border
+                    ${currentStep > index + 1 
+                      ? 'bg-pink-100 border-pink-200 text-pink-400' 
+                      : currentStep === index + 1 
+                        ? 'bg-white border-pink-200 text-pink-400' 
+                        : 'bg-white border-pink-100 text-gray-400'}
+                  `}>
+                    {index + 1}
                   </div>
+                  <span className={`
+                    mt-3 text-sm transition-all duration-300
+                    ${currentStep > index + 1 
+                      ? 'text-pink-400' 
+                      : currentStep === index + 1 
+                        ? 'text-gray-800' 
+                        : 'text-gray-400'}
+                  `}>
+                    {step}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
-                  <div>
-                    <label className="block text-white font-medium mb-2">Horário</label>
-                    <div className="grid grid-cols-2 gap-4">
-                      {Object.entries(periodos).map(([periodo, horarios]) => (
-                        <div key={periodo}>
-                          <h4 className="text-sm font-medium text-white mb-2">
-                            {periodo === 'manha' ? 'Manhã' : 'Tarde'}
-                          </h4>
-                          <div className="space-y-2">
-                            {horarios.map((horario) => (
-                              <button
-                                key={horario.hora}
-                                onClick={() => setSelectedTime(horario.hora)}
-                                disabled={!horario.disponivel}
-                                className={`w-full py-2 px-3 rounded-lg text-sm font-medium transition-all
-                                  ${
-                                    selectedTime === horario.hora
-                                      ? 'bg-white text-[#FFC0CB]'
-                                      : horario.disponivel
-                                      ? 'bg-white/80 text-gray-700 hover:bg-white'
-                                      : 'bg-white/50 text-gray-400 cursor-not-allowed'
-                                  }
-                                `}
-                              >
-                                {horario.hora}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+        {/* Mensagens de Feedback com estilo suave */}
+        {error && (
+          <div className="max-w-3xl mx-auto mb-6">
+            <div className="bg-red-50/50 border border-red-100 p-4 rounded-lg">
+              <div className="flex items-center">
+                <svg className="h-5 w-5 text-red-300 mr-3" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" />
+                </svg>
+                <p className="text-red-400">{error}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showSuccess && (
+          <div className="max-w-3xl mx-auto mb-6">
+            <div className="bg-green-50/50 border border-green-100 p-4 rounded-lg">
+              <div className="flex items-center">
+                <svg className="h-5 w-5 text-green-300 mr-3" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
+                </svg>
+                <p className="text-green-600">
+                  Agendamento realizado com sucesso! Em breve você receberá um email de confirmação.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Conteúdo Principal com estilo suave */}
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-pink-100 p-8">
+            {currentStep === 1 && (
+              <div className="space-y-8">
+                <div className="text-center mb-8">
+                  <h2 className="text-2xl font-light text-gray-800 mb-2">Escolha seu Serviço</h2>
+                  <p className="text-gray-600 font-light">Selecione o serviço que você deseja agendar</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {services.map(service => (
+                    <button
+                      key={service}
+                      onClick={() => setSelectedService(service)}
+                      className={`
+                        group relative p-6 rounded-xl transition-all duration-300
+                        border hover:shadow-sm
+                        ${selectedService === service 
+                          ? 'bg-pink-50 border-pink-200 text-gray-800' 
+                          : 'bg-white border-pink-50 hover:border-pink-200 text-gray-600 hover:bg-pink-50/50'}
+                      `}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-lg font-light">{service}</span>
+                        <span className={`
+                          transition-all duration-300
+                          ${selectedService === service ? 'opacity-100' : 'opacity-0 group-hover:opacity-50'}
+                        `}>
+                          <svg className="w-5 h-5 text-pink-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                          </svg>
+                        </span>
+                      </div>
+                    </button>
+                  ))}
                 </div>
               </div>
+            )}
 
-              <div className="p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Seus Dados</h3>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Serviço</label>
-                    <select
-                      value={selectedService}
-                      onChange={(e) => setSelectedService(e.target.value)}
-                      className="w-full p-3 rounded-full border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB] text-gray-900 bg-white"
-                      required
-                    >
-                      <option value="">Selecione um serviço</option>
-                      {services.map((service) => (
-                        <option key={service} value={service} className="text-gray-900">
-                          {service}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+            {currentStep === 2 && (
+              <div className="space-y-8">
+                <div className="text-center mb-8">
+                  <h2 className="text-2xl font-light text-gray-800 mb-2">Escolha a Data e Horário</h2>
+                  <p className="text-gray-600 font-light">Selecione quando você deseja ser atendido(a)</p>
+                </div>
+                <Calendar selectedDate={date} onDateSelect={setDate} />
+                <div className="mt-8">
+                  <h3 className="text-xl font-light text-gray-800 mb-4">Horários Disponíveis</h3>
+                  <TimeSlots
+                    selectedDate={date}
+                    selectedTime={selectedTime}
+                    onTimeSelect={setSelectedTime}
+                  />
+                </div>
+              </div>
+            )}
 
+            {currentStep === 3 && (
+              <div className="space-y-8">
+                <div className="text-center mb-8">
+                  <h2 className="text-2xl font-light text-gray-800 mb-2">Seus Dados</h2>
+                  <p className="text-gray-600 font-light">Preencha suas informações para confirmar o agendamento</p>
+                </div>
+                <div className="max-w-xl mx-auto space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Nome</label>
+                    <label className="block text-sm text-gray-600 mb-2">
+                      Nome Completo
+                    </label>
                     <input
                       type="text"
                       value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full p-3 rounded-full border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB] text-gray-900 bg-white"
-                      required
+                      onChange={e => setName(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-pink-100 focus:ring-2 focus:ring-pink-100 focus:border-pink-200 transition-colors bg-white/50"
+                      placeholder="Digite seu nome completo"
                     />
                   </div>
-
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <label className="block text-sm text-gray-600 mb-2">
+                      Email
+                    </label>
                     <input
                       type="email"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full p-3 rounded-full border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB] text-gray-900 bg-white"
-                      required
+                      onChange={e => setEmail(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-pink-100 focus:ring-2 focus:ring-pink-100 focus:border-pink-200 transition-colors bg-white/50"
+                      placeholder="Digite seu email"
                     />
                   </div>
-
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
+                    <label className="block text-sm text-gray-600 mb-2">
+                      Telefone (WhatsApp)
+                    </label>
                     <input
                       type="tel"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="+49 XXX XXXXXXX"
-                      className="w-full p-3 rounded-full border-gray-300 focus:ring-[#FFC0CB] focus:border-[#FFC0CB] text-gray-900 bg-white"
-                      required
+                      onChange={e => setPhone(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-pink-100 focus:ring-2 focus:ring-pink-100 focus:border-pink-200 transition-colors bg-white/50"
+                      placeholder="+XX (XX) XXXXX-XXXX"
                     />
                   </div>
-
-                  {error && (
-                    <div className="text-red-600 text-sm">
-                      {error}
-                    </div>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={!selectedTime || !selectedService || isLoading}
-                    className={`w-full py-3 px-4 rounded-full text-white font-medium transition-all
-                      ${
-                        !selectedTime || !selectedService || isLoading
-                          ? 'bg-gray-400 cursor-not-allowed'
-                          : 'bg-[#FFC0CB] hover:bg-[#FFB6C1] shadow-lg hover:shadow-xl'
-                      }
-                    `}
-                  >
-                    {isLoading ? 'Enviando...' : 'Confirmar Agendamento'}
-                  </button>
-                </form>
-
-                {showSuccess && (
-                  <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
-                    Agendamento realizado com sucesso! Você receberá um email de confirmação em breve.
-                  </div>
-                )}
+                </div>
               </div>
+            )}
+
+            {/* Botões de Navegação com estilo suave */}
+            <div className="flex justify-between items-center mt-10 pt-6 border-t border-pink-50">
+              {currentStep > 1 ? (
+                <button
+                  onClick={prevStep}
+                  className="flex items-center px-6 py-3 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  Voltar
+                </button>
+              ) : (
+                <div></div>
+              )}
+              
+              {currentStep < 3 ? (
+                <button
+                  onClick={nextStep}
+                  disabled={currentStep === 1 && !selectedService || currentStep === 2 && !selectedTime}
+                  className={`
+                    flex items-center px-6 py-3 rounded-lg transition-all duration-300 border
+                    ${currentStep === 1 && !selectedService || currentStep === 2 && !selectedTime
+                      ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+                      : 'bg-pink-50 text-gray-800 border-pink-200 hover:bg-pink-100'}
+                  `}
+                >
+                  Continuar
+                  <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              ) : (
+                <button
+                  onClick={handleSubmit}
+                  disabled={isLoading}
+                  className={`
+                    flex items-center px-6 py-3 rounded-lg transition-all duration-300 border
+                    ${isLoading
+                      ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+                      : 'bg-pink-50 text-gray-800 border-pink-200 hover:bg-pink-100'}
+                  `}
+                >
+                  {isLoading ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Processando...
+                    </>
+                  ) : (
+                    <>
+                      Confirmar Agendamento
+                      <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </>
+                  )}
+                </button>
+              )}
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 } 
