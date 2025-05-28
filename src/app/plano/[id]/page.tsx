@@ -24,7 +24,7 @@ const planos: { [key: string]: PlanoDetalhes } = {
     beneficios: [
       'Ideal para clientes que desejam manter mãos e pés bem cuidados com um tratamento mensal básico'
     ],
-    imagem: '/images/plano-basico.jpg'
+    imagem: '/images/plano-basico.png'
   },
   'balance': {
     id: 'balance',
@@ -43,7 +43,7 @@ const planos: { [key: string]: PlanoDetalhes } = {
       'Prioridade no agendamento',
       'Perfeito para quem deseja manter unhas e sobrancelhas sempre impecáveis'
     ],
-    imagem: '/images/plano-balance.jpg'
+    imagem: '/images/plano-balance.png'
   },
   'premium': {
     id: 'premium',
@@ -63,7 +63,7 @@ const planos: { [key: string]: PlanoDetalhes } = {
       'Prioridade no agendamento',
       'Para mulheres que desejam se presentear com o luxo do cuidado e uma experiência completa e relaxante — dos pés ao rosto, com mimo e exclusividade'
     ],
-    imagem: '/images/plano-premium.jpg'
+    imagem: '/images/plano-premium.png'
   }
 }
 

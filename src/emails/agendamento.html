@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --primary-color: #FFC0CB;
+            --secondary-color: #FFB6C1;
+            --text-color: #4A4A4A;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--text-color);
+            background-color: #F5F5F5;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .email-wrapper {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(to bottom right, transparent 49%, white 51%);
+        }
+
+        .header h2 {
+            color: white;
+            font-size: 28px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 0;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .greeting {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: #2D3748;
+        }
+
+        .details {
+            background: #F8FAFC;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            margin: 25px 0;
+            border: 1px solid #E2E8F0;
+        }
+
+        .details ul {
+            list-style: none;
+        }
+
+        .details li {
+            margin: 15px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .details li::before {
+            content: '•';
+            color: var(--primary-color);
+            font-size: 20px;
+            position: absolute;
+            left: 0;
+        }
+
+        .important-note {
+            background: #FFF5F5;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 25px 0;
+            border-left: 4px solid var(--primary-color);
+            position: relative;
+        }
+
+        .important-note::before {
+            content: '!';
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            width: 24px;
+            height: 24px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .business-info {
+            background: linear-gradient(to bottom right, #F8FAFC, #F0F4F8);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            margin: 25px 0;
+            text-align: center;
+            border: 1px solid #E2E8F0;
+        }
+
+        .business-info h3 {
+            color: #2D3748;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .business-info p {
+            margin: 10px 0;
+            color: #4A5568;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #F8FAFC;
+            border-top: 1px solid #E2E8F0;
+            color: #718096;
+        }
+
+        .signature {
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 500;
+        }
+
+        .social-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px auto;
+                padding: 0 15px;
+            }
+
+            .header {
+                padding: 30px 15px;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .header h2 {
+                font-size: 24px;
+            }
+
+            .greeting {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="email-wrapper">
+            <div class="header">
+                <h2>Confirmação de Agendamento - {{business_name}}</h2>
+            </div>
+            
+            <div class="content">
+                <p class="greeting">Olá {{to_name}},</p>
+
+                <p>Que ótimo ter você conosco! Recebemos sua solicitação de agendamento e aqui estão os detalhes:</p>
+
+                <div class="details">
+                    <ul>
+                        <li><strong>Serviço:</strong> {{service}}</li>
+                        <li><strong>Data:</strong> {{date}}</li>
+                        <li><strong>Horário:</strong> {{time}}</li>
+                    </ul>
+                </div>
+
+                <div class="important-note">
+                    <p><strong>Importante:</strong> Em breve entraremos em contato para confirmar seu agendamento. Fique atenta ao seu telefone!</p>
+                </div>
+
+                <div class="business-info">
+                    <h3>{{business_name}}</h3>
+                    <p>{{business_address}}</p>
+                    <p>📞 {{business_phone}}</p>
+                    <p>📍 <a href="https://maps.google.com/?q={{business_address}}" style="color: var(--primary-color); text-decoration: none;">Ver no Google Maps</a></p>
+                </div>
+
+                <p>Caso precise reagendar ou cancelar, por favor entre em contato conosco através do telefone ou WhatsApp com pelo menos 24 horas de antecedência.</p>
+
+                <p>Mal podemos esperar para receber você!</p>
+
+                <div class="social-links">
+                    <a href="https://instagram.com/{{instagram_handle}}">Instagram</a>
+                    <a href="https://wa.me/{{whatsapp_number}}">WhatsApp</a>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Atenciosamente,</p>
+                <p class="signature">Equipe {{business_name}}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

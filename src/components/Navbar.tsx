@@ -8,7 +8,7 @@ import { Heart } from 'lucide-react'
 const navigation = [
   { name: 'Início', href: '/' },
   { name: 'Serviços', href: '/#todos-servicos' },
-  { name: 'Planos', href: '/#servicos' },
+  { name: 'Planos', href: '/#planos' },
   { name: 'Sobre', href: '/#sobre' },
 ]
 

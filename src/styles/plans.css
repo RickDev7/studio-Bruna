@@ -1,6 +1,6 @@
 /* Animações para os cards de planos */
 .plan-card {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: center;
 }
 
@@ -10,7 +10,18 @@
 }
 
 .plan-card:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: translateY(-12px);
+}
+
+/* Efeito de hover nos cards */
+.plan-card > div {
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 192, 203, 0.1);
+  transition: all 0.3s ease;
+}
+
+.plan-card:hover > div {
+  border-color: rgba(255, 192, 203, 0.3);
 }
 
 /* Badge "Mais Popular" */
@@ -26,14 +37,15 @@
 @keyframes badgeSlideIn {
   from {
     opacity: 0;
-    transform: translateX(20px);
+    transform: translateY(-20px) translateX(-50%);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0) translateX(-50%);
   }
 }
 
+/* Efeito de brilho no badge */
 .popular-badge::before {
   content: '';
   position: absolute;
@@ -41,7 +53,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.4),
     transparent
   );
   animation: shimmer 2s infinite;
@@ -54,12 +66,6 @@
   }
 }
 
-/* Efeitos de hover */
-.plan-card:hover .popular-badge {
-  transform: translateX(-4px);
-  transition: transform 0.3s ease;
-}
-
 /* Efeito nos preços */
 .price-tag {
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -67,7 +73,7 @@
 }
 
 .plan-card:hover .price-tag {
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
 
 /* Animação de entrada dos cards */
@@ -94,73 +100,83 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
+    transform: translateY(-10px);
   }
   to {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* Delays de animação */
-.animate-delay-100 {
-  transition-delay: 100ms;
-}
-
-.animate-delay-200 {
-  transition-delay: 200ms;
-}
-
-.animate-delay-300 {
-  transition-delay: 300ms;
-}
-
-/* Efeito de hover nas features */
-.feature-item {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 0.5rem 0;
-}
-
-.plan-card:hover .feature-item {
-  transform: translateX(4px);
-  color: #4a5568;
-}
-
-/* Efeito do botão */
+/* Efeito de hover nos botões */
 .plan-button {
   position: relative;
   overflow: hidden;
-  isolation: isolate;
 }
 
 .plan-button::before {
   content: '';
   position: absolute;
-  inset: -2px;
-  background: linear-gradient(90deg, #FFC0CB, #ff758c, #FFC0CB);
-  background-size: 200% 100%;
-  animation: gradientMove 3s linear infinite;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: -2;
-}
-
-.plan-button::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: inherit;
-  border-radius: inherit;
-  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
 }
 
 .plan-button:hover::before {
-  opacity: 1;
+  transform: translateX(100%);
 }
 
-@keyframes gradientMove {
+/* Efeito de hover nos ícones */
+.feature-item svg {
+  transition: transform 0.3s ease;
+}
+
+.feature-item:hover svg {
+  transform: scale(1.2);
+}
+
+/* Delays de animação */
+.animate-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animate-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animate-delay-300 {
+  animation-delay: 300ms;
+}
+
+/* Sombra especial para o plano popular */
+.shadow-pink-xl {
+  box-shadow: 0 20px 25px -5px rgba(255, 192, 203, 0.1),
+              0 10px 10px -5px rgba(255, 192, 203, 0.04);
+}
+
+/* Efeito de gradiente animado */
+@keyframes gradient {
   0% {
-    background-position: 0% 0%;
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
   100% {
-    background-position: 200% 0%;
+    background-position: 0% 50%;
   }
+}
+
+.bg-gradient-animate {
+  background-size: 200% 200%;
+  animation: gradient 15s ease infinite;
 } 
