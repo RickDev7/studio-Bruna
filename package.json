@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm install tailwindcss postcss autoprefixer && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "npm install tailwindcss@latest postcss@latest autoprefixer@latest && npx tailwindcss init -p"
+    "postinstall": "npx tailwindcss init -p"
   },
   "dependencies": {
     "@emailjs/browser": "^3.12.1",
