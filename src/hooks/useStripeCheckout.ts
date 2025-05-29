@@ -2,7 +2,6 @@
 
 import { getStripe } from '@/lib/stripe'
 import { toast } from 'sonner'
-import type Stripe from 'stripe'
 
 export function useStripeCheckout() {
   const handleCheckout = async (priceId: string) => {
@@ -51,4 +50,4 @@ export function useStripeCheckout() {
   }
 
   return { handleCheckout }
-} 
+}
