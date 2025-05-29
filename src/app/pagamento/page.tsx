@@ -3,7 +3,7 @@
 import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Copy, Check, AlertCircle, Phone } from 'lucide-react';
+import { Copy, Check, AlertCircle, Phone, Building } from 'lucide-react';
 
 function PagamentoContent() {
   const searchParams = useSearchParams();

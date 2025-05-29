@@ -1,5 +1,7 @@
 'use client'
 
+import { Facebook, WhatsApp } from 'lucide-react'
+
 export function About() {
   return (
     <section id="sobre" className="py-24 bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1]">

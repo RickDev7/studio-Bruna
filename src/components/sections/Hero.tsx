@@ -25,7 +25,7 @@ export function Hero() {
   }, [])
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1]">
+    <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#FFC0CB]/20">
       {/* Imagem de fundo com efeito parallax */}
       <div className="absolute inset-0 overflow-hidden">
         <Image
