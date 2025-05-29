@@ -120,13 +120,13 @@ export function Footer() {
         <div className="mt-8 border-t border-gray-200 pt-8 text-center">
           <div className="flex items-center justify-center mb-4">
             <Heart className="h-8 w-8 text-[#FFC0CB]" />
-            <span className="ml-2 text-xl font-semibold text-gray-900">Bruna Silva - Estética & Unhas</span>
+            <span className="ml-2 text-xl font-semibold text-gray-900">Bruna Silva - Aesthetic & Nails</span>
           </div>
           <p className="text-gray-600 mb-4">
             Seu estúdio de beleza para tratamentos profissionais e bem-estar.
           </p>
-          <p className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} Bruna Silva - Estética & Unhas. Todos os direitos reservados.
+          <p className="text-center text-gray-500 text-sm">
+            © {new Date().getFullYear()} Bruna Silva - Aesthetic & Nails. Todos os direitos reservados.
           </p>
         </div>
       </div>

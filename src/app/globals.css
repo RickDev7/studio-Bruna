@@ -9,6 +9,9 @@
   --baby-pink: #FFC0CB;
   --baby-pink-light: #FFE4E8;
   --baby-pink-dark: #FFB6C1;
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 255, 192, 203;
+  --background-end-rgb: 255, 255, 255;
 }
 
 @theme inline {
@@ -85,8 +88,12 @@
 }
 
 body {
-  background: linear-gradient(135deg, #000000 0%, #1a0033 50%, #330066 100%);
-  color: var(--foreground);
+  background: linear-gradient(
+    to bottom right,
+    rgb(var(--background-start-rgb)),
+    rgb(var(--background-end-rgb))
+  );
+  color: rgb(var(--foreground-rgb));
   font-family: 'Inter', Arial, Helvetica, sans-serif;
   min-height: 100vh;
   position: relative;
@@ -154,20 +161,21 @@ html {
 
 /* Scrollbar customization */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #FFC0CB;
-  border-radius: 4px;
+  background: #FFB6C1;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #FFB6C1;
+  background: #FF69B4;
 }
 
 /* Animações para o Hero */
@@ -200,4 +208,59 @@ html {
 .animate-fade-in-up {
   animation: fade-in-up 0.8s ease-out forwards;
   animation-delay: 0.2s;
+}
+
+/* Estilos globais para animações suaves */
+* {
+  transition: background-color 0.3s ease,
+              border-color 0.3s ease,
+              transform 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+/* Estilos para seleção de texto */
+::selection {
+  background: rgba(255, 192, 203, 0.3);
+  color: #FF69B4;
+}
+
+/* Estilos para inputs e botões */
+input, button {
+  outline: none !important;
+}
+
+input:focus {
+  ring: 2px solid #FF69B4;
+  border-color: #FFB6C1;
+}
+
+/* Estilos para links */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Estilos para texto gradiente */
+.text-gradient {
+  background: linear-gradient(to right, #FF69B4, #FFB6C1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Estilos para bordas gradiente */
+.border-gradient {
+  border: 2px solid;
+  border-image: linear-gradient(to right, #FF69B4, #FFB6C1) 1;
+}
+
+/* Estilos para sombras */
+.shadow-pink {
+  box-shadow: 0 4px 14px -3px rgba(255, 105, 180, 0.15);
+}
+
+/* Estilos para backdrop blur */
+.backdrop-pink {
+  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.8);
 }

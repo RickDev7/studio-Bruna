@@ -9,7 +9,7 @@ export function About() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent">
-            Sobre o Studio Bruna
+            Sobre a Bruna Silva
           </h2>
           <p className="mt-4 text-lg text-gray-600">
             Conheça nossa história e compromisso com sua beleza
@@ -21,9 +21,9 @@ export function About() {
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#FFC0CB] transform hover:scale-105 transition-all duration-300">
               <h3 className="text-2xl font-bold text-[#FF69B4] mb-4">Nossa História</h3>
               <p className="text-gray-600 leading-relaxed">
-                O Studio Bruna nasceu do sonho de proporcionar serviços de beleza de alta qualidade em Cuxhaven.
-                Com anos de experiência e formação especializada no Brasil, trazemos para a Alemanha o melhor da
-                técnica brasileira em serviços de beleza.
+                A Bruna Silva - Aesthetic & Nails nasceu do sonho de proporcionar serviços de beleza de alta qualidade em Cuxhaven.
+                Com anos de experiência e formação especializada em Portugal, trazemos para a Alemanha o melhor da
+                técnica portuguesa em serviços de beleza.
               </p>
             </div>
 
@@ -71,7 +71,7 @@ export function About() {
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#FFC0CB] transform hover:scale-105 transition-all duration-300">
               <h3 className="text-2xl font-bold text-[#FF69B4] mb-4">Localização</h3>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Estamos localizados em um ponto privilegiado de Cuxhaven, com fácil acesso e estacionamento.
+                Estamos localizados em um ponto privilegiado de Cuxhaven, com fácil acesso.
                 Nosso espaço foi pensado para proporcionar conforto e tranquilidade durante seu momento de
                 cuidado pessoal.
               </p>

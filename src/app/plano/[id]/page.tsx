@@ -5,7 +5,8 @@ interface PlanoDetalhes {
   id: string
   nome: string
   descricao: string
-  preco: string
+  precoFidelidade: string
+  precoSemFidelidade: string
   servicos: string[]
   beneficios: string[]
   imagem: string
@@ -16,7 +17,8 @@ const planos: { [key: string]: PlanoDetalhes } = {
     id: 'basico',
     nome: 'Plano Básico',
     descricao: 'Cuidados básicos mensais para manter suas mãos e pés sempre bem cuidados.',
-    preco: '40€/mês',
+    precoFidelidade: '40€',
+    precoSemFidelidade: '45€',
     servicos: [
       '1 Manicure com Shellac',
       '1 Pedicure simples',
@@ -31,7 +33,8 @@ const planos: { [key: string]: PlanoDetalhes } = {
     id: 'balance',
     nome: 'Plano Balance',
     descricao: 'Autocuidado completo para você manter-se sempre impecável.',
-    preco: '65€/mês',
+    precoFidelidade: '65€',
+    precoSemFidelidade: '70€',
     servicos: [
       '1 Tratamento de unhas em gel',
       '1 Pedicure com Shellac',
@@ -50,7 +53,8 @@ const planos: { [key: string]: PlanoDetalhes } = {
     id: 'premium',
     nome: 'Plano Premium',
     descricao: 'Experiência VIP completa com máximo conforto e exclusividade.',
-    preco: '115€/mês',
+    precoFidelidade: '115€',
+    precoSemFidelidade: '130€',
     servicos: [
       '1 Spa pedicure com Shellac',
       '1 Tratamento de unhas em gel',

@@ -2,13 +2,16 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
-import { Copy, Check, AlertCircle, Phone } from 'lucide-react';
+import { Copy, Check, AlertCircle, Phone, Building2 } from 'lucide-react';
 
 export default function PagamentoPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const valor = searchParams.get('valor');
   const plano = searchParams.get('plano');
+  const tipo = searchParams.get('tipo');
 
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
@@ -51,21 +54,23 @@ export default function PagamentoPage() {
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-[#FFC0CB]">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent mb-4">
-              Informações de Pagamento
+              Finalizar Assinatura
             </h1>
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-600 text-lg mb-8">
               Por favor, utilize as informações bancárias abaixo para realizar sua transferência
             </p>
+
+            {/* Resumo do Plano */}
+            <div className="bg-gradient-to-r from-[#FFB6C1] to-[#FFC0CB] p-6 rounded-2xl text-white mb-8">
+              <h2 className="text-lg font-medium mb-2">Plano Selecionado</h2>
+              <p className="text-2xl font-bold mb-2">{plano}</p>
+              <p className="text-lg">{tipo === 'fidelidade' ? 'Com Fidelização' : 'Sem Fidelização'}</p>
+              <p className="text-3xl font-bold mt-4">{valor}</p>
+            </div>
           </div>
 
+          {/* Dados Bancários */}
           <div className="space-y-8">
-            {valor && (
-              <div className="bg-gradient-to-r from-[#FFB6C1] to-[#FFC0CB] p-6 rounded-2xl text-white text-center mb-8 transform hover:scale-105 transition-transform duration-300 shadow-lg">
-                <h2 className="text-lg font-medium mb-2">Valor a Pagar</h2>
-                <p className="text-3xl font-bold">{valor}</p>
-              </div>
-            )}
-
             <div className="space-y-6">
               {dadosBancarios.map(({ label, value, id }) => (
                 <div
@@ -91,7 +96,7 @@ export default function PagamentoPage() {
               ))}
             </div>
 
-            <div className="bg-gradient-to-r from-[#FFE4E1] to-[#FFF0F5] p-6 rounded-xl border border-[#FFB6C1] mt-8">
+            <div className="bg-gradient-to-r from-[#FFE4E1] to-[#FFF0F5] p-6 rounded-xl border border-[#FFB6C1]">
               <div className="flex items-start">
                 <AlertCircle className="w-6 h-6 text-[#FF69B4] mr-3 flex-shrink-0 mt-1" />
                 <div>
@@ -99,8 +104,7 @@ export default function PagamentoPage() {
                   <ul className="list-disc list-inside text-gray-700 space-y-3 marker:text-[#FF69B4]">
                     <li>Guarde o comprovante de transferência</li>
                     <li>O processamento pode levar até 2 dias úteis</li>
-                    <li>Após confirmação do pagamento, você receberá um e-mail</li>
-                    {plano && <li>Este pagamento é referente ao {plano}</li>}
+                    <li>Após confirmação do pagamento, entraremos em contato com você</li>
                     <li className="!mt-6 !list-none">
                       <div className="flex items-center bg-white p-4 rounded-lg border border-[#FFB6C1]">
                         <Phone className="w-5 h-5 text-[#FF69B4] mr-3" />
@@ -122,12 +126,12 @@ export default function PagamentoPage() {
               </div>
             </div>
 
-            <div className="text-center pt-8">
+            <div className="text-center mt-8">
               <Link 
-                href="/"
-                className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium rounded-full text-white bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] hover:from-[#FF69B4] hover:to-[#FFB6C1] transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
+                href="/planos"
+                className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-full text-[#FF69B4] border-2 border-[#FFB6C1] hover:bg-[#FFB6C1] hover:text-white transition-all duration-300"
               >
-                Voltar para a Página Inicial
+                Voltar para os Planos
               </Link>
             </div>
           </div>

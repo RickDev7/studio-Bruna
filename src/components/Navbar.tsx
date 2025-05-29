@@ -1,169 +1,149 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Dialog } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Heart } from 'lucide-react'
-
-const navigation = [
-  { name: 'Início', href: '/' },
-  { name: 'Serviços', href: '/#todos-servicos' },
-  { name: 'Planos', href: '/#planos' },
-  { name: 'Sobre', href: '/sobre' },
-]
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { Menu, X } from 'lucide-react';
 
 export function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const [prevScrollPos, setPrevScrollPos] = useState(0)
-  const [visible, setVisible] = useState(true)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollPos = window.scrollY
-      const isScrolled = currentScrollPos > 20
-      
-      // Determina se deve mostrar ou esconder o navbar baseado na direção do scroll
-      setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10)
-      setScrolled(isScrolled)
-      setPrevScrollPos(currentScrollPos)
-    }
+      setIsScrolled(window.scrollY > 20);
 
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [prevScrollPos])
+      if (pathname === '/') {
+        const sections = ['servicos', 'planos', 'sobre'];
+        for (const section of sections) {
+          const element = document.getElementById(section);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            if (rect.top <= 100 && rect.bottom >= 100) {
+              setActiveSection(section);
+              break;
+            }
+          }
+        }
+        // Se nenhuma seção estiver visível, considere a página inicial como ativa
+        if (window.scrollY < 100) {
+          setActiveSection('');
+        }
+      }
+    };
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const href = e.currentTarget.getAttribute('href')
-    
-    if (href?.includes('#')) {
-      e.preventDefault()
-      const targetId = href.split('#')[1]
-      const element = document.getElementById(targetId)
-      
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [pathname]);
+
+  const scrollToSection = (sectionId: string) => {
+    if (pathname !== '/') {
+      router.push('/');
+      // Aguarda a navegação ser concluída antes de rolar
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      const element = document.getElementById(sectionId);
       if (element) {
-        const offset = 80 // altura do navbar + algum espaço extra
-        const elementPosition = element.getBoundingClientRect().top
-        const offsetPosition = elementPosition + window.pageYOffset - offset
-
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        })
-
-        setMobileMenuOpen(false)
-      } else if (href === '/#nossos-servicos' || href === '/#planos-mensais') {
-        // Se estiver em outra página, redireciona para a home com a âncora
-        window.location.href = href
+        element.scrollIntoView({ behavior: 'smooth' });
       }
     }
-  }
+    setIsMenuOpen(false);
+  };
+
+  const menuItems = [
+    { href: '/', label: 'Início', action: () => router.push('/') },
+    { href: '#servicos', label: 'Serviços', action: () => scrollToSection('servicos') },
+    { href: '#planos', label: 'Planos', action: () => scrollToSection('planos') },
+    { href: '#sobre', label: 'Sobre', action: () => scrollToSection('sobre') },
+    { href: '/agendar', label: 'Agendar', action: () => router.push('/agendar') },
+  ];
+
+  const isActive = (path: string) => {
+    if (path === '/') return pathname === '/' && activeSection === '';
+    if (path.startsWith('#')) {
+      return activeSection === path.replace('#', '');
+    }
+    return pathname === path;
+  };
 
   return (
-    <header 
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white shadow-md' : 'bg-transparent'
-      } ${
-        visible ? 'translate-y-0' : '-translate-y-full'
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-white/90 backdrop-blur-md shadow-md'
+          : 'bg-transparent'
       }`}
     >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex-shrink-0">
-            <a href="/" className="flex items-center group">
-              <div className="flex items-center justify-center">
-                <Heart className="h-8 w-8 text-[#FFC0CB]" />
-                <span className="ml-2 text-xl font-semibold text-gray-900">
-                  Bruna Silva - Estética & Unhas
-                </span>
-              </div>
-            </a>
-          </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="flex-shrink-0">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent">
+              Bruna Silva - Aesthetic & Nails
+            </h1>
+          </Link>
 
-          {/* Desktop menu */}
-          <div className="hidden md:flex md:space-x-8">
-            {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={handleNavClick}
-                className="text-sm font-medium text-gray-700 hover:text-[#FFC0CB] transition-colors duration-200 relative after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-[#FFC0CB] after:left-0 after:-bottom-1 after:rounded-full after:origin-left after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
+          {/* Desktop Menu */}
+          <div className="hidden md:flex items-center space-x-8">
+            {menuItems.map((item) => (
+              <button
+                key={item.href}
+                onClick={item.action}
+                className={`text-base font-medium transition-all duration-300 ${
+                  isActive(item.href)
+                    ? 'text-[#FF69B4] scale-105'
+                    : 'text-gray-600 hover:text-[#FF69B4] hover:scale-105'
+                }`}
               >
-                {item.name}
-              </a>
+                {item.label}
+              </button>
             ))}
-            <a
-              href="/agendar"
-              className="ml-4 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-[#FFC0CB] rounded-md hover:bg-[#FFB6C1] hover:-translate-y-0.5 hover:shadow-md transition-all duration-200"
-            >
-              Agendar Horário
-            </a>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="flex md:hidden">
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
             <button
-              type="button"
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:bg-pink-50 transition-colors duration-200"
-              onClick={() => setMobileMenuOpen(true)}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 rounded-md text-gray-600 hover:text-[#FF69B4] hover:bg-pink-50 transition-colors duration-300"
             >
-              <span className="sr-only">Abrir menu</span>
-              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </button>
           </div>
         </div>
-      </nav>
 
-      {/* Mobile menu */}
-      <Dialog 
-        as="div" 
-        className="md:hidden" 
-        open={mobileMenuOpen} 
-        onClose={setMobileMenuOpen}
-      >
-        <div className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm transition-opacity duration-300" />
-        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm transform transition-transform duration-300">
-          <div className="flex items-center justify-between">
-            <a href="/" className="flex items-center group">
-              <div className="flex items-center justify-center">
-                <Heart className="h-8 w-8 text-[#FFC0CB]" />
-                <span className="ml-2 text-xl font-semibold text-gray-900">
-                  BS Estética
-                </span>
-              </div>
-            </a>
-            <button
-              type="button"
-              className="rounded-md p-2.5 text-gray-700 hover:bg-pink-50 transition-colors duration-200"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <span className="sr-only">Fechar menu</span>
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-            </button>
-          </div>
-          <div className="mt-6 flow-root">
-            <div className="space-y-2 py-6">
-              {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  onClick={handleNavClick}
-                  className="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-pink-50 hover:text-[#FFC0CB] transition-all duration-200"
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-white/90 backdrop-blur-md rounded-b-2xl border-t border-pink-100">
+              {menuItems.map((item) => (
+                <button
+                  key={item.href}
+                  onClick={item.action}
+                  className={`block w-full px-3 py-2 rounded-md text-base font-medium transition-all duration-300 text-left ${
+                    isActive(item.href)
+                      ? 'text-[#FF69B4] bg-pink-50'
+                      : 'text-gray-600 hover:text-[#FF69B4] hover:bg-pink-50'
+                  }`}
                 >
-                  {item.name}
-                </a>
+                  {item.label}
+                </button>
               ))}
-              <a
-                href="/agendar"
-                className="block w-full px-3 py-2 text-center text-base font-medium text-white bg-[#FFC0CB] rounded-md hover:bg-[#FFB6C1] hover:shadow-md transition-all duration-200"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Agendar Horário
-              </a>
             </div>
           </div>
-        </Dialog.Panel>
-      </Dialog>
-    </header>
-  )
+        )}
+      </div>
+    </nav>
+  );
 } 

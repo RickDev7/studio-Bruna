@@ -2,13 +2,14 @@
 
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { Contract } from '@/components/Contract'
+import { TermsAndConditions } from '@/components/TermsAndConditions'
 
 interface PlanoDetalhes {
   id: string
   nome: string
   descricao: string
-  preco: string
+  precoFidelidade: string
+  precoSemFidelidade: string
   servicos: string[]
   beneficios: string[]
   imagem: string
@@ -52,11 +53,21 @@ export function PlanoDetails({ plano }: PlanoDetailsProps) {
                 </p>
               </div>
 
-              {/* Preço */}
-              <div className="mb-8">
-                <div className="inline-block bg-gradient-to-r from-[#FFB6C1] to-[#FFC0CB] p-6 rounded-2xl text-white text-center transform hover:scale-105 transition-transform duration-300 shadow-lg">
-                  <h2 className="text-lg font-medium mb-2">Valor do Plano</h2>
-                  <p className="text-3xl font-bold">{plano.preco}</p>
+              {/* Preços */}
+              <div className="flex flex-col md:flex-row gap-6 mb-8">
+                <div className="flex-1">
+                  <div className="bg-gradient-to-r from-[#FFB6C1] to-[#FFC0CB] p-6 rounded-2xl text-white text-center transform hover:scale-105 transition-transform duration-300 shadow-lg">
+                    <h2 className="text-lg font-medium mb-2">Com Fidelização</h2>
+                    <p className="text-sm mb-2">(3 ou 6 meses)</p>
+                    <p className="text-3xl font-bold">{plano.precoFidelidade}/mês</p>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="bg-white p-6 rounded-2xl text-gray-800 text-center border-2 border-[#FFB6C1] transform hover:scale-105 transition-transform duration-300 shadow-lg">
+                    <h2 className="text-lg font-medium mb-2">Sem Fidelização</h2>
+                    <p className="text-sm mb-2">&nbsp;</p>
+                    <p className="text-3xl font-bold">{plano.precoSemFidelidade}/mês</p>
+                  </div>
                 </div>
               </div>
 
@@ -103,7 +114,7 @@ export function PlanoDetails({ plano }: PlanoDetailsProps) {
               {/* Botões de Ação */}
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <a
-                  href={`/pagamento?valor=${encodeURIComponent(plano.preco)}&plano=${encodeURIComponent(plano.nome)}`}
+                  href={`/pagamento?valor=${encodeURIComponent(plano.precoFidelidade)}&plano=${encodeURIComponent(plano.nome)}`}
                   className="inline-flex items-center px-8 py-4 text-lg font-medium rounded-full text-white bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] hover:from-[#FF69B4] hover:to-[#FFB6C1] transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
                 >
                   Assinar Plano
@@ -132,7 +143,7 @@ export function PlanoDetails({ plano }: PlanoDetailsProps) {
                   Voltar
                 </button>
 
-                <Contract planoNome={plano.nome} planoPreco={plano.preco.replace('/mês', '')} />
+                <TermsAndConditions />
               </div>
             </div>
           </div>

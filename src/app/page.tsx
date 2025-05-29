@@ -7,8 +7,8 @@ import { About } from '@/components/sections/About'
 import { Footer } from '@/components/sections/Footer'
 
 export const metadata: Metadata = {
-  title: 'Bruna Silva - Estética & Unhas',
-  description: 'Tratamentos profissionais de beleza e cuidados para seu bem-estar e autoestima.',
+  title: 'Bruna Silva - Aesthetic & Nails',
+  description: 'Serviços de estética e beleza em Cuxhaven',
   other: {
     'google': 'notranslate'
   }

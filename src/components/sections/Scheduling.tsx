@@ -241,7 +241,7 @@ export function Scheduling() {
       )}
 
       {currentStep === 3 && (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form id="agendamentoForm" onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-sm text-gray-600 mb-2">
               Nome Completo
@@ -293,56 +293,55 @@ export function Scheduling() {
               </p>
             </div>
           </div>
+
+          <div className="flex justify-between pt-6">
+            <button
+              type="button"
+              onClick={prevStep}
+              className="px-6 py-3 rounded-full border border-pink-200 text-gray-700 hover:bg-pink-50 transition-all duration-300"
+            >
+              Voltar
+            </button>
+            <button
+              type="submit"
+              form="agendamentoForm"
+              disabled={isLoading}
+              className="ml-auto px-8 py-3 bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] text-white rounded-full hover:opacity-90 transition-opacity duration-300 flex items-center"
+            >
+              {isLoading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Processando...
+                </>
+              ) : (
+                'Confirmar Agendamento'
+              )}
+            </button>
+          </div>
         </form>
       )}
 
-      <div className="flex justify-between pt-6">
-        {currentStep > 1 && (
-          <button
-            onClick={prevStep}
-            className="px-6 py-3 rounded-lg border border-pink-200 text-gray-700 hover:bg-pink-50 transition-all duration-300"
-          >
-            Voltar
-          </button>
-        )}
-        
-        {currentStep < 3 ? (
+      {currentStep < 3 && (
+        <div className="flex justify-between pt-6">
+          {currentStep > 1 && (
+            <button
+              onClick={prevStep}
+              className="px-6 py-3 rounded-full border border-pink-200 text-gray-700 hover:bg-pink-50 transition-all duration-300"
+            >
+              Voltar
+            </button>
+          )}
           <button
             onClick={nextStep}
             className="ml-auto px-6 py-3 rounded-lg bg-pink-50 text-gray-800 border border-pink-200 hover:bg-pink-100 transition-all duration-300"
           >
             Próximo
           </button>
-        ) : (
-          <button
-            onClick={handleSubmit}
-            disabled={isLoading}
-            className={`
-              ml-auto flex items-center px-6 py-3 rounded-lg transition-all duration-300 border
-              ${isLoading
-                ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
-                : 'bg-pink-50 text-gray-800 border-pink-200 hover:bg-pink-100'}
-            `}
-          >
-            {isLoading ? (
-              <>
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Processando...
-              </>
-            ) : (
-              <>
-                Confirmar Agendamento
-                <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
-                </svg>
-              </>
-            )}
-          </button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 } 

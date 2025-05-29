@@ -149,7 +149,7 @@ export function Services() {
                       </div>
                       <Link
                         href={`/pagamento?plano=${encodeURIComponent(service.name)}&valor=${encodeURIComponent(service.precoFidelidade)}&tipo=fidelidade`}
-                        className="block w-full py-2 px-4 bg-white text-gray-900 rounded-full font-medium hover:bg-opacity-90 transition-all duration-300 text-center"
+                        className="block w-full py-2 px-4 bg-white text-gray-900 rounded-full font-medium border-2 border-[#FFB6C1] hover:bg-gradient-to-r hover:from-[#FFE4E1] hover:to-[#FFF0F5] hover:border-[#FF69B4] hover:text-gray-900 hover:scale-105 transform transition-all duration-300 text-center shadow-sm hover:shadow-md"
                       >
                         Escolher Com Fidelização
                       </Link>

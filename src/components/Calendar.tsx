@@ -1,17 +1,70 @@
-import React, { useState, useEffect } from 'react'
-import { businessHours } from '@/config/businessHours'
+'use client'
+
+import React from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { businessHours, holidays } from '@/config/businessHours'
 
 interface CalendarProps {
-  selectedDate: Date
-  onDateSelect: (date: Date) => void
+  selectedDate: Date;
+  onDateSelect: (date: Date) => void;
 }
 
 export function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
-  const [currentMonth, setCurrentMonth] = useState(new Date())
-  const [calendar, setCalendar] = useState<Date[][]>([])
+  const [currentMonth, setCurrentMonth] = React.useState(new Date());
+  const [calendar, setCalendar] = React.useState<Date[][]>([]);
+
+  const daysInMonth = new Date(
+    currentMonth.getFullYear(),
+    currentMonth.getMonth() + 1,
+    0
+  ).getDate();
+
+  const firstDayOfMonth = new Date(
+    currentMonth.getFullYear(),
+    currentMonth.getMonth(),
+    1
+  ).getDay();
+
+  const monthNames = [
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+  ];
+
+  const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+  const handlePreviousMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
+  };
+
+  const isToday = (date: Date) => {
+    const today = new Date();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
+  };
+
+  const isSelected = (date: Date) => {
+    return (
+      date.getDate() === selectedDate.getDate() &&
+      date.getMonth() === selectedDate.getMonth() &&
+      date.getFullYear() === selectedDate.getFullYear()
+    );
+  };
+
+  const isPastDate = (date: Date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date < today;
+  };
 
   // Gera o calendário do mês atual
-  useEffect(() => {
+  React.useEffect(() => {
     const firstDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
     const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)
     
@@ -51,67 +104,37 @@ export function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
 
     // Verifica se é feriado
     const dateString = date.toISOString().split('T')[0]
-    if (businessHours.holidays.includes(dateString)) return false
+    if (holidays.includes(dateString)) return false
 
     // Verifica horário de funcionamento
     const dayOfWeek = date.getDay()
-    const dayConfig = businessHours.weekdays[dayOfWeek as keyof typeof businessHours.weekdays]
+    const dayConfig = businessHours[dayOfWeek]
     return dayConfig.isOpen
   }
 
-  const monthNames = [
-    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-  ]
-
-  const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
-
-  const prevMonth = () => {
-    setCurrentMonth(prev => {
-      const newDate = new Date(prev)
-      newDate.setMonth(prev.getMonth() - 1)
-      return newDate
-    })
-  }
-
-  const nextMonth = () => {
-    setCurrentMonth(prev => {
-      const newDate = new Date(prev)
-      newDate.setMonth(prev.getMonth() + 1)
-      return newDate
-    })
-  }
-
   return (
-    <div className="bg-white/90 backdrop-blur-sm rounded-xl border border-pink-100 p-4">
-      <div className="flex items-center justify-between mb-4">
+    <div className="bg-white rounded-xl shadow-sm">
+      <div className="flex items-center justify-between p-4">
         <button
-          onClick={prevMonth}
-          className="p-2 hover:bg-pink-50 rounded-lg transition-colors"
+          onClick={handlePreviousMonth}
+          className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
         >
-          <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
-          </svg>
+          <ChevronLeft className="w-5 h-5 text-gray-600" />
         </button>
-        <h2 className="text-lg font-medium text-gray-800">
+        <h2 className="text-lg font-medium text-gray-900">
           {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
         </h2>
         <button
-          onClick={nextMonth}
-          className="p-2 hover:bg-pink-50 rounded-lg transition-colors"
+          onClick={handleNextMonth}
+          className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
         >
-          <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
-          </svg>
+          <ChevronRight className="w-5 h-5 text-gray-600" />
         </button>
       </div>
 
-      <div className="grid grid-cols-7 gap-1">
-        {weekDays.map(day => (
-          <div
-            key={day}
-            className="text-center py-2 text-sm font-medium text-gray-600"
-          >
+      <div className="grid grid-cols-7 gap-1 p-4">
+        {weekDays.map((day) => (
+          <div key={day} className="text-center text-sm font-medium text-gray-500 py-2">
             {day}
           </div>
         ))}
@@ -119,46 +142,29 @@ export function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
         {calendar.map((week, weekIndex) => (
           <React.Fragment key={weekIndex}>
             {week.map((date, dateIndex) => {
-              const isAvailable = isDateAvailable(date)
-              const isSelected = selectedDate && 
-                date.getDate() === selectedDate.getDate() &&
-                date.getMonth() === selectedDate.getMonth() &&
-                date.getFullYear() === selectedDate.getFullYear()
-              const isCurrentMonth = date.getMonth() === currentMonth.getMonth()
+              const isDisabled = isPastDate(date) || !isDateAvailable(date);
+              const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
 
               return (
                 <button
                   key={dateIndex}
-                  onClick={() => isAvailable && onDateSelect(date)}
-                  disabled={!isAvailable}
+                  onClick={() => !isDisabled && onDateSelect(date)}
+                  disabled={isDisabled}
                   className={`
-                    relative p-2 w-full text-center rounded-lg transition-all duration-300
-                    ${isSelected
-                      ? 'bg-pink-50 text-gray-800 border border-pink-200'
-                      : isAvailable && isCurrentMonth
-                        ? 'hover:bg-pink-50/50 text-gray-800 border border-transparent hover:border-pink-100'
-                        : isCurrentMonth
-                          ? 'text-gray-400 cursor-not-allowed'
-                          : 'text-gray-300 cursor-not-allowed'
-                    }
+                    text-center py-2 rounded-full mx-1
+                    ${!isCurrentMonth ? 'text-gray-300' : ''}
+                    ${isDisabled ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-pink-50'}
+                    ${isToday(date) ? 'bg-pink-50 text-[#FF69B4]' : ''}
+                    ${isSelected(date) ? 'bg-[#FF69B4] text-white hover:bg-[#FF69B4]' : ''}
                   `}
                 >
-                  <span className={`text-sm ${isSelected ? 'font-medium' : 'font-light'}`}>
-                    {date.getDate()}
-                  </span>
-                  {isSelected && (
-                    <div className="absolute -top-1 -right-1">
-                      <svg className="w-4 h-4 text-pink-300" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
-                      </svg>
-                    </div>
-                  )}
+                  {date.getDate()}
                 </button>
-              )
+              );
             })}
           </React.Fragment>
         ))}
       </div>
     </div>
-  )
+  );
 } 

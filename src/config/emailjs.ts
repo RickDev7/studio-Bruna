@@ -35,8 +35,8 @@ export const emailjsConfig: EmailJSConfig = {
 
   // Informações do negócio
   businessInfo: {
-    name: 'BS Estética & Unhas',
-    address: 'Bei der Grodener Kirche 7, 27472 Cuxhaven',
-    phone: '+49 1520 800 7814'
+    name: 'Bruna Silva - Aesthetic & Nails',
+    address: 'Deichstraße 37, 27472 Cuxhaven, Deutschland',
+    phone: '+49 176 24290357'
   }
 }; 

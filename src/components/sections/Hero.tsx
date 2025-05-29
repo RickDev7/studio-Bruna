@@ -45,8 +45,8 @@ export function Hero() {
           <div className="mx-auto max-w-2xl text-center space-y-12">
             {/* Título com animação */}
             <div className="space-y-4 animate-fade-in">
-              <h1 className="bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-tight">
-                Studio Bruna
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent">
+                Bruna Silva - Aesthetic & Nails
               </h1>
               <p className="text-xl sm:text-2xl leading-relaxed text-gray-600 max-w-xl mx-auto">
                 Realce sua beleza natural com nossos serviços especializados em estética e cuidados pessoais.

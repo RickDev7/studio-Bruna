@@ -6,9 +6,9 @@ import { Navbar } from "@/components/Navbar";
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Bruna Silva - Estética & Unhas",
-  description: "Tratamentos profissionais de beleza e cuidados para seu bem-estar e autoestima.",
-  keywords: "unhas, estética, beleza, Cuxhaven, design de unhas, cuidados faciais, lifting de cílios, design de sobrancelhas",
+  title: "Bruna Silva - Aesthetic & Nails",
+  description: "Serviços de estética e beleza em Cuxhaven",
+  keywords: ["estética", "unhas", "beleza", "Cuxhaven"],
   authors: [{ name: "Bruna Silva" }],
   openGraph: {
     title: "Bruna Silva - Estética & Unhas",
@@ -26,10 +26,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="de">
+    <html lang="pt">
       <body className={inter.className}>
         <Navbar />
-        <main>
+        <main className="pt-16">
           {children}
         </main>
       </body>
