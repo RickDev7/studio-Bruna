@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { Contract } from '@/components/Contract'
 
 interface PlanoDetalhes {
   id: string
@@ -130,6 +131,8 @@ export function PlanoDetails({ plano }: PlanoDetailsProps) {
                   </svg>
                   Voltar
                 </button>
+
+                <Contract planoNome={plano.nome} planoPreco={plano.preco.replace('/mês', '')} />
               </div>
             </div>
           </div>

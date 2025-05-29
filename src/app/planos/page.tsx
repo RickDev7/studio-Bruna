@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { Contract } from '@/components/Contract';
 
 export default function PlanosPage() {
   const planos = [
@@ -102,14 +103,14 @@ export default function PlanosPage() {
                 ))}
               </div>
 
-              <div className="text-center">
+              <div className="flex flex-col items-center gap-4">
                 <Link
                   href={`/plano/${plano.id}`}
-                  className="inline-flex items-center px-8 py-4 text-lg font-medium rounded-full text-white bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] hover:from-[#FF69B4] hover:to-[#FFB6C1] transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
+                  className="inline-flex items-center px-8 py-4 text-lg font-medium rounded-full text-white bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] hover:from-[#FF69B4] hover:to-[#FFB6C1] transform hover:scale-105 transition-all duration-300 hover:shadow-lg w-full justify-center"
                 >
                   Ver Detalhes
                   <svg
-                    className="ml-2 -mr-1 w-5 h-5 transform transition-transform duration-300 group-hover:translate-x-1"
+                    className="ml-2 -mr-1 w-5 h-5"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -122,6 +123,8 @@ export default function PlanosPage() {
                     />
                   </svg>
                 </Link>
+
+                <Contract planoNome={plano.nome} planoPreco={plano.preco} />
               </div>
             </div>
           ))}
