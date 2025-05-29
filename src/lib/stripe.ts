@@ -1,5 +1,5 @@
 import { loadStripe } from '@stripe/stripe-js'
-import Stripe from 'stripe'
+import { Stripe } from 'stripe'
 
 // Client-side Stripe instance
 export const getStripe = async () => {
