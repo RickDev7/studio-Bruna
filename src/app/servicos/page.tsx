@@ -1,66 +1,114 @@
+'use client'
+
 import React from 'react';
 
+const servicos = [
+  {
+    categoria: 'Unhas',
+    items: [
+      'Manicure com Shellac',
+      'Pedicure com Shellac',
+      'Spa Pedicure',
+      'Unhas em gel',
+      'Reparos de unhas'
+    ]
+  },
+  {
+    categoria: 'Tratamentos Faciais',
+    items: [
+      'Limpeza facial',
+      'Tratamento anti-idade',
+      'Hidratação facial',
+      'Microagulhamento',
+      'Máscaras faciais'
+    ]
+  },
+  {
+    categoria: 'Design e Embelezamento',
+    items: [
+      'Design de sobrancelhas',
+      'Coloração de sobrancelhas',
+      'Brow lamination',
+      'Lifting de pestanas'
+    ]
+  },
+  {
+    categoria: 'Depilação',
+    items: [
+      'Depilação facial',
+      'Depilação axilas',
+      'Depilação pernas',
+      'Depilação virilha',
+      'Depilação completa'
+    ]
+  }
+];
+
 export default function ServicosPage() {
-  const servicos = [
-    {
-      titulo: "Design de Sobrancelhas",
-      descricao: "Modelagem personalizada para realçar sua expressão facial",
-      preco: "€30",
-      duracao: "45 min"
-    },
-    {
-      titulo: "Extensão de Cílios",
-      descricao: "Técnicas modernas para um olhar mais marcante e natural",
-      preco: "€80",
-      duracao: "120 min"
-    },
-    {
-      titulo: "Micropigmentação",
-      descricao: "Procedimento semi-permanente para sobrancelhas perfeitas",
-      preco: "€250",
-      duracao: "180 min"
-    },
-    {
-      titulo: "Limpeza de Pele",
-      descricao: "Tratamento completo para uma pele radiante e saudável",
-      preco: "€60",
-      duracao: "60 min"
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-pink-50 to-purple-200 py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center text-purple-900 mb-16">
-          Nossos Serviços
-        </h1>
+    <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1] py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent mb-4">
+            Nossos Serviços
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Conheça todos os nossos serviços de estética e unhas
+          </p>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {servicos.map((servico, index) => (
-            <div 
-              key={index}
-              className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300"
+        <div className="mt-20 grid grid-cols-1 gap-8 md:grid-cols-2">
+          {servicos.map((categoria) => (
+            <div
+              key={categoria.categoria}
+              className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 p-8 border border-[#FFC0CB] transform hover:scale-105"
             >
-              <h2 className="text-2xl font-semibold text-purple-800 mb-3">
-                {servico.titulo}
-              </h2>
-              <p className="text-gray-600 mb-4">
-                {servico.descricao}
-              </p>
-              <div className="flex justify-between items-center text-gray-700">
-                <span className="font-semibold text-pink-500">{servico.preco}</span>
-                <span className="text-sm">{servico.duracao}</span>
-              </div>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent mb-6">
+                {categoria.categoria}
+              </h3>
+              <ul className="space-y-4">
+                {categoria.items.map((servico, index) => (
+                  <li key={index} className="flex items-center">
+                    <svg
+                      className="h-5 w-5 text-[#FFB6C1] mr-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    <span className="text-gray-600 hover:text-[#FF69B4] transition-colors duration-200">{servico}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        <div className="mt-12 text-center">
           <a
             href="/agendar"
-            className="inline-block bg-pink-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-pink-600 transition-colors duration-300"
+            className="inline-flex items-center px-8 py-4 text-lg font-medium rounded-full text-white bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] hover:from-[#FF69B4] hover:to-[#FFB6C1] transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
           >
             Agendar Horário
+            <svg
+              className="ml-2 -mr-1 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
           </a>
         </div>
       </div>

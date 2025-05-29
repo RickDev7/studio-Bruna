@@ -7,10 +7,8 @@ const servicos = [
       'Manicure com Shellac',
       'Pedicure com Shellac',
       'Spa Pedicure',
-      'Tratamento de unhas em gel',
-      'Reparos de unhas',
-      'Manutenção de unhas em gel',
-      'Remoção de unhas em gel'
+      'Unhas em gel',
+      'Reparos de unhas'
     ]
   },
   {
@@ -20,7 +18,6 @@ const servicos = [
       'Tratamento anti-idade',
       'Hidratação facial',
       'Microagulhamento',
-      'Peeling facial',
       'Máscaras faciais'
     ]
   },
@@ -29,9 +26,8 @@ const servicos = [
     items: [
       'Design de sobrancelhas',
       'Coloração de sobrancelhas',
-      'Extensão de cílios',
-      'Manutenção de cílios',
-      'Remoção de cílios'
+      'Brow lamination',
+      'Lifting de pestanas'
     ]
   },
   {
@@ -48,7 +44,7 @@ const servicos = [
 
 export function AllServices() {
   return (
-    <section className="py-24 bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1]" id="todos-servicos">
+    <section id="servicos" className="py-24 bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent mb-4">
