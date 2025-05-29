@@ -11,12 +11,14 @@ export const metadata: Metadata = {
   description: "Serviços de estética e beleza em Cuxhaven",
   keywords: ["estética", "unhas", "beleza", "Cuxhaven"],
   authors: [{ name: "Bruna Silva" }],
-  icons: [
-    { rel: 'icon', url: '/favicon.ico' },
-    { rel: 'icon', url: '/favicon.ico', type: 'image/x-icon' },
-    { rel: 'shortcut icon', url: '/favicon.ico' },
-    { rel: 'apple-touch-icon', url: '/apple-icon.png' },
-  ],
+  icons: {
+    icon: [
+      { url: '/favicon.ico?v=2', type: 'image/x-icon' },
+    ],
+    apple: [
+      { url: '/apple-icon.png?v=2' },
+    ],
+  },
   openGraph: {
     title: "Bruna Silva - Estética & Unhas",
     description: "Tratamentos profissionais de beleza e cuidados para seu bem-estar e autoestima.",
@@ -24,7 +26,7 @@ export const metadata: Metadata = {
     siteName: "BS Estética & Unhas",
     locale: "pt_BR",
     type: "website",
-    images: ['/og-image.png'],
+    images: ['/og-image.png?v=2'],
   },
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
 };
@@ -37,9 +39,9 @@ export default function RootLayout({
   return (
     <html lang="pt">
       <head>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-icon.png" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2" />
+        <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2" />
+        <link rel="apple-touch-icon" href="/apple-icon.png?v=2" />
       </head>
       <body className={inter.className}>
         <Navbar />
