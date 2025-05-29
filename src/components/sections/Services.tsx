@@ -79,11 +79,11 @@ export function Services() {
   }, [])
 
   return (
-    <section id="planos" className="py-24 bg-gradient-to-br from-white to-pink-50" ref={plansRef}>
+    <section id="planos" className="py-24 bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1]" ref={plansRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16 animate-fade-in">
-          <span className="text-[#FFC0CB] font-medium text-sm uppercase tracking-wider">Planos Mensais</span>
-          <h2 className="mt-2 text-4xl font-extrabold text-gray-900 sm:text-5xl">
+        <div className="text-center mb-16">
+          <span className="text-[#FF69B4] font-medium text-sm uppercase tracking-wider">Planos Mensais</span>
+          <h2 className="mt-2 text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent">
             Escolha o Plano Perfeito para Você
           </h2>
           <p className="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
@@ -97,20 +97,18 @@ export function Services() {
             return (
               <div
                 key={service.id}
-                className={`plan-card opacity-0 transform translate-y-8 ${
-                  service.id === 'balance' ? 'lg:-mt-4' : ''
-                }`}
+                className="plan-card opacity-0 transform translate-y-8"
               >
                 <div 
-                  className={`relative p-8 h-full rounded-3xl transition-all duration-300 ${
-                    service.id === 'balance'
-                      ? 'bg-gradient-to-br from-pink-50 via-white to-pink-50 shadow-xl hover:shadow-2xl'
-                      : 'bg-white shadow-lg hover:shadow-xl'
+                  className={`relative p-8 h-full rounded-3xl transition-all duration-300 bg-white/90 backdrop-blur-sm border ${
+                    service.popular
+                      ? 'border-[#FF69B4] shadow-xl hover:shadow-2xl scale-105'
+                      : 'border-[#FFC0CB] shadow-lg hover:shadow-xl hover:scale-105'
                   }`}
                 >
                   {service.popular && (
                     <div className="absolute -top-5 left-1/2 transform -translate-x-1/2">
-                      <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-pink-500 to-[#FFC0CB] text-white text-sm font-semibold shadow-lg">
+                      <div className="inline-flex items-center px-6 py-2 rounded-full bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] text-white text-sm font-semibold shadow-lg">
                         <Crown className="w-4 h-4 mr-2" />
                         Mais Popular
                       </div>
@@ -120,12 +118,12 @@ export function Services() {
                   {/* Ícone e Nome */}
                   <div className="text-center mb-8">
                     <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 ${
-                      service.id === 'balance' 
-                        ? 'bg-gradient-to-br from-pink-100 to-pink-50'
-                        : 'bg-pink-50'
+                      service.popular 
+                        ? 'bg-gradient-to-br from-[#FFB6C1] to-[#FFE4E1]'
+                        : 'bg-gradient-to-br from-[#FFC0CB] to-white'
                     }`}>
                       <Icon className={`w-8 h-8 ${
-                        service.id === 'balance' ? 'text-pink-500' : 'text-[#FFC0CB]'
+                        service.popular ? 'text-[#FF69B4]' : 'text-[#FFB6C1]'
                       }`} />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.name}</h3>
@@ -135,7 +133,7 @@ export function Services() {
                   {/* Preço */}
                   <div className="text-center mb-8">
                     <div className="flex items-center justify-center">
-                      <span className="text-4xl font-extrabold bg-gradient-to-r from-pink-500 to-[#FFC0CB] bg-clip-text text-transparent">
+                      <span className="text-4xl font-extrabold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent">
                         {service.price.split('/')[0]}
                       </span>
                       <span className="ml-2 text-gray-500">/mês</span>
@@ -145,7 +143,7 @@ export function Services() {
                   {/* Linha divisória */}
                   <div className="relative my-8">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-pink-100"></div>
+                      <div className="w-full border-t border-[#FFE4E1]"></div>
                     </div>
                     <div className="relative flex justify-center">
                       <span className="bg-white px-4 text-sm text-gray-500">Benefícios inclusos</span>
@@ -158,7 +156,7 @@ export function Services() {
                       <div key={index} className="feature-item flex items-start">
                         <div className="flex-shrink-0">
                           <svg
-                            className={`h-5 w-5 ${service.id === 'balance' ? 'text-pink-500' : 'text-[#FFC0CB]'}`}
+                            className={`h-5 w-5 ${service.popular ? 'text-[#FF69B4]' : 'text-[#FFB6C1]'}`}
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -182,27 +180,13 @@ export function Services() {
                       onClick={() => router.push(`/plano/${service.id}`)}
                       className={`plan-button w-full group relative inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full transition-all duration-300
                         ${
-                          service.id === 'balance'
-                            ? 'bg-gradient-to-r from-pink-500 to-[#FFC0CB] text-white hover:shadow-pink-xl'
-                            : 'bg-white text-[#FFC0CB] border-2 border-[#FFC0CB] hover:bg-[#FFC0CB] hover:text-white'
+                          service.popular
+                            ? 'bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] text-white hover:shadow-lg hover:scale-105'
+                            : 'bg-white text-[#FF69B4] border-2 border-[#FFB6C1] hover:bg-gradient-to-r hover:from-[#FFB6C1] hover:to-[#FF69B4] hover:text-white hover:border-transparent hover:scale-105'
                         }
-                        transform hover:-translate-y-1 hover:shadow-lg
                       `}
                     >
                       Escolher Plano
-                      <svg
-                        className="ml-2 -mr-1 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M13 7l5 5m0 0l-5 5m5-5H6"
-                        />
-                      </svg>
                     </button>
                   </div>
                 </div>

@@ -1,3 +1,4 @@
+import React from 'react'
 import { businessHours } from '@/config/businessHours'
 
 interface TimeSlotsProps {
@@ -6,7 +7,7 @@ interface TimeSlotsProps {
   onTimeSelect: (time: string) => void
 }
 
-interface DayConfig {
+type DayConfig = {
   isOpen: boolean
   hours?: {
     start: string
@@ -73,7 +74,7 @@ export function TimeSlots({ selectedDate, selectedTime, onTimeSelect }: TimeSlot
 
   if (availableSlots.length === 0) {
     return (
-      <div className="text-center p-6 bg-pink-50/30 rounded-xl border border-pink-100">
+      <div className="bg-pink-50/30 rounded-xl p-6 border border-pink-100">
         <div className="flex flex-col items-center justify-center">
           <svg className="w-10 h-10 text-pink-200 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -95,16 +96,23 @@ export function TimeSlots({ selectedDate, selectedTime, onTimeSelect }: TimeSlot
             key={time}
             onClick={() => onTimeSelect(time)}
             className={`
-              group relative p-3 rounded-lg transition-all duration-300
+              group relative p-3 rounded-lg transition-all duration-300 border
               ${isSelected 
-                ? 'bg-pink-50 text-gray-800 border border-pink-200' 
-                : 'bg-white text-gray-600 border border-pink-50 hover:border-pink-200 hover:bg-pink-50/50'}
+                ? 'bg-pink-50 text-gray-800 border-pink-200' 
+                : 'bg-white text-gray-600 border-pink-50 hover:border-pink-200 hover:bg-pink-50/50'}
             `}
           >
             <div className="flex items-center justify-center">
               <span className={`text-base ${isSelected ? 'font-medium' : 'font-light'}`}>
                 {formatTimeDisplay(time)}
               </span>
+              {isSelected && (
+                <div className="absolute -top-1 -right-1">
+                  <svg className="w-4 h-4 text-pink-300" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                  </svg>
+                </div>
+              )}
             </div>
           </button>
         )

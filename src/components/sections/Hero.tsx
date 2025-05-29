@@ -19,61 +19,93 @@ export function Hero() {
     }
 
     window.addEventListener('scroll', handleScroll)
-    handleScroll() // Checa elementos visíveis no carregamento inicial
+    handleScroll()
 
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   return (
-    <section className="relative isolate min-h-screen flex items-center">
-      {/* Fundo gradiente */}
-      <div className="absolute inset-0 bg-gradient-to-r from-white via-pink-50 to-white opacity-90" />
+    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1]">
+      {/* Imagem de fundo com efeito parallax */}
+      <div className="absolute inset-0 overflow-hidden">
+        <Image
+          src="/images/hero-nails.jpg"
+          alt="Studio Bruna - Estética & Unhas"
+          fill
+          sizes="100vw"
+          style={{ objectFit: 'cover' }}
+          className="opacity-20"
+          priority
+        />
+      </div>
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Conteúdo */}
-          <div className="text-center lg:text-left">
-            <h1 className="animate-on-scroll opacity-0 translate-y-4 transition-all duration-700 ease-out text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Realce sua beleza natural com nossos cuidados especializados
-            </h1>
-            <p className="animate-on-scroll opacity-0 translate-y-4 transition-all duration-700 delay-200 ease-out mt-6 text-lg leading-8 text-gray-600">
-              Oferecemos serviços premium de estética e cuidados com unhas, proporcionando uma experiência única de bem-estar e beleza.
-            </p>
-            <div className="animate-on-scroll opacity-0 translate-y-4 transition-all duration-700 delay-300 ease-out mt-10 flex items-center gap-x-6 justify-center lg:justify-start">
+      {/* Conteúdo principal */}
+      <div className="relative w-full py-16 sm:py-24">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center space-y-12">
+            {/* Título com animação */}
+            <div className="space-y-4 animate-fade-in">
+              <h1 className="bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-tight">
+                Studio Bruna
+              </h1>
+              <p className="text-xl sm:text-2xl leading-relaxed text-gray-600 max-w-xl mx-auto">
+                Realce sua beleza natural com nossos serviços especializados em estética e cuidados pessoais.
+              </p>
+            </div>
+
+            {/* Botões com animação */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 animate-fade-in-up">
               <a
                 href="/agendar"
-                className="rounded-md bg-[#FFC0CB] px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#FFB6C1] hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFC0CB] transition-all duration-300"
+                className="w-full sm:w-auto rounded-full bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] px-8 py-4 text-lg font-semibold text-white shadow-lg hover:from-[#FF69B4] hover:to-[#FFB6C1] transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
               >
                 Agendar Horário
               </a>
               <a
-                href="/#todos-servicos"
-                className="text-sm font-semibold leading-6 text-gray-900 hover:text-[#FFC0CB] transition-colors duration-200 group"
+                href="#todos-servicos"
+                className="w-full sm:w-auto text-lg font-semibold leading-6 text-gray-700 hover:text-[#FF69B4] transition-colors duration-200 flex items-center justify-center group"
               >
-                Nossos Serviços <span aria-hidden="true" className="inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+                Ver Serviços 
+                <span className="ml-2 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
               </a>
-            </div>
-          </div>
-
-          {/* Imagem */}
-          <div className="relative">
-            <div className="animate-on-scroll opacity-0 translate-y-4 transition-all duration-700 delay-400 ease-out">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl">
-                <Image
-                  src="/images/hero-nails.jpg"
-                  alt="Serviços de estética e unhas"
-                  width={800}
-                  height={600}
-                  className="object-cover object-center w-full h-full shadow-2xl"
-                  priority
-                  quality={100}
-                />
-                <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-2xl" />
-              </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   )
-} 
+}
+
+// Adicione estes estilos ao seu arquivo CSS global
+const styles = `
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+  animation-delay: 0.2s;
+}
+` 

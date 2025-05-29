@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { businessHours } from '@/config/businessHours'
 
 interface CalendarProps {
@@ -66,25 +66,41 @@ export function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
 
   const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
 
+  const prevMonth = () => {
+    setCurrentMonth(prev => {
+      const newDate = new Date(prev)
+      newDate.setMonth(prev.getMonth() - 1)
+      return newDate
+    })
+  }
+
+  const nextMonth = () => {
+    setCurrentMonth(prev => {
+      const newDate = new Date(prev)
+      newDate.setMonth(prev.getMonth() + 1)
+      return newDate
+    })
+  }
+
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-pink-100 p-6">
-      <div className="flex justify-between items-center mb-6">
+    <div className="bg-white/90 backdrop-blur-sm rounded-xl border border-pink-100 p-4">
+      <div className="flex items-center justify-between mb-4">
         <button
-          onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
-          className="p-2 hover:bg-pink-50 rounded-lg transition-colors flex items-center justify-center text-gray-400 hover:text-gray-600"
+          onClick={prevMonth}
+          className="p-2 hover:bg-pink-50 rounded-lg transition-colors"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
-        <h2 className="text-xl font-light text-gray-800">
+        <h2 className="text-lg font-medium text-gray-800">
           {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
         </h2>
         <button
-          onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
-          className="p-2 hover:bg-pink-50 rounded-lg transition-colors flex items-center justify-center text-gray-400 hover:text-gray-600"
+          onClick={nextMonth}
+          className="p-2 hover:bg-pink-50 rounded-lg transition-colors"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />
           </svg>
         </button>
@@ -92,53 +108,55 @@ export function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
 
       <div className="grid grid-cols-7 gap-1">
         {weekDays.map(day => (
-          <div key={day} className="text-center text-sm font-light text-gray-500 pb-3">
+          <div
+            key={day}
+            className="text-center py-2 text-sm font-medium text-gray-600"
+          >
             {day}
           </div>
         ))}
-        
+
         {calendar.map((week, weekIndex) => (
-          week.map((date, dateIndex) => {
-            const isSelected = date.toDateString() === selectedDate.toDateString()
-            const isAvailable = isDateAvailable(date)
-            const isCurrentMonth = date.getMonth() === currentMonth.getMonth()
-            const isToday = date.toDateString() === new Date().toDateString()
-            
-            return (
-              <button
-                key={`${weekIndex}-${dateIndex}`}
-                onClick={() => isAvailable && onDateSelect(date)}
-                disabled={!isAvailable}
-                className={`
-                  relative p-2 text-center transition-all duration-300
-                  rounded-lg group
-                  ${isSelected 
-                    ? 'bg-pink-50 text-gray-800' 
-                    : isAvailable && isCurrentMonth
-                      ? 'hover:bg-pink-50/50 text-gray-600'
-                      : 'text-gray-300 cursor-not-allowed'}
-                  ${!isCurrentMonth ? 'opacity-40' : ''}
-                  ${isToday && !isSelected ? 'bg-pink-50/50' : ''}
-                `}
-              >
-                <span className={`
-                  text-base
-                  ${isSelected ? 'font-medium' : isToday ? 'font-medium' : 'font-light'}
-                `}>
-                  {date.getDate()}
-                </span>
-                {isToday && !isSelected && (
-                  <span className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-pink-200 rounded-full" />
-                )}
-                {isAvailable && !isSelected && (
-                  <span className="absolute inset-0 rounded-lg border border-transparent group-hover:border-pink-100 transition-colors" />
-                )}
-                {isSelected && (
-                  <span className="absolute inset-0 rounded-lg border border-pink-200" />
-                )}
-              </button>
-            )
-          })
+          <React.Fragment key={weekIndex}>
+            {week.map((date, dateIndex) => {
+              const isAvailable = isDateAvailable(date)
+              const isSelected = selectedDate && 
+                date.getDate() === selectedDate.getDate() &&
+                date.getMonth() === selectedDate.getMonth() &&
+                date.getFullYear() === selectedDate.getFullYear()
+              const isCurrentMonth = date.getMonth() === currentMonth.getMonth()
+
+              return (
+                <button
+                  key={dateIndex}
+                  onClick={() => isAvailable && onDateSelect(date)}
+                  disabled={!isAvailable}
+                  className={`
+                    relative p-2 w-full text-center rounded-lg transition-all duration-300
+                    ${isSelected
+                      ? 'bg-pink-50 text-gray-800 border border-pink-200'
+                      : isAvailable && isCurrentMonth
+                        ? 'hover:bg-pink-50/50 text-gray-800 border border-transparent hover:border-pink-100'
+                        : isCurrentMonth
+                          ? 'text-gray-400 cursor-not-allowed'
+                          : 'text-gray-300 cursor-not-allowed'
+                    }
+                  `}
+                >
+                  <span className={`text-sm ${isSelected ? 'font-medium' : 'font-light'}`}>
+                    {date.getDate()}
+                  </span>
+                  {isSelected && (
+                    <div className="absolute -top-1 -right-1">
+                      <svg className="w-4 h-4 text-pink-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                      </svg>
+                    </div>
+                  )}
+                </button>
+              )
+            })}
+          </React.Fragment>
         ))}
       </div>
     </div>

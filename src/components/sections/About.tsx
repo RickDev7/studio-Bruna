@@ -5,81 +5,108 @@ import Image from 'next/image'
 
 export function About() {
   return (
-    <section className="py-24 bg-white" id="sobre">
+    <section id="sobre" className="py-24 bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Sobre Mim
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent">
+            Sobre o Studio Bruna
           </h2>
-          <p className="mt-4 text-xl text-gray-600">
-            Especialista em Unhas e Tratamentos Estéticos
+          <p className="mt-4 text-lg text-gray-600">
+            Conheça nossa história e compromisso com sua beleza
           </p>
         </div>
 
-        <div className="mt-20">
-          <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
-            <div className="grid grid-cols-1 lg:grid-cols-2">
-              <div className="p-8 lg:p-12">
-                <div className="flex flex-col items-center lg:items-start">
-                  <div className="w-64 h-64 mb-8 rounded-full overflow-hidden relative bg-gradient-to-r from-[#FFC0CB] to-[#FFB6C1]">
-                    <Image
-                      src="/images/bruna-profile.jpg"
-                      alt="Bruna Silva"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      priority
-                    />
-                  </div>
-                  <h3 className="text-2xl font-semibold text-gray-900">
-                    BS Estética & Unhas
-                  </h3>
-                  <p className="mt-6 text-gray-600 leading-relaxed">
-                    Bem-vinda ao meu estúdio de beleza! Como especialista em unhas e estética, 
-                    dedico-me a oferecer serviços de alta qualidade e atendimento 
-                    personalizado para cada cliente.
-                  </p>
-                  <p className="mt-4 text-gray-600 leading-relaxed">
-                    Com anos de experiência, ofereço serviços completos em design de unhas 
-                    e tratamentos estéticos. Meu objetivo é realçar sua beleza natural, 
-                    sempre utilizando produtos de primeira linha e técnicas atualizadas.
-                  </p>
-                  
-                  <a
-                    href="https://www.instagram.com/bs.aesthetic.nails?igsh=eXR0a2VqbmxqYXY0"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-6 inline-flex items-center text-[#FFC0CB] hover:text-[#FFB6C1]"
-                  >
-                    <Instagram className="h-5 w-5 mr-2" />
-                    Me siga no Instagram
-                  </a>
-                </div>
-              </div>
-              
-              <div className="relative lg:h-full bg-gray-50">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#FFC0CB] to-[#FFB6C1] opacity-10"></div>
-                <div className="relative h-full flex items-center justify-center p-8">
-                  <div className="text-center">
-                    <h3 className="text-2xl font-semibold text-gray-900 mb-4">Horário de Funcionamento</h3>
-                    <div className="mt-4 space-y-2 text-gray-600">
-                      <p>Segunda a Sexta: 9:00 - 13:00</p>
-                      <p>Terça e Quinta: 15:00 - 18:00</p>
-                      <p>Sábado: 9:30 - 17:00</p>
-                    </div>
-                    <div className="mt-6">
-                      <a
-                        href="/agendar"
-                        className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-[#FFC0CB] hover:bg-[#FFB6C1]"
-                      >
-                        Agendar Horário
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="space-y-8">
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#FFC0CB] transform hover:scale-105 transition-all duration-300">
+              <h3 className="text-2xl font-bold text-[#FF69B4] mb-4">Nossa História</h3>
+              <p className="text-gray-600 leading-relaxed">
+                O Studio Bruna nasceu do sonho de proporcionar serviços de beleza de alta qualidade em Cuxhaven.
+                Com anos de experiência e formação especializada no Brasil, trazemos para a Alemanha o melhor da
+                técnica brasileira em serviços de beleza.
+              </p>
+            </div>
+
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#FFC0CB] transform hover:scale-105 transition-all duration-300">
+              <h3 className="text-2xl font-bold text-[#FF69B4] mb-4">Nossa Missão</h3>
+              <p className="text-gray-600 leading-relaxed">
+                Nosso compromisso é realçar a beleza natural de cada cliente, oferecendo serviços personalizados
+                e de alta qualidade. Buscamos não apenas resultados estéticos excepcionais, mas também
+                proporcionar uma experiência relaxante e acolhedora.
+              </p>
             </div>
           </div>
+
+          <div className="space-y-8">
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#FFC0CB] transform hover:scale-105 transition-all duration-300">
+              <h3 className="text-2xl font-bold text-[#FF69B4] mb-4">Nossos Valores</h3>
+              <ul className="space-y-4">
+                {[
+                  'Excelência em cada atendimento',
+                  'Compromisso com a satisfação do cliente',
+                  'Ambiente acolhedor e higienizado',
+                  'Profissionais altamente qualificados',
+                  'Produtos de primeira qualidade'
+                ].map((valor, index) => (
+                  <li key={index} className="flex items-center">
+                    <svg
+                      className="h-5 w-5 text-[#FFB6C1] mr-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    <span className="text-gray-600">{valor}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#FFC0CB] transform hover:scale-105 transition-all duration-300">
+              <h3 className="text-2xl font-bold text-[#FF69B4] mb-4">Localização</h3>
+              <p className="text-gray-600 leading-relaxed mb-4">
+                Estamos localizados em um ponto privilegiado de Cuxhaven, com fácil acesso e estacionamento.
+                Nosso espaço foi pensado para proporcionar conforto e tranquilidade durante seu momento de
+                cuidado pessoal.
+              </p>
+              <a
+                href="https://maps.google.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-[#FF69B4] hover:text-[#FFB6C1] transition-colors duration-200"
+              >
+                Ver no Google Maps
+                <svg
+                  className="ml-2 w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-center mt-12">
+          <a
+            href="/agendar"
+            className="inline-flex items-center px-8 py-4 text-lg font-medium rounded-full text-white bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] hover:from-[#FF69B4] hover:to-[#FFB6C1] transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
+          >
+            Agendar Horário
+          </a>
         </div>
       </div>
     </section>

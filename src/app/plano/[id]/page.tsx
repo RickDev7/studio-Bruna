@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation'
 import { PlanoDetails } from './PlanoDetails'
 
 interface PlanoDetalhes {
@@ -67,15 +68,17 @@ const planos: { [key: string]: PlanoDetalhes } = {
   }
 }
 
-export default function PlanoPage({ params }: { params: { id: string } }) {
+interface Props {
+  params: {
+    id: string
+  }
+}
+
+export default function PlanoPage({ params }: Props) {
   const plano = planos[params.id]
 
   if (!plano) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl text-gray-600">Plano não encontrado</p>
-      </div>
-    )
+    notFound()
   }
 
   return <PlanoDetails plano={plano} />
