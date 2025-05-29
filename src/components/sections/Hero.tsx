@@ -62,7 +62,7 @@ export function Hero() {
                 Agendar Horário
               </a>
               <a
-                href="#todos-servicos"
+                href="#servicos"
                 className="w-full sm:w-auto text-lg font-semibold leading-6 text-gray-700 hover:text-[#FF69B4] transition-colors duration-200 flex items-center justify-center group"
               >
                 Ver Serviços 
