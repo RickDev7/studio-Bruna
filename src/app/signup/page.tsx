@@ -125,7 +125,7 @@ export default function SignUp() {
             entrar na sua conta existente
           </Link>
         </p>
-      </div>
+            </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
@@ -135,21 +135,21 @@ export default function SignUp() {
                 Email
               </label>
               <div className="mt-1">
-                <input
-                  id="email"
+              <input
+                id="email"
                   name="email"
-                  type="email"
+                type="email"
                   autoComplete="email"
                   required
-                  value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                value={formData.email}
+                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                   className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF69B4] focus:border-[#FF69B4] sm:text-sm ${
                     errors.email ? 'border-red-300' : 'border-gray-300'
-                  }`}
-                />
-                {errors.email && (
+                }`}
+              />
+              {errors.email && (
                   <p className="mt-2 text-sm text-red-600">{errors.email}</p>
-                )}
+              )}
               </div>
             </div>
 
@@ -158,13 +158,13 @@ export default function SignUp() {
                 Senha
               </label>
               <div className="mt-1">
-                <PasswordInput
-                  id="password"
+            <PasswordInput
+              id="password"
                   name="password"
-                  value={formData.password}
+              value={formData.password}
                   onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                  error={errors.password}
-                />
+              error={errors.password}
+            />
                 {errors.password && (
                   <p className="mt-2 text-sm text-red-600">{errors.password}</p>
                 )}
@@ -176,13 +176,13 @@ export default function SignUp() {
                 Confirmar Senha
               </label>
               <div className="mt-1">
-                <PasswordInput
-                  id="confirmPassword"
+            <PasswordInput
+              id="confirmPassword"
                   name="confirmPassword"
-                  value={formData.confirmPassword}
+              value={formData.confirmPassword}
                   onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                  error={errors.confirmPassword}
-                />
+              error={errors.confirmPassword}
+            />
                 {errors.confirmPassword && (
                   <p className="mt-2 text-sm text-red-600">{errors.confirmPassword}</p>
                 )}
@@ -200,13 +200,13 @@ export default function SignUp() {
             )}
 
             <div>
-              <button
-                type="submit"
-                disabled={loading}
+            <button
+              type="submit"
+              disabled={loading}
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#FF69B4] hover:bg-[#FF1493] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF69B4] disabled:opacity-50"
-              >
-                {loading ? 'Criando conta...' : 'Criar conta'}
-              </button>
+            >
+              {loading ? 'Criando conta...' : 'Criar conta'}
+            </button>
             </div>
           </form>
 

@@ -25,7 +25,7 @@ export function AddContactForm({ onClose, onSuccess }: AddContactFormProps) {
       toast.error('Erro ao conectar com o banco de dados')
       return
     }
-
+    
     try {
       setLoading(true)
 
@@ -41,7 +41,7 @@ export function AddContactForm({ onClose, onSuccess }: AddContactFormProps) {
         .insert([
           {
             ...formData,
-            user_id: user.id,
+          user_id: user.id,
             created_at: new Date().toISOString()
           }
         ])
@@ -61,76 +61,76 @@ export function AddContactForm({ onClose, onSuccess }: AddContactFormProps) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg max-w-md w-full p-6">
-        <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold text-gray-900">Adicionar Contato</h2>
-          <button
-            onClick={onClose}
+        <button
+          onClick={onClose}
             className="text-gray-400 hover:text-gray-500"
-          >
+        >
             <X className="h-6 w-6" />
-          </button>
+        </button>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            Nome
+          </label>
+          <input
+              type="text"
+            id="name"
+            value={formData.name}
+            onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#FF69B4] focus:ring-[#FF69B4] sm:text-sm"
+              required
+          />
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Nome
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={formData.name}
-              onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#FF69B4] focus:ring-[#FF69B4] sm:text-sm"
-              required
-            />
-          </div>
-
-          <div>
+        <div>
             <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-              Telefone
-            </label>
-            <input
+            Telefone
+          </label>
+          <input
               type="tel"
-              id="phone"
-              value={formData.phone}
-              onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+            id="phone"
+            value={formData.phone}
+            onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#FF69B4] focus:ring-[#FF69B4] sm:text-sm"
               required
-            />
-          </div>
+          />
+        </div>
 
-          <div>
+        <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
+            Email
+          </label>
+          <input
               type="email"
-              id="email"
-              value={formData.email}
-              onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+            id="email"
+            value={formData.email}
+            onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#FF69B4] focus:ring-[#FF69B4] sm:text-sm"
               required
-            />
-          </div>
+          />
+        </div>
 
           <div className="flex justify-end space-x-3">
-            <button
-              type="button"
-              onClick={onClose}
+          <button
+            type="button"
+            onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF69B4]"
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            disabled={loading}
               className="px-4 py-2 text-sm font-medium text-white bg-[#FF69B4] border border-transparent rounded-md shadow-sm hover:bg-[#FF1493] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF69B4] disabled:opacity-50"
-            >
+          >
               {loading ? 'Adicionando...' : 'Adicionar'}
-            </button>
-          </div>
-        </form>
+          </button>
+        </div>
+      </form>
       </div>
     </div>
   )
