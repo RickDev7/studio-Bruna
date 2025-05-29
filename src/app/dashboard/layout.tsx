@@ -1,13 +1,13 @@
 'use client'
 
+import { DashboardSidebar } from '@/components/DashboardSidebar'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'sonner'
-import { DashboardSidebar } from '@/components/DashboardSidebar'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function DashboardLayout({
-  children
+  children,
 }: {
   children: React.ReactNode
 }) {

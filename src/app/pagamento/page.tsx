@@ -1,13 +1,11 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
-import { Copy, Check, AlertCircle, Phone, Building2 } from 'lucide-react';
+import { Copy, Check, AlertCircle, Phone } from 'lucide-react';
 
-export default function PagamentoPage() {
-  const router = useRouter();
+function PagamentoContent() {
   const searchParams = useSearchParams();
   const valor = searchParams.get('valor');
   const plano = searchParams.get('plano');
@@ -138,5 +136,13 @@ export default function PagamentoPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PagamentoPage() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <PagamentoContent />
+    </Suspense>
   );
 } 

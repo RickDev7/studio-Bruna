@@ -13,18 +13,6 @@ export function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
   const [currentMonth, setCurrentMonth] = React.useState(new Date());
   const [calendar, setCalendar] = React.useState<Date[][]>([]);
 
-  const daysInMonth = new Date(
-    currentMonth.getFullYear(),
-    currentMonth.getMonth() + 1,
-    0
-  ).getDate();
-
-  const firstDayOfMonth = new Date(
-    currentMonth.getFullYear(),
-    currentMonth.getMonth(),
-    1
-  ).getDay();
-
   const monthNames = [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'

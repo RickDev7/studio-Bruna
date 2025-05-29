@@ -21,9 +21,17 @@ export type Database = {
   };
 };
 
-// Configuração do Supabase
-const supabaseUrl = "https://pxvdkqqsvtuwdorvinrd.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB4dmRrcXFzdnR1d2RvcnZpbnJkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgzODE1NTgsImV4cCI6MjA2Mzk1NzU1OH0.9qahoZDGaZY1lAqUogZ9s4SaBsJB8E3RQouR7m7wqDU";
+let supabase: ReturnType<typeof createClient<Database>> | null = null;
 
-// Cliente do Supabase com tipagem
-export const supabase = createClient<Database>(supabaseUrl, supabaseKey); 
+if (typeof window !== 'undefined') {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error('Missing Supabase environment variables');
+  }
+
+  supabase = createClient<Database>(supabaseUrl, supabaseKey);
+}
+
+export { supabase }; 

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { supabase } from '@/config/supabase'
 import { toast } from 'sonner'
 import { PasswordInput } from '@/components/PasswordInput'
 
@@ -47,6 +47,11 @@ export default function ResetPassword() {
     
     if (!validateForm()) return
 
+    if (!supabase) {
+      toast.error('Erro ao conectar com o banco de dados')
+      return
+    }
+
     try {
       setLoading(true)
       const { error } = await supabase.auth.updateUser({
@@ -66,49 +71,73 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-16 p-6">
-      <h1 className="text-3xl font-bold text-center mb-8">Redefinir Senha</h1>
-      
-      <div className="space-y-6">
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-          <p className="text-gray-600 text-center">
-            Digite sua nova senha abaixo.
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Redefinir senha
+        </h2>
+      </div>
+
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Nova Senha
+              </label>
+              <div className="mt-1">
+                <PasswordInput
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                  error={errors.password}
+                />
+                {errors.password && (
+                  <p className="mt-2 text-sm text-red-600">{errors.password}</p>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                Confirmar Nova Senha
+              </label>
+              <div className="mt-1">
+                <PasswordInput
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                  error={errors.confirmPassword}
+                />
+                {errors.confirmPassword && (
+                  <p className="mt-2 text-sm text-red-600">{errors.confirmPassword}</p>
+                )}
+              </div>
+            </div>
+
+            {errors.form && (
+              <div className="rounded-md bg-red-50 p-4">
+                <div className="flex">
+                  <div className="ml-3">
+                    <p className="text-sm font-medium text-red-800">{errors.form}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#FF69B4] hover:bg-[#FF1493] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF69B4] disabled:opacity-50"
+              >
+                {loading ? 'Atualizando...' : 'Atualizar senha'}
+              </button>
+            </div>
+          </form>
         </div>
-
-        {errors.form && (
-          <div className="p-3 text-sm text-red-500 bg-red-50 rounded-lg">
-            {errors.form}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <PasswordInput
-            id="password"
-            label="Nova Senha"
-            placeholder="Digite sua nova senha"
-            value={formData.password}
-            onChange={(value) => setFormData(prev => ({ ...prev, password: value }))}
-            error={errors.password}
-          />
-
-          <PasswordInput
-            id="confirmPassword"
-            label="Confirmar Nova Senha"
-            placeholder="Confirme sua nova senha"
-            value={formData.confirmPassword}
-            onChange={(value) => setFormData(prev => ({ ...prev, confirmPassword: value }))}
-            error={errors.confirmPassword}
-          />
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-[#0A0A0A] text-white py-3 px-4 rounded-lg hover:bg-[#1a1a1a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? 'Atualizando...' : 'Atualizar Senha'}
-          </button>
-        </form>
       </div>
     </div>
   )

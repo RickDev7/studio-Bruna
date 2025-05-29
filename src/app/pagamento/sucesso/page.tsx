@@ -1,11 +1,11 @@
 'use client'
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { CheckCircle2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 
-export default function SucessoPage() {
+function SucessoContent() {
   const searchParams = useSearchParams();
   const plano = searchParams.get('plano');
   const valor = searchParams.get('valor');
@@ -83,5 +83,13 @@ export default function SucessoPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SucessoPage() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <SucessoContent />
+    </Suspense>
   );
 } 

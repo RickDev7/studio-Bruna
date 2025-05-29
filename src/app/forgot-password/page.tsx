@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
+import { supabase } from '@/config/supabase'
 import { toast } from 'sonner'
 
 export default function ForgotPassword() {
@@ -13,6 +13,11 @@ export default function ForgotPassword() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
+    if (!supabase) {
+      toast.error('Erro ao conectar com o banco de dados')
+      return
+    }
+
     try {
       setLoading(true)
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
@@ -61,50 +66,50 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="min-h-screen bg-purple-100">
-      <div className="max-w-md mx-auto pt-16 p-6">
-        <h1 className="text-3xl font-bold text-center mb-8 text-gray-900">Recuperar Senha</h1>
-        
-        <div className="space-y-6">
-          <div className="bg-purple-50 border border-purple-200 rounded-lg p-6">
-            <p className="text-gray-700 text-center">
-              Digite seu email e enviaremos instruções para redefinir sua senha.
-            </p>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Recuperar senha
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-600">
+          Ou{' '}
+          <Link href="/login" className="font-medium text-[#FF69B4] hover:text-[#FF1493]">
+            voltar para o login
+          </Link>
+        </p>
+      </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-1">
-                Endereço de Email
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
               </label>
-              <input
-                id="email"
-                type="email"
-                required
-                placeholder="Seu endereço de email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-purple-600 text-gray-900 placeholder:text-gray-500"
-              />
+              <div className="mt-1">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF69B4] focus:border-[#FF69B4] sm:text-sm"
+                />
+              </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-purple-700 text-white py-3 px-4 rounded-lg hover:bg-purple-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Enviando...' : 'Enviar Instruções'}
-            </button>
+            <div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#FF69B4] hover:bg-[#FF1493] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF69B4] disabled:opacity-50"
+              >
+                {loading ? 'Enviando...' : 'Enviar email de recuperação'}
+              </button>
+            </div>
           </form>
-
-          <div className="space-y-3 text-center text-sm">
-            <Link href="/login" className="block text-purple-700 hover:text-purple-900 hover:underline">
-              Voltar para login
-            </Link>
-            <Link href="/magic-link" className="block text-purple-700 hover:text-purple-900 hover:underline">
-              Entrar com link mágico
-            </Link>
-          </div>
         </div>
       </div>
     </div>

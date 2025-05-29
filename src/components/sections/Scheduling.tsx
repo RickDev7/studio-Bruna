@@ -160,9 +160,10 @@ export function Scheduling() {
       setPhone('')
       setEmail('')
       setCurrentStep(1)
-    } catch (err: any) {
-      console.error('Erro ao enviar emails:', err)
-      setError(err.message || 'Ocorreu um erro ao agendar. Por favor, tente novamente.')
+    } catch (err: Error | unknown) {
+      const error = err as Error
+      console.error('Erro ao enviar emails:', error)
+      setError(error.message || 'Ocorreu um erro ao agendar. Por favor, tente novamente.')
     } finally {
       setIsLoading(false)
     }

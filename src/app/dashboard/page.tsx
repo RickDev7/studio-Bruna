@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Plus, Search, Phone, Mail } from 'lucide-react'
 import { AddContactForm } from '@/components/AddContactForm'
 import { ContactActions } from '@/components/ContactActions'
-import { supabase } from '@/lib/supabase'
+import { supabase } from '@/config/supabase'
 import { toast } from 'sonner'
 
 interface Contact {
@@ -22,6 +22,11 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
 
   const fetchContacts = async () => {
+    if (!supabase) {
+      toast.error('Erro ao conectar com o banco de dados')
+      return
+    }
+
     try {
       const { data: { user } } = await supabase.auth.getUser()
       
@@ -58,107 +63,78 @@ export default function Dashboard() {
   )
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Contatos</h1>
+    <div className="space-y-8">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Meus Contatos</h1>
         <button
           onClick={() => setShowAddForm(true)}
-          className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 flex items-center gap-2"
+          className="flex items-center gap-2 px-4 py-2 bg-[#FF69B4] text-white rounded-lg hover:bg-[#FF1493] transition-colors"
         >
-          <Plus className="h-5 w-5" />
+          <Plus className="w-5 h-5" />
           Adicionar Contato
         </button>
       </div>
 
-      <div className="mb-6">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-          <input
-            type="text"
-            placeholder="Buscar contatos..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
-        </div>
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+        <input
+          type="text"
+          placeholder="Buscar contatos..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FF69B4] focus:border-transparent"
+        />
       </div>
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Nome
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Informações de Contato
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Último Contato
-              </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Ações
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {loading ? (
-              <tr>
-                <td colSpan={4} className="px-6 py-4 text-center text-gray-500">
-                  Carregando contatos...
-                </td>
-              </tr>
-            ) : filteredContacts.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="px-6 py-4 text-center text-gray-500">
-                  {searchQuery ? 'Nenhum contato encontrado' : 'Nenhum contato adicionado ainda'}
-                </td>
-              </tr>
-            ) : (
-              filteredContacts.map((contact) => (
-                <tr key={contact.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{contact.name}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex flex-col space-y-1">
-                      <div className="flex items-center text-sm text-gray-500">
-                        <Phone className="h-4 w-4 mr-2" />
-                        {contact.phone}
-                      </div>
-                      <div className="flex items-center text-sm text-gray-500">
-                        <Mail className="h-4 w-4 mr-2" />
-                        {contact.email}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">
-                      {new Date(contact.last_contact).toLocaleDateString('pt-BR')}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right">
-                    <ContactActions 
-                      contactId={contact.id} 
-                      onDelete={fetchContacts}
-                    />
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+      {loading ? (
+        <div className="text-center py-8">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF69B4] mx-auto"></div>
+          <p className="mt-4 text-gray-600">Carregando contatos...</p>
+        </div>
+      ) : filteredContacts.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredContacts.map((contact) => (
+            <div
+              key={contact.id}
+              className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+            >
+              <div className="flex justify-between items-start mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">{contact.name}</h3>
+                <ContactActions contactId={contact.id} onDelete={fetchContacts} />
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex items-center text-gray-600">
+                  <Phone className="w-4 h-4 mr-2 text-[#FF69B4]" />
+                  <a href={`tel:${contact.phone}`} className="hover:text-[#FF69B4] transition-colors">
+                    {contact.phone}
+                  </a>
+                </div>
+                
+                <div className="flex items-center text-gray-600">
+                  <Mail className="w-4 h-4 mr-2 text-[#FF69B4]" />
+                  <a href={`mailto:${contact.email}`} className="hover:text-[#FF69B4] transition-colors">
+                    {contact.email}
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-8">
+          <p className="text-gray-600">Nenhum contato encontrado</p>
+        </div>
+      )}
 
       {showAddForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg max-w-md w-full p-6">
-            <AddContactForm 
-              onClose={() => setShowAddForm(false)} 
-              onSuccess={fetchContacts}
-            />
-          </div>
-        </div>
+        <AddContactForm
+          onClose={() => setShowAddForm(false)}
+          onSuccess={() => {
+            setShowAddForm(false)
+            fetchContacts()
+          }}
+        />
       )}
     </div>
   )

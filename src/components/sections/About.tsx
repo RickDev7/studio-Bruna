@@ -1,8 +1,5 @@
 'use client'
 
-import { Instagram } from 'lucide-react'
-import Image from 'next/image'
-
 export function About() {
   return (
     <section id="sobre" className="py-24 bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1]">

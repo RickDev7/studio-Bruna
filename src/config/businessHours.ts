@@ -83,7 +83,7 @@ export function generateTimeSlots(dayConfig: DayConfig): string[] {
     const [startHour, startMinute] = period.start.split(':').map(Number);
     const [endHour, endMinute] = period.end.split(':').map(Number);
     
-    let currentTime = new Date();
+    const currentTime = new Date();
     currentTime.setHours(startHour, startMinute, 0);
     
     const endTime = new Date();

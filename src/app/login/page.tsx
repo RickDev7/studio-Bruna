@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { GoogleButton } from '@/components/GoogleButton'
 import { PasswordInput } from '@/components/PasswordInput'
-import { supabase } from '@/lib/supabase'
+import { supabase } from '@/config/supabase'
+import { toast } from 'sonner'
 
 export default function Login() {
   const router = useRouter()
@@ -46,6 +47,11 @@ export default function Login() {
     
     if (!validateForm()) return
 
+    if (!supabase) {
+      toast.error('Erro ao conectar com o banco de dados')
+      return
+    }
+
     try {
       setLoading(true)
       const { error } = await supabase.auth.signInWithPassword({
@@ -81,6 +87,11 @@ export default function Login() {
   }
 
   const handleGoogleSignIn = async () => {
+    if (!supabase) {
+      toast.error('Erro ao conectar com o banco de dados')
+      return
+    }
+
     try {
       const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin
       const { error } = await supabase.auth.signInWithOAuth({
@@ -104,89 +115,106 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-purple-100">
-      <div className="max-w-md mx-auto pt-16 p-6">
-        <h1 className="text-3xl font-bold text-center mb-8 text-gray-900">Bem-vindo de volta</h1>
-        
-        <div className="space-y-6">
-          <GoogleButton onClick={handleGoogleSignIn} />
+    <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Entrar na sua conta
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-600">
+          Ou{' '}
+          <Link href="/signup" className="font-medium text-[#FF69B4] hover:text-[#FF1493]">
+            criar uma nova conta
+          </Link>
+        </p>
+      </div>
 
-          {errors.form && (
-            <div className="p-3 text-sm text-red-600 bg-red-50 rounded-lg border border-red-200">
-              {errors.form}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-1">
-                Endereço de Email
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
               </label>
-              <input
-                id="email"
-                type="email"
-                placeholder="Seu endereço de email"
-                value={formData.email}
-                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-gray-900 placeholder:text-gray-500 ${
-                  errors.email 
-                    ? 'border-red-500 focus:ring-red-500' 
-                    : 'border-gray-300 focus:ring-purple-600 focus:border-purple-600'
-                }`}
-              />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-              )}
+              <div className="mt-1">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                  className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF69B4] focus:border-[#FF69B4] sm:text-sm ${
+                    errors.email ? 'border-red-300' : 'border-gray-300'
+                  }`}
+                />
+                {errors.email && (
+                  <p className="mt-2 text-sm text-red-600">{errors.email}</p>
+                )}
+              </div>
             </div>
 
-            <PasswordInput
-              id="password"
-              label="Sua Senha"
-              placeholder="Sua senha"
-              value={formData.password}
-              onChange={(value) => setFormData(prev => ({ ...prev, password: value }))}
-              error={errors.password}
-            />
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Senha
+              </label>
+              <div className="mt-1">
+                <PasswordInput
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                  error={errors.password}
+                />
+                {errors.password && (
+                  <p className="mt-2 text-sm text-red-600">{errors.password}</p>
+                )}
+              </div>
+            </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-purple-700 text-white py-3 px-4 rounded-lg hover:bg-purple-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Entrando...' : 'Entrar'}
-            </button>
+            <div className="flex items-center justify-between">
+              <div className="text-sm">
+                <Link href="/forgot-password" className="font-medium text-[#FF69B4] hover:text-[#FF1493]">
+                  Esqueceu sua senha?
+                </Link>
+              </div>
+            </div>
+
+            {errors.form && (
+              <div className="rounded-md bg-red-50 p-4">
+                <div className="flex">
+                  <div className="ml-3">
+                    <p className="text-sm font-medium text-red-800">{errors.form}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#FF69B4] hover:bg-[#FF1493] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF69B4] disabled:opacity-50"
+              >
+                {loading ? 'Entrando...' : 'Entrar'}
+              </button>
+            </div>
           </form>
 
-          <div className="space-y-3 text-center text-sm">
-            <Link href="/magic-link" className="block text-purple-700 hover:text-purple-900 hover:underline">
-              Enviar email com link mágico
-            </Link>
-            <Link href="/forgot-password" className="block text-purple-700 hover:text-purple-900 hover:underline">
-              Esqueceu sua senha?
-            </Link>
-            <Link href="/signup" className="block text-purple-700 hover:text-purple-900 hover:underline">
-              Não tem uma conta? Cadastre-se
-            </Link>
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">Ou continue com</span>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <GoogleButton onClick={handleGoogleSignIn} />
+            </div>
           </div>
-
-          <p className="text-center text-sm text-gray-700 mt-8">
-            Ao continuar, eu concordo com os{' '}
-            <Link href="/terms" className="text-purple-700 hover:text-purple-900 hover:underline">
-              Termos de Serviço
-            </Link>{' '}
-            e{' '}
-            <Link href="/privacy" className="text-purple-700 hover:text-purple-900 hover:underline">
-              Política de Privacidade
-            </Link>
-          </p>
-
-          <p className="text-center text-sm text-gray-700">
-            Problemas para fazer login?{' '}
-            <Link href="/help" className="text-purple-700 hover:text-purple-900 hover:underline">
-              Clique Aqui
-            </Link>{' '}
-            e tente novamente.
-          </p>
         </div>
       </div>
     </div>

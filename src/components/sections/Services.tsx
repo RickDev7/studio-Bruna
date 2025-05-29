@@ -1,8 +1,7 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useEffect, useRef } from 'react'
-import { Star, Crown, Award, Heart, Sparkles } from 'lucide-react'
+import { useEffect } from 'react'
+import { Star, Crown, Sparkles } from 'lucide-react'
 import '@/styles/plans.css'
 import Link from 'next/link'
 import { TermsAndConditions } from '@/components/TermsAndConditions'
@@ -60,9 +59,6 @@ const services = [
 ]
 
 export function Services() {
-  const router = useRouter()
-  const plansRef = useRef(null)
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {

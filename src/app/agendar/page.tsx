@@ -195,10 +195,11 @@ export default function AgendarPage() {
       setPhone('')
       setEmail('')
       setCurrentStep(1)
-    } catch (err: any) {
-      console.error('Erro ao enviar emails:', err)
+    } catch (err: Error | unknown) {
+      const error = err as Error
+      console.error('Erro ao enviar emails:', error)
       setError(
-        err.text || err.message || 'Ocorreu um erro ao agendar. Por favor, tente novamente.'
+        error.message || 'Ocorreu um erro ao agendar. Por favor, tente novamente.'
       )
     } finally {
       setIsLoading(false)
