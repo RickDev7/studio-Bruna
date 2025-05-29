@@ -9,7 +9,7 @@ const navigation = [
   { name: 'Início', href: '/' },
   { name: 'Serviços', href: '/#todos-servicos' },
   { name: 'Planos', href: '/#planos' },
-  { name: 'Sobre', href: '/#sobre' },
+  { name: 'Sobre', href: '/sobre' },
 ]
 
 export function Navbar() {
@@ -32,6 +32,32 @@ export function Navbar() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [prevScrollPos])
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const href = e.currentTarget.getAttribute('href')
+    
+    if (href?.includes('#')) {
+      e.preventDefault()
+      const targetId = href.split('#')[1]
+      const element = document.getElementById(targetId)
+      
+      if (element) {
+        const offset = 80 // altura do navbar + algum espaço extra
+        const elementPosition = element.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.pageYOffset - offset
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+
+        setMobileMenuOpen(false)
+      } else if (href === '/#nossos-servicos' || href === '/#planos-mensais') {
+        // Se estiver em outra página, redireciona para a home com a âncora
+        window.location.href = href
+      }
+    }
+  }
 
   return (
     <header 
@@ -60,6 +86,7 @@ export function Navbar() {
               <a
                 key={item.name}
                 href={item.href}
+                onClick={handleNavClick}
                 className="text-sm font-medium text-gray-700 hover:text-[#FFC0CB] transition-colors duration-200 relative after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-[#FFC0CB] after:left-0 after:-bottom-1 after:rounded-full after:origin-left after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:duration-300"
               >
                 {item.name}
@@ -120,8 +147,8 @@ export function Navbar() {
                 <a
                   key={item.name}
                   href={item.href}
+                  onClick={handleNavClick}
                   className="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-pink-50 hover:text-[#FFC0CB] transition-all duration-200"
-                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {item.name}
                 </a>
