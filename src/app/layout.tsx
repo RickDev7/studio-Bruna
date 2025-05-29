@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from 'next/font/google';
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
+import { Toaster } from 'sonner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -10,6 +11,15 @@ export const metadata: Metadata = {
   description: "Serviços de estética e beleza em Cuxhaven",
   keywords: ["estética", "unhas", "beleza", "Cuxhaven"],
   authors: [{ name: "Bruna Silva" }],
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-icon.png',
+    other: {
+      rel: 'apple-touch-icon-precomposed',
+      url: '/apple-icon.png',
+    },
+  },
   openGraph: {
     title: "Bruna Silva - Estética & Unhas",
     description: "Tratamentos profissionais de beleza e cuidados para seu bem-estar e autoestima.",
@@ -17,6 +27,7 @@ export const metadata: Metadata = {
     siteName: "BS Estética & Unhas",
     locale: "pt_BR",
     type: "website",
+    images: ['/og-image.png'],
   },
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000')
 };
@@ -33,6 +44,7 @@ export default function RootLayout({
         <main className="pt-16">
           {children}
         </main>
+        <Toaster />
       </body>
     </html>
   );
