@@ -1,6 +1,6 @@
 'use client'
 
-import { Facebook, WhatsApp } from 'lucide-react'
+import { Facebook, MessageCircle } from 'lucide-react'
 
 export function About() {
   return (

@@ -1,5 +1,8 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* Variáveis CSS */
 :root {
   --background: #000000;
   --foreground: #ffffff;
@@ -143,15 +146,6 @@ main {
 
 .glow:hover {
   box-shadow: 0 0 25px rgba(139, 92, 246, 0.7);
-}
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-.animate-in {
-  opacity: 1 !important;
-  transform: translateY(0) translateX(0) !important;
 }
 
 /* Smooth scroll behavior */
