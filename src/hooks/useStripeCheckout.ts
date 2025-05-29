@@ -2,7 +2,7 @@
 
 import { getStripe } from '@/lib/stripe'
 import { toast } from 'sonner'
-import Stripe from 'stripe'
+import type { Stripe as StripeType } from 'stripe'
 
 export function useStripeCheckout() {
   const handleCheckout = async (priceId: string) => {
@@ -41,9 +41,7 @@ export function useStripeCheckout() {
       }
     } catch (error) {
       console.error('Error:', error)
-      if (error instanceof Stripe.errors.StripeError) {
-        toast.error(`Erro ao processar o pagamento: ${error.message}`)
-      } else if (error instanceof Error) {
+      if (error instanceof Error) {
         toast.error(`Erro ao processar o pagamento: ${error.message}`)
       } else {
         toast.error('Erro ao processar o pagamento. Por favor, tente novamente.')
