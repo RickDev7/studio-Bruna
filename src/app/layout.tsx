@@ -11,15 +11,12 @@ export const metadata: Metadata = {
   description: "Serviços de estética e beleza em Cuxhaven",
   keywords: ["estética", "unhas", "beleza", "Cuxhaven"],
   authors: [{ name: "Bruna Silva" }],
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/apple-icon.png',
-    other: {
-      rel: 'apple-touch-icon-precomposed',
-      url: '/apple-icon.png',
-    },
-  },
+  icons: [
+    { rel: 'icon', url: '/favicon.ico' },
+    { rel: 'icon', url: '/favicon.ico', type: 'image/x-icon' },
+    { rel: 'shortcut icon', url: '/favicon.ico' },
+    { rel: 'apple-touch-icon', url: '/apple-icon.png' },
+  ],
   openGraph: {
     title: "Bruna Silva - Estética & Unhas",
     description: "Tratamentos profissionais de beleza e cuidados para seu bem-estar e autoestima.",
@@ -39,6 +36,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" />
+      </head>
       <body className={inter.className}>
         <Navbar />
         <main className="pt-16">
