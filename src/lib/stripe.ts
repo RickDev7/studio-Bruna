@@ -1,5 +1,5 @@
 import { loadStripe } from '@stripe/stripe-js'
-import { Stripe } from 'stripe'
+import Stripe from 'stripe'
 
 // Client-side Stripe instance
 export const getStripe = async () => {
@@ -20,7 +20,7 @@ let stripe: Stripe | null = null
 
 if (stripeSecretKey) {
   stripe = new Stripe(stripeSecretKey, {
-    apiVersion: '2025-02-24.acacia',
+    apiVersion: '2023-10-16',
     typescript: true,
   })
 } else {
