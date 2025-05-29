@@ -109,12 +109,12 @@ function PagamentoContent() {
                         <span>
                           Envie o comprovante para nosso WhatsApp:{' '}
                           <a 
-                            href="https://wa.me/491637647843" 
+                            href="https://wa.me/4915208007814" 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="font-medium text-[#FF69B4] hover:underline"
                           >
-                            +49 163 764 7843
+                            +49 152 080 07814
                           </a>
                         </span>
                       </div>
