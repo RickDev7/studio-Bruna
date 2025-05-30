@@ -1,3 +1,4 @@
+// Footer component - Updated for deployment trigger
 import { Clock, Instagram, Mail, MapPin, Phone } from 'lucide-react'
 import Link from 'next/link'
 
