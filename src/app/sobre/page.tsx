@@ -74,27 +74,6 @@ export default function SobrePage() {
                 Nosso espaço foi pensado para proporcionar conforto e tranquilidade durante seu momento de
                 cuidado pessoal.
               </p>
-              <a
-                href="https://maps.google.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-[#FF69B4] hover:text-[#FFB6C1] transition-colors duration-200"
-              >
-                Ver no Google Maps
-                <svg
-                  className="ml-2 w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                  />
-                </svg>
-              </a>
             </div>
           </div>
         </div>

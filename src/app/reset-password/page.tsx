@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/config/supabase'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { toast } from 'sonner'
 import { PasswordInput } from '@/components/PasswordInput'
 
@@ -18,6 +18,7 @@ export default function ResetPassword() {
     confirmPassword: '',
     form: ''
   })
+  const supabase = createClientComponentClient()
 
   const validateForm = () => {
     const newErrors = {
@@ -46,11 +47,6 @@ export default function ResetPassword() {
     e.preventDefault()
     
     if (!validateForm()) return
-
-    if (!supabase) {
-      toast.error('Erro ao conectar com o banco de dados')
-      return
-    }
 
     try {
       setLoading(true)
@@ -92,6 +88,8 @@ export default function ResetPassword() {
                   value={formData.password}
                   onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                   error={errors.password}
+                  className="appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF69B4] focus:border-[#FF69B4] sm:text-sm"
+                  placeholder="Nova senha"
                 />
                 {errors.password && (
                   <p className="mt-2 text-sm text-red-600">{errors.password}</p>
@@ -110,6 +108,8 @@ export default function ResetPassword() {
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                   error={errors.confirmPassword}
+                  className="appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF69B4] focus:border-[#FF69B4] sm:text-sm"
+                  placeholder="Confirmar nova senha"
                 />
                 {errors.confirmPassword && (
                   <p className="mt-2 text-sm text-red-600">{errors.confirmPassword}</p>

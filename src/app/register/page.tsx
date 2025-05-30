@@ -2,10 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import Link from 'next/link'
-import { toast } from 'sonner'
-import { PasswordInput } from '@/components/PasswordInput'
+import { createClient } from '@/config/supabase-client'
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -17,9 +14,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
-
-  // Inicializa o cliente Supabase usando o hook do Next.js
-  const supabase = createClientComponentClient()
+  const supabase = createClient()
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -27,34 +22,16 @@ export default function RegisterPage() {
     setError(null)
 
     try {
-      // Validações básicas
-      if (formData.password.length < 6) {
-        throw new Error('A senha deve ter pelo menos 6 caracteres')
-      }
-
-      if (formData.phone && !/^[0-9]{10,11}$/.test(formData.phone)) {
-        throw new Error('O telefone deve ter 10 ou 11 dígitos')
-      }
-
+      // Registrar usuário
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
-        options: {
-          data: {
-            full_name: formData.fullName,
-            phone: formData.phone
-          }
-        }
       })
 
-      if (authError) {
-        if (authError.message.includes('Email rate limit exceeded')) {
-          throw new Error('Muitas tentativas. Por favor, aguarde alguns minutos.')
-        }
-        throw authError
-      }
+      if (authError) throw authError
 
       if (authData.user) {
+        // Criar perfil do usuário
         const { error: profileError } = await supabase
           .from('profiles')
           .insert({
@@ -67,13 +44,11 @@ export default function RegisterPage() {
 
         if (profileError) throw profileError
 
-        toast.success('Conta criada com sucesso! Verifique seu email para confirmar.')
         router.push('/login?registered=true')
       }
-    } catch (error: any) {
-      const errorMessage = error.message || 'Erro ao criar conta. Por favor, tente novamente.'
-      setError(errorMessage)
-      toast.error(errorMessage)
+    } catch (error) {
+      setError('Erro ao criar conta. Por favor, tente novamente.')
+      console.error('Erro de registro:', error)
     } finally {
       setLoading(false)
     }
@@ -86,15 +61,6 @@ export default function RegisterPage() {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Criar nova conta
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Ou{' '}
-            <Link
-              href="/login"
-              className="font-medium text-pink-600 hover:text-pink-500"
-            >
-              faça login em sua conta existente
-            </Link>
-          </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleRegister}>
           <div className="rounded-md shadow-sm -space-y-px">
@@ -136,28 +102,25 @@ export default function RegisterPage() {
                 id="phone"
                 name="phone"
                 type="tel"
-                pattern="[0-9]{10,11}"
-                title="Digite um número de telefone válido (10 ou 11 dígitos)"
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
-                placeholder="Telefone (apenas números)"
+                placeholder="Telefone"
                 value={formData.phone}
-                onChange={(e) => {
-                  const value = e.target.value.replace(/\D/g, '')
-                  setFormData({ ...formData, phone: value })
-                }}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               />
             </div>
             <div>
               <label htmlFor="password" className="sr-only">
                 Senha
               </label>
-              <PasswordInput
+              <input
                 id="password"
                 name="password"
+                type="password"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
+                placeholder="Senha"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 focus:z-10 sm:text-sm"
-                placeholder="Senha (mínimo 6 caracteres)"
               />
             </div>
           </div>

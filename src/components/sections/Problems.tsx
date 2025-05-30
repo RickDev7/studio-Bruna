@@ -20,7 +20,7 @@ export function Problems() {
     {
       icon: <Gem className="w-6 h-6 text-[#FFC0CB]" />,
       title: "Procedimentos Especiais",
-      description: "Depilação, design de sobrancelhas, extensão de cílios e outros serviços para realçar sua beleza natural."
+      description: "Design de sobrancelhas, extensão de cílios e outros serviços para realçar sua beleza natural."
     }
   ]
 

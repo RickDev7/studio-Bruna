@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fundo circular rosa claro -->
+  <circle cx="16" cy="16" r="16" fill="#FFB6C1"/>
+  
+  <!-- Círculo interno rosa escuro -->
+  <circle cx="16" cy="16" r="14" fill="#FF69B4"/>
+  
+  <!-- Texto BS em branco -->
+  <text x="16" y="22" font-family="Arial" font-weight="bold" font-size="16" fill="white" text-anchor="middle">
+    BS
+  </text>
+</svg> 

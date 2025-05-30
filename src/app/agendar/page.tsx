@@ -5,6 +5,8 @@ import emailjs from '@emailjs/browser';
 import { emailjsConfig } from '@/config/emailjs';
 import { Calendar } from '@/components/Calendar';
 import { TimeSlots } from '@/components/TimeSlots';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/navigation';
 
 // Função auxiliar para formatar a data
 function formatarData(data: Date): string {
@@ -16,6 +18,14 @@ function formatarData(data: Date): string {
     month: 'long',
     year: 'numeric'
   })}`
+}
+
+// Função para formatar a data para o banco de dados
+function formatarDataBanco(data: Date): string {
+  const year = data.getFullYear();
+  const month = String(data.getMonth() + 1).padStart(2, '0');
+  const day = String(data.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 type EmailParams = {
@@ -51,6 +61,8 @@ export default function AgendarPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+  const router = useRouter();
+  const supabase = createClientComponentClient();
 
   // Inicializar EmailJS
   useEffect(() => {
@@ -92,16 +104,6 @@ export default function AgendarPage() {
         'Brow lamination',
         'Lifting de pestanas'
       ]
-    },
-    {
-      name: 'Depilação',
-      services: [
-        'Depilação facial',
-        'Depilação axilas',
-        'Depilação pernas',
-        'Depilação virilha',
-        'Depilação completa'
-      ]
     }
   ];
 
@@ -136,6 +138,37 @@ export default function AgendarPage() {
 
     try {
       const dataFormatada = formatarData(date)
+      const dataBanco = formatarDataBanco(date)
+      
+      // Verificar se o usuário está autenticado
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) {
+        router.push('/login')
+        return
+      }
+
+      // Salvar o agendamento no Supabase
+      const response = await fetch('/api/appointments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          service: selectedService,
+          date: dataBanco,
+          time: selectedTime,
+          notes: `Nome: ${name}\nTelefone: ${phone}\nEmail: ${email}`
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error('Erro na resposta:', data);
+        throw new Error(data.error || 'Erro ao criar agendamento');
+      }
+
+      console.log('Resposta do servidor:', data);
       
       // Parâmetros base para os emails
       const baseParams: EmailParams = {
@@ -186,7 +219,10 @@ export default function AgendarPage() {
       ])
 
       setShowSuccess(true)
-      setTimeout(() => setShowSuccess(false), 3000)
+      setTimeout(() => {
+        setShowSuccess(false)
+        router.push('/')
+      }, 3000)
 
       // Limpar formulário
       setSelectedTime('')
@@ -195,12 +231,9 @@ export default function AgendarPage() {
       setPhone('')
       setEmail('')
       setCurrentStep(1)
-    } catch (err: Error | unknown) {
-      const error = err as Error
-      console.error('Erro ao enviar emails:', error)
-      setError(
-        error.message || 'Ocorreu um erro ao agendar. Por favor, tente novamente.'
-      )
+    } catch (err: any) {
+      console.error('Erro:', err)
+      setError(err.message || 'Ocorreu um erro ao agendar. Por favor, tente novamente.')
     } finally {
       setIsLoading(false)
     }
@@ -235,7 +268,7 @@ export default function AgendarPage() {
           </p>
         </div>
 
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-[#FFC0CB]">
+        <div className="bg-white shadow-xl rounded-2xl p-8">
           {error && (
             <div className="mb-6 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
               {error}
@@ -383,7 +416,7 @@ export default function AgendarPage() {
           )}
 
           {/* Botões de Navegação */}
-          <div className="mt-8 flex justify-between">
+          <div className="flex justify-between mt-8">
             {currentStep > 1 && (
               <button
                 onClick={() => setCurrentStep(currentStep - 1)}

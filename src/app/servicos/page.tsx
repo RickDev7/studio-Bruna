@@ -31,16 +31,6 @@ const servicos = [
       'Brow lamination',
       'Lifting de pestanas'
     ]
-  },
-  {
-    categoria: 'Depilação',
-    items: [
-      'Depilação facial',
-      'Depilação axilas',
-      'Depilação pernas',
-      'Depilação virilha',
-      'Depilação completa'
-    ]
   }
 ];
 

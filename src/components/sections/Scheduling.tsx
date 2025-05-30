@@ -71,8 +71,7 @@ export function Scheduling() {
     'Lifting de Cílios',
     'Lifting de Sobrancelhas',
     'Hidratação Labial',
-    'Técnica com Fio',
-    'Depilação com Cera'
+    'Técnica com Fio'
   ]
 
   const validateForm = () => {

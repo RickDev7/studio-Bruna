@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { ClientProvider } from '@/components/ClientProvider'
 import { Navbar } from '@/components/Navbar'
 import { Hero } from '@/components/sections/Hero'
 import { Services } from '@/components/sections/Services'
@@ -16,13 +17,17 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <>
-      <Navbar />
-      <Hero />
-      <AllServices />
-      <Services />
-      <About />
-      <Footer />
-    </>
+    <ClientProvider>
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-1">
+          <Hero />
+          <AllServices />
+          <Services />
+          <About />
+        </main>
+        <Footer />
+      </div>
+    </ClientProvider>
   )
 }
