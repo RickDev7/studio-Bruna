@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import emailjs from '@emailjs/browser'
 
 interface Profile {
   full_name: string | null
@@ -170,27 +169,30 @@ export function AdminDashboard({ initialAppointments }: AdminDashboardProps) {
 
   const sendStatusEmail = async (appointment: Appointment, newStatus: 'confirmed' | 'cancelled') => {
     try {
-      const templateParams = {
-        to_name: appointment.profile.full_name || 'Cliente',
-        to_email: appointment.profile.email,
-        service: appointment.service,
-        date: new Date(appointment.scheduled_at).toLocaleDateString('pt-BR'),
-        time: new Date(appointment.scheduled_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
-        status: newStatus === 'confirmed' ? 'confirmado' : 'cancelado'
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userName: appointment.profile.full_name || 'Cliente',
+          userEmail: appointment.profile.email,
+          service: appointment.service,
+          date: new Date(appointment.scheduled_at).toLocaleDateString('pt-BR'),
+          time: new Date(appointment.scheduled_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+          status: newStatus === 'confirmed' ? 'confirmado' : 'cancelado'
+        }),
+      });
+
+      if (!response.ok) {
+        console.warn('Erro ao enviar email:', await response.text());
+        return false;
       }
 
-      const response = await emailjs.send(
-        'service_studio_bruna', // Seu Service ID do EmailJS
-        'template_appointment_status', // Seu Template ID do EmailJS
-        templateParams,
-        'YOUR_PUBLIC_KEY' // Sua Public Key do EmailJS
-      )
-
-      console.log('E-mail enviado:', response)
-      return true
+      return true;
     } catch (error) {
-      console.error('Erro ao enviar e-mail:', error)
-      return false
+      console.error('Erro ao enviar email:', error);
+      return false;
     }
   }
 

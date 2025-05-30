@@ -41,6 +41,6 @@ npm run dev
 ## Contato
 
 Para mais informações, entre em contato:
-- WhatsApp: +49 1520 800 7814
+- WhatsApp: +49 152 800 7814
 - Email: bs.aestheticnails@gmail.com
 - Endereço: Bei der Grodener Kirche 7, 27472 Cuxhaven, Alemanha

@@ -8,10 +8,11 @@ import Link from 'next/link'
 
 interface Profile {
   id: string
-  role: string | null
+  role: 'user' | 'admin' | null
   email: string
   full_name: string | null
   phone: string | null
+  updated_at: string
 }
 
 interface DashboardClientProps {
@@ -28,19 +29,28 @@ export function DashboardClient({ initialProfile, userId }: DashboardClientProps
   const makeAdmin = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/self-promote', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      })
+      
+      // Primeiro, verificar se já existe algum admin
+      const { data: admins, error: adminsError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('role', 'admin')
 
-      const data = await response.json()
+      if (adminsError) throw adminsError
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Erro ao atualizar perfil')
+      if (admins && admins.length > 0) {
+        throw new Error('Já existe um administrador no sistema')
       }
 
+      // Se não houver admin, fazer a promoção
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ role: 'admin' })
+        .eq('id', userId)
+
+      if (updateError) throw updateError
+
+      // Atualizar o estado local
       setProfile(prev => prev ? { ...prev, role: 'admin' } : null)
       toast.success('Perfil atualizado com sucesso! Agora você é um administrador.')
       router.refresh()

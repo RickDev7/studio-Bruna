@@ -14,25 +14,28 @@ export interface Database {
           id: string
           created_at: string
           email: string
-          full_name: string
+          full_name: string | null
           phone: string | null
-          role: string | null
+          role: 'user' | 'admin' | null
+          updated_at: string
         }
         Insert: {
           id: string
           created_at?: string
           email: string
-          full_name: string
+          full_name?: string | null
           phone?: string | null
-          role?: string | null
+          role?: 'user' | 'admin' | null
+          updated_at?: string
         }
         Update: {
           id?: string
           created_at?: string
           email?: string
-          full_name?: string
+          full_name?: string | null
           phone?: string | null
-          role?: string | null
+          role?: 'user' | 'admin' | null
+          updated_at?: string
         }
       }
       appointments: {
@@ -43,7 +46,9 @@ export interface Database {
           service: string
           date: string
           time: string
-          status: 'pending' | 'confirmed' | 'cancelled'
+          status: 'pending' | 'confirmed' | 'cancelled' | 'rescheduled'
+          notes: string | null
+          updated_at: string
         }
         Insert: {
           id?: string
@@ -52,7 +57,9 @@ export interface Database {
           service: string
           date: string
           time: string
-          status?: 'pending' | 'confirmed' | 'cancelled'
+          status?: 'pending' | 'confirmed' | 'cancelled' | 'rescheduled'
+          notes?: string | null
+          updated_at?: string
         }
         Update: {
           id?: string
@@ -61,7 +68,9 @@ export interface Database {
           service?: string
           date?: string
           time?: string
-          status?: 'pending' | 'confirmed' | 'cancelled'
+          status?: 'pending' | 'confirmed' | 'cancelled' | 'rescheduled'
+          notes?: string | null
+          updated_at?: string
         }
       }
     }

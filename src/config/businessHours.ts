@@ -1,4 +1,4 @@
-interface DayConfig {
+export interface DayConfig {
   isOpen: boolean;
   periods: { start: string; end: string }[];
 }
@@ -14,33 +14,44 @@ export const businessHours: BusinessHours = {
   },
   1: { // Segunda
     isOpen: true,
-    periods: [{ start: '09:00', end: '13:00' }]
+    periods: [
+      { start: '09:00', end: '13:00' },
+      { start: '14:00', end: '18:00' }
+    ]
   },
   2: { // Terça
     isOpen: true,
     periods: [
       { start: '09:00', end: '13:00' },
-      { start: '15:00', end: '18:00' }
+      { start: '14:00', end: '18:00' }
     ]
   },
   3: { // Quarta
     isOpen: true,
-    periods: [{ start: '09:00', end: '13:00' }]
+    periods: [
+      { start: '09:00', end: '13:00' },
+      { start: '14:00', end: '18:00' }
+    ]
   },
   4: { // Quinta
     isOpen: true,
     periods: [
       { start: '09:00', end: '13:00' },
-      { start: '15:00', end: '18:00' }
+      { start: '14:00', end: '18:00' }
     ]
   },
   5: { // Sexta
     isOpen: true,
-    periods: [{ start: '09:00', end: '13:00' }]
+    periods: [
+      { start: '09:00', end: '13:00' },
+      { start: '14:00', end: '18:00' }
+    ]
   },
   6: { // Sábado
     isOpen: true,
-    periods: [{ start: '09:30', end: '17:00' }]
+    periods: [
+      { start: '09:00', end: '14:00' }
+    ]
   }
 };
 
@@ -55,48 +66,61 @@ export function isLunchBreak(time: string, dayConfig: DayConfig): boolean {
   return timeInMinutes >= lunchStartInMinutes && timeInMinutes < lunchEndInMinutes
 }
 
-// Função para verificar se um horário está dentro do horário de funcionamento
-export function isWithinBusinessHours(time: string, dayConfig: DayConfig): boolean {
-  if (!dayConfig.isOpen || !dayConfig.periods) return false
-
-  const timeInMinutes = timeToMinutes(time)
-  const startInMinutes = timeToMinutes(dayConfig.periods[0].start)
-  const endInMinutes = timeToMinutes(dayConfig.periods[0].end)
-
-  return timeInMinutes >= startInMinutes && timeInMinutes <= endInMinutes
-}
-
 // Função auxiliar para converter horário em minutos
 function timeToMinutes(time: string): number {
-  const [hours, minutes] = time.split(':').map(Number)
-  return hours * 60 + minutes
+  const [hours, minutes] = time.split(':').map(Number);
+  return hours * 60 + minutes;
+}
+
+// Função auxiliar para converter minutos em horário formatado
+function minutesToTime(minutes: number): string {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+}
+
+// Função para verificar se um horário está dentro do horário de funcionamento
+export function isWithinBusinessHours(time: string, dayConfig: DayConfig): boolean {
+  if (!dayConfig.isOpen || !dayConfig.periods.length) return false;
+
+  const timeInMinutes = timeToMinutes(time);
+
+  return dayConfig.periods.some(period => {
+    const startInMinutes = timeToMinutes(period.start);
+    const endInMinutes = timeToMinutes(period.end);
+    return timeInMinutes >= startInMinutes && timeInMinutes <= endInMinutes;
+  });
 }
 
 // Função para gerar os horários disponíveis para um dia específico
 export function generateTimeSlots(dayConfig: DayConfig): string[] {
-  if (!dayConfig.isOpen) return [];
+  if (!dayConfig.isOpen || !dayConfig.periods.length) {
+    console.log('Estabelecimento fechado ou sem períodos definidos');
+    return [];
+  }
 
   const slots: string[] = [];
   const interval = 30; // intervalo em minutos
 
   dayConfig.periods.forEach(period => {
-    const [startHour, startMinute] = period.start.split(':').map(Number);
-    const [endHour, endMinute] = period.end.split(':').map(Number);
-    
-    const currentTime = new Date();
-    currentTime.setHours(startHour, startMinute, 0);
-    
-    const endTime = new Date();
-    endTime.setHours(endHour, endMinute, 0);
+    try {
+      const startMinutes = timeToMinutes(period.start);
+      const endMinutes = timeToMinutes(period.end);
+      
+      console.log(`Gerando slots para período: ${period.start} - ${period.end}`);
+      console.log(`Minutos: ${startMinutes} - ${endMinutes}`);
 
-    while (currentTime < endTime) {
-      slots.push(
-        `${currentTime.getHours().toString().padStart(2, '0')}:${currentTime.getMinutes().toString().padStart(2, '0')}`
-      );
-      currentTime.setMinutes(currentTime.getMinutes() + interval);
+      for (let currentMinutes = startMinutes; currentMinutes <= endMinutes; currentMinutes += interval) {
+        const timeSlot = minutesToTime(currentMinutes);
+        console.log(`Adicionando slot: ${timeSlot}`);
+        slots.push(timeSlot);
+      }
+    } catch (error) {
+      console.error(`Erro ao gerar slots para período ${period.start} - ${period.end}:`, error);
     }
   });
 
+  console.log(`Total de slots gerados: ${slots.length}`);
   return slots;
 }
 

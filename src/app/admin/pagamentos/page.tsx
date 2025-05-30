@@ -1,11 +1,9 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import emailjs from "@emailjs/browser";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/config/supabase";
-import { emailjsConfig } from "@/config/emailjs";
 
 // Definição dos tipos
 type PedidoStatus = "pendente" | "pago";
@@ -17,14 +15,6 @@ interface Pedido {
   valor: string;
   status: PedidoStatus;
   created_at: string;
-  data_pagamento?: string;
-}
-
-interface EmailjsParams extends Record<string, unknown> {
-  client_name: string;
-  client_email: string;
-  order_id: string;
-  total_price: string;
 }
 
 export default function PagamentosAdmin() {
@@ -32,17 +22,6 @@ export default function PagamentosAdmin() {
   const [filtro, setFiltro] = useState<"todos" | PedidoStatus>("todos");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Inicializar EmailJS
-  useEffect(() => {
-    try {
-      emailjs.init(emailjsConfig.publicKey);
-      console.log('EmailJS inicializado com sucesso');
-    } catch (err) {
-      console.error('Erro ao inicializar EmailJS:', err);
-      setError('Erro ao inicializar o sistema de emails');
-    }
-  }, []);
 
   // Carrega pedidos do Supabase
   useEffect(() => {
@@ -75,32 +54,21 @@ export default function PagamentosAdmin() {
   }, []);
 
   const enviarEmails = async (pedido: Pedido) => {
-    const emailParams: EmailjsParams = {
-      client_name: pedido.nome,
-      client_email: pedido.email,
-      order_id: pedido.id,
-      total_price: pedido.valor,
-    };
-
     try {
       // Email para o cliente
-      await emailjs.send(
-        emailjsConfig.serviceId,
-        emailjsConfig.templates.clientConfirmation,
-        emailParams,
-        emailjsConfig.publicKey
-      );
-
-      // Email para o admin
-      await emailjs.send(
-        emailjsConfig.serviceId,
-        emailjsConfig.templates.adminNotification,
-        {
-          ...emailParams,
-          to_email: emailjsConfig.adminEmail,
+      await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        emailjsConfig.publicKey
-      );
+        body: JSON.stringify({
+          userName: pedido.nome,
+          userEmail: pedido.email,
+          orderId: pedido.id,
+          totalPrice: pedido.valor,
+          isPaymentConfirmation: true
+        }),
+      });
     } catch (error) {
       console.error('Erro ao enviar emails:', error);
       throw new Error('Erro ao enviar emails de confirmação');
@@ -111,154 +79,119 @@ export default function PagamentosAdmin() {
     try {
       setLoading(true);
       setError(null);
-      const dataAtual = new Date().toLocaleString("pt-BR");
 
-      // Atualiza no Supabase
+      // Atualizar status no banco
       const { error: updateError } = await supabase
         .from("pedidos")
-        .update({ 
-          status: "pago" as PedidoStatus, 
-          data_pagamento: dataAtual 
-        })
+        .update({ status: "pago" })
         .eq("id", pedido.id);
 
-      if (updateError) {
-        throw updateError;
-      }
+      if (updateError) throw updateError;
 
-      // Atualiza localmente
-      setPedidos((prev) =>
-        prev.map((p) =>
-          p.id === pedido.id
-            ? { ...p, status: "pago", data_pagamento: dataAtual }
-            : p
-        )
-      );
-
-      // Envia emails
+      // Enviar emails de confirmação
       await enviarEmails(pedido);
 
-      alert("Pagamento confirmado e emails enviados com sucesso!");
+      // Atualizar lista de pedidos
+      setPedidos(pedidos.map(p => 
+        p.id === pedido.id ? { ...p, status: "pago" } : p
+      ));
+
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erro ao confirmar pagamento';
-      console.error("Erro ao confirmar pagamento:", err);
+      console.error('Erro ao confirmar pagamento:', err);
       setError(errorMessage);
-      alert("Erro ao confirmar pagamento. Por favor, tente novamente.");
     } finally {
       setLoading(false);
     }
   };
 
-  const pedidosFiltrados = pedidos.filter((p) =>
-    filtro === "todos" ? true : p.status === filtro
+  const pedidosFiltrados = pedidos.filter(pedido => 
+    filtro === "todos" ? true : pedido.status === filtro
   );
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 py-12">
-        <div className="max-w-4xl mx-auto p-4 text-center">
-          <p className="text-gray-600">Carregando...</p>
-        </div>
-      </div>
-    );
+    return <div>Carregando...</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-4xl mx-auto p-4 space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-gray-900">Painel de Pagamentos</h1>
-        </div>
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
-            {error}
-          </div>
-        )}
-
-        <div className="flex gap-2">
-          <Button 
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Pagamentos</h1>
+        <div className="space-x-2">
+          <Button
             onClick={() => setFiltro("todos")}
-            className={`${
-              filtro === "todos" 
-                ? "bg-[#FFC0CB] text-white" 
-                : "bg-white text-gray-700 border border-gray-300"
-            } hover:bg-[#FFB6C1]`}
+            className={filtro === "todos" ? "bg-pink-500 text-white" : "bg-white text-gray-700"}
           >
-            Todos ({pedidos.length})
+            Todos
           </Button>
-          <Button 
+          <Button
             onClick={() => setFiltro("pendente")}
-            className={`${
-              filtro === "pendente" 
-                ? "bg-[#FFC0CB] text-white" 
-                : "bg-white text-gray-700 border border-gray-300"
-            } hover:bg-[#FFB6C1]`}
+            className={filtro === "pendente" ? "bg-pink-500 text-white" : "bg-white text-gray-700"}
           >
-            Pendentes ({pedidos.filter(p => p.status === "pendente").length})
+            Pendentes
           </Button>
-          <Button 
+          <Button
             onClick={() => setFiltro("pago")}
-            className={`${
-              filtro === "pago" 
-                ? "bg-[#FFC0CB] text-white" 
-                : "bg-white text-gray-700 border border-gray-300"
-            } hover:bg-[#FFB6C1]`}
+            className={filtro === "pago" ? "bg-pink-500 text-white" : "bg-white text-gray-700"}
           >
-            Pagos ({pedidos.filter(p => p.status === "pago").length})
+            Pagos
           </Button>
         </div>
+      </div>
 
-        <div className="grid gap-4">
-          {pedidosFiltrados.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              Nenhum pedido encontrado.
-            </div>
-          ) : (
-            pedidosFiltrados.map((pedido) => (
-              <Card key={pedido.id} className="bg-white">
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex justify-between items-start">
-                    <div className="space-y-2">
-                      <p className="text-lg font-semibold">{pedido.nome}</p>
-                      <p className="text-gray-600">{pedido.email}</p>
-                      {pedido.created_at && (
-                        <p className="text-sm text-gray-500">
-                          Criado em: {new Date(pedido.created_at).toLocaleString("pt-BR")}
-                        </p>
-                      )}
-                      {pedido.data_pagamento && (
-                        <p className="text-sm text-gray-500">
-                          Pago em: {pedido.data_pagamento}
-                        </p>
-                      )}
-                    </div>
-                    <div className="text-right">
-                      <p className="text-lg font-bold">{pedido.valor}</p>
-                      <p className={`font-medium ${
-                        pedido.status === "pago" 
-                          ? "text-green-600" 
-                          : "text-yellow-600"
-                      }`}>
-                        {pedido.status.toUpperCase()}
-                      </p>
-                    </div>
-                  </div>
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6">
+          {error}
+        </div>
+      )}
 
+      <div className="grid gap-4">
+        {pedidosFiltrados.map((pedido) => (
+          <Card key={pedido.id}>
+            <CardContent className="p-4">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="font-medium">{pedido.nome}</h3>
+                  <p className="text-sm text-gray-500">{pedido.email}</p>
+                  <p className="text-sm text-gray-500">
+                    {new Date(pedido.created_at).toLocaleDateString('pt-BR')}
+                  </p>
+                  <p className="font-medium text-lg mt-2">
+                    {new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'EUR'
+                    }).format(parseFloat(pedido.valor))}
+                  </p>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm ${
+                      pedido.status === "pago"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-yellow-100 text-yellow-800"
+                    }`}
+                  >
+                    {pedido.status === "pago" ? "Pago" : "Pendente"}
+                  </span>
                   {pedido.status === "pendente" && (
-                    <Button 
+                    <Button
                       onClick={() => confirmarPagamento(pedido)}
                       disabled={loading}
-                      className="w-full bg-[#FFC0CB] hover:bg-[#FFB6C1] text-white disabled:opacity-50"
                     >
-                      {loading ? "Processando..." : "Confirmar Pagamento"}
+                      Confirmar Pagamento
                     </Button>
                   )}
-                </CardContent>
-              </Card>
-            ))
-          )}
-        </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+
+        {pedidosFiltrados.length === 0 && (
+          <div className="text-center py-8 text-gray-500">
+            Nenhum pagamento encontrado
+          </div>
+        )}
       </div>
     </div>
   );

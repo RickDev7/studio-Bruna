@@ -4,9 +4,10 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-export async function POST(request: Request) {
+export async function POST() {
   try {
-    const supabase = createRouteHandlerClient({ cookies });
+    const cookieStore = cookies();
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
     // Verificar se o usuário está autenticado
     const {
@@ -26,7 +27,10 @@ export async function POST(request: Request) {
       .select('id')
       .eq('role', 'admin');
 
-    if (adminsError) throw adminsError;
+    if (adminsError) {
+      console.error('Erro ao verificar admins:', adminsError);
+      throw adminsError;
+    }
 
     // Se já existem admins, não permitir a auto-promoção
     if (admins && admins.length > 0) {
@@ -37,16 +41,22 @@ export async function POST(request: Request) {
     }
 
     // Atualizar o papel do usuário para admin
-    const { error } = await supabase
+    const { error: updateError } = await supabase
       .from('profiles')
       .update({ role: 'admin' })
       .eq('id', session.user.id);
 
-    if (error) throw error;
+    if (updateError) {
+      console.error('Erro ao atualizar perfil:', updateError);
+      throw updateError;
+    }
 
-    return NextResponse.json({ message: 'Usuário promovido a administrador com sucesso!' });
+    return NextResponse.json({ 
+      message: 'Usuário promovido a administrador com sucesso!',
+      userId: session.user.id 
+    });
   } catch (error) {
-    console.error('Erro:', error);
+    console.error('Erro ao promover usuário:', error);
     return NextResponse.json(
       { error: 'Erro ao processar a requisição' },
       { status: 500 }

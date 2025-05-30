@@ -1,8 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import emailjs from '@emailjs/browser'
-import { emailjsConfig } from '@/config/emailjs'
+import { useState } from 'react'
 import { Calendar } from '@/components/Calendar'
 import { TimeSlots } from '@/components/TimeSlots'
 
@@ -18,28 +16,6 @@ function formatarData(data: Date): string {
   })}`
 }
 
-type EmailParams = {
-  to_name: string
-  to_email: string
-  service: string
-  date: string
-  time: string
-}
-
-type ClientEmailParams = EmailParams & {
-  business_name: string
-  business_address: string
-  business_phone: string
-}
-
-type AdminEmailParams = EmailParams & {
-  to_email: string
-  from_name: string
-  client_name: string
-  client_email: string
-  client_phone: string
-}
-
 export function Scheduling() {
   const [date, setDate] = useState<Date>(new Date())
   const [selectedTime, setSelectedTime] = useState<string>('')
@@ -51,17 +27,6 @@ export function Scheduling() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [currentStep, setCurrentStep] = useState(1)
-
-  // Inicializar EmailJS
-  useEffect(() => {
-    try {
-      emailjs.init(emailjsConfig.publicKey)
-      console.log('EmailJS inicializado com sucesso')
-    } catch (err) {
-      console.error('Erro ao inicializar EmailJS:', err)
-      setError('Erro ao inicializar o sistema de emails. Por favor, recarregue a página.')
-    }
-  }, [])
 
   const services = [
     'Manicure',
@@ -106,48 +71,24 @@ export function Scheduling() {
     try {
       const dataFormatada = formatarData(date)
       
-      // Parâmetros base para os emails
-      const baseParams: EmailParams = {
-        to_name: name,
-        to_email: email,
-        service: selectedService,
-        date: dataFormatada,
-        time: selectedTime
-      }
+      // Enviar email de confirmação
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userName: name,
+          userEmail: email,
+          service: selectedService,
+          date: dataFormatada,
+          time: selectedTime,
+        }),
+      });
 
-      // Parâmetros para o email do cliente
-      const clientParams: ClientEmailParams = {
-        ...baseParams,
-        business_name: emailjsConfig.businessInfo.name,
-        business_address: emailjsConfig.businessInfo.address,
-        business_phone: emailjsConfig.businessInfo.phone
+      if (!response.ok) {
+        throw new Error('Erro ao enviar email de confirmação');
       }
-
-      // Parâmetros para o email do admin
-      const adminParams: AdminEmailParams = {
-        ...baseParams,
-        to_email: emailjsConfig.adminEmail,
-        from_name: name,
-        client_name: name,
-        client_email: email,
-        client_phone: phone
-      }
-
-      // Enviar emails
-      await Promise.all([
-        emailjs.send(
-          emailjsConfig.serviceId,
-          emailjsConfig.templates.clientConfirmation,
-          clientParams,
-          emailjsConfig.publicKey
-        ),
-        emailjs.send(
-          emailjsConfig.serviceId,
-          emailjsConfig.templates.adminNotification,
-          adminParams,
-          emailjsConfig.publicKey
-        )
-      ])
 
       setShowSuccess(true)
       setTimeout(() => setShowSuccess(false), 3000)
@@ -159,10 +100,9 @@ export function Scheduling() {
       setPhone('')
       setEmail('')
       setCurrentStep(1)
-    } catch (err: Error | unknown) {
-      const error = err as Error
-      console.error('Erro ao enviar emails:', error)
-      setError(error.message || 'Ocorreu um erro ao agendar. Por favor, tente novamente.')
+    } catch (error) {
+      console.error('Erro:', error)
+      setError('Ocorreu um erro ao agendar. Por favor, tente novamente.')
     } finally {
       setIsLoading(false)
     }

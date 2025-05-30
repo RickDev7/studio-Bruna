@@ -33,8 +33,8 @@ export function Contract({ planoNome, planoPreco }: ContractProps) {
                 <p className="font-semibold">Firma / Empresa:</p>
                 <p>Bruna Silva - Aesthetic & Nails</p>
                 <p>Bei der Grodener Kirche 7, 27472 Cuxhaven</p>
-                <p>Telefon: +49 1520 8007814</p>
-                <p>E-Mail: bs.aestheticalnails@gmail.com</p>
+                <p>Telefon: +49 152 800 7814</p>
+                <p>E-Mail: bs.aestheticnails@gmail.com</p>
                 <p>Steuernummer: 18/138/03805</p>
               </div>
 

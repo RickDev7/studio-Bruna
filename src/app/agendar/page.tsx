@@ -1,111 +1,52 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
-import emailjs from '@emailjs/browser';
-import { emailjsConfig } from '@/config/emailjs';
-import { Calendar } from '@/components/Calendar';
-import { TimeSlots } from '@/components/TimeSlots';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useRouter } from 'next/navigation';
-
-// Função auxiliar para formatar a data
-function formatarData(data: Date): string {
-  const diasDaSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado']
-  const diaDaSemana = diasDaSemana[data.getDay()]
-  
-  return `${diaDaSemana}, ${data.toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric'
-  })}`
-}
-
-// Função para formatar a data para o banco de dados
-function formatarDataBanco(data: Date): string {
-  const year = data.getFullYear();
-  const month = String(data.getMonth() + 1).padStart(2, '0');
-  const day = String(data.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
-type EmailParams = {
-  to_name: string
-  to_email: string
-  service: string
-  date: string
-  time: string
-}
-
-type ClientEmailParams = EmailParams & {
-  business_name: string
-  business_address: string
-  business_phone: string
-}
-
-type AdminEmailParams = EmailParams & {
-  to_email: string
-  from_name: string
-  client_name: string
-  client_email: string
-  client_phone: string
-}
+import { useState } from 'react'
+import { Calendar } from '@/components/Calendar'
+import { TimeSlots } from '@/components/TimeSlots'
+import { useAppointment } from '@/hooks/useAppointment'
+import { formatarData, formatarDataBanco } from '@/utils/formatters'
+import { services, Service } from '@/config/services'
+import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
 export default function AgendarPage() {
-  const [date, setDate] = useState<Date>(new Date());
-  const [selectedTime, setSelectedTime] = useState<string>('');
-  const [selectedService, setSelectedService] = useState<string>('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [currentStep, setCurrentStep] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [showSuccess, setShowSuccess] = useState(false);
-  const router = useRouter();
-  const supabase = createClientComponentClient();
+  const [date, setDate] = useState<Date>(new Date())
+  const [selectedTime, setSelectedTime] = useState<string>('')
+  const [selectedService, setSelectedService] = useState<string>('')
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [showSuccess, setShowSuccess] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [currentStep, setCurrentStep] = useState(1)
+  const [selectedCategory, setSelectedCategory] = useState<Service['category']>('nails')
 
-  // Inicializar EmailJS
-  useEffect(() => {
-    try {
-      emailjs.init(emailjsConfig.publicKey)
-      console.log('EmailJS inicializado com sucesso')
-    } catch (err) {
-      console.error('Erro ao inicializar EmailJS:', err)
-      setError('Erro ao inicializar o sistema de emails. Por favor, recarregue a página.')
+  const { createAppointment } = useAppointment({
+    onSuccess: () => {
+      setShowSuccess(true)
+      setTimeout(() => setShowSuccess(false), 3000)
+      // Limpar formulário
+      setSelectedTime('')
+      setSelectedService('')
+      setName('')
+      setPhone('')
+      setEmail('')
+      setCurrentStep(1)
+    },
+    onError: (error) => {
+      setError(error)
     }
-  }, [])
+  })
 
-  const serviceCategories = [
-    {
-      name: 'Unhas',
-      services: [
-        'Manicure com Shellac',
-        'Pedicure com Shellac',
-        'Spa Pedicure',
-        'Unhas em gel',
-        'Reparos de unhas'
-      ]
-    },
-    {
-      name: 'Tratamentos Faciais',
-      services: [
-        'Limpeza facial',
-        'Tratamento anti-idade',
-        'Hidratação facial',
-        'Microagulhamento',
-        'Máscaras faciais'
-      ]
-    },
-    {
-      name: 'Design e Embelezamento',
-      services: [
-        'Design de sobrancelhas',
-        'Coloração de sobrancelhas',
-        'Brow lamination',
-        'Lifting de pestanas'
-      ]
-    }
-  ];
+  const categories = [
+    { id: 'nails', name: 'Unhas' },
+    { id: 'face', name: 'Rosto' },
+    { id: 'eyebrows', name: 'Sobrancelhas e Cílios' },
+    { id: 'lips', name: 'Lábios' }
+  ]
+
+  const filteredServices = services.filter(service => service.category === selectedCategory)
 
   const validateForm = () => {
     if (!selectedService) return 'Por favor, selecione um serviço'
@@ -137,263 +78,185 @@ export default function AgendarPage() {
     setError('')
 
     try {
-      const dataFormatada = formatarData(date)
-      const dataBanco = formatarDataBanco(date)
-      
-      // Verificar se o usuário está autenticado
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session) {
-        router.push('/login')
-        return
-      }
-
-      // Salvar o agendamento no Supabase
-      const response = await fetch('/api/appointments', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          service: selectedService,
-          date: dataBanco,
-          time: selectedTime,
-          notes: `Nome: ${name}\nTelefone: ${phone}\nEmail: ${email}`
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        console.error('Erro na resposta:', data);
-        throw new Error(data.error || 'Erro ao criar agendamento');
-      }
-
-      console.log('Resposta do servidor:', data);
-      
-      // Parâmetros base para os emails
-      const baseParams: EmailParams = {
-        to_name: name,
-        to_email: email,
+      await createAppointment({
         service: selectedService,
-        date: dataFormatada,
-        time: selectedTime
-      }
-
-      // Parâmetros para o email do cliente
-      const clientParams: ClientEmailParams = {
-        ...baseParams,
-        business_name: emailjsConfig.businessInfo.name,
-        business_address: emailjsConfig.businessInfo.address,
-        business_phone: emailjsConfig.businessInfo.phone
-      }
-
-      // Parâmetros para o email do admin
-      const adminParams: AdminEmailParams = {
-        ...baseParams,
-        to_email: emailjsConfig.adminEmail,
-        from_name: name,
-        client_name: name,
-        client_email: email,
-        client_phone: phone
-      }
-
-      console.log('Enviando email com os parâmetros:', {
-        serviceId: emailjsConfig.serviceId,
-        templateIds: emailjsConfig.templates,
-        clientParams,
-        adminParams
+        date: formatarDataBanco(date),
+        time: selectedTime,
+        notes: '',
+        user_name: name,
+        user_email: email,
+        user_phone: phone
       })
-
-      // Enviar emails
-      await Promise.all([
-        emailjs.send(
-          emailjsConfig.serviceId,
-          emailjsConfig.templates.clientConfirmation,
-          clientParams
-        ),
-        emailjs.send(
-          emailjsConfig.serviceId,
-          emailjsConfig.templates.adminNotification,
-          adminParams
-        )
-      ])
-
-      setShowSuccess(true)
-      setTimeout(() => {
-        setShowSuccess(false)
-        router.push('/')
-      }, 3000)
-
-      // Limpar formulário
-      setSelectedTime('')
-      setSelectedService('')
-      setName('')
-      setPhone('')
-      setEmail('')
-      setCurrentStep(1)
-    } catch (err: any) {
-      console.error('Erro:', err)
-      setError(err.message || 'Ocorreu um erro ao agendar. Por favor, tente novamente.')
+    } catch (error) {
+      console.error('Erro:', error)
+      setError('Ocorreu um erro ao agendar. Por favor, tente novamente.')
     } finally {
       setIsLoading(false)
     }
   }
 
-  const handleNextStep = () => {
-    setError('');
-
+  const nextStep = () => {
     if (currentStep === 1 && !selectedService) {
-      setError('Por favor, selecione um serviço');
-      return;
+      setError('Por favor, selecione um serviço')
+      return
     }
     if (currentStep === 2 && !selectedTime) {
-      setError('Por favor, selecione um horário');
-      return;
+      setError('Por favor, selecione um horário')
+      return
     }
-    if (currentStep === 3) {
-      return;
-    }
-    setCurrentStep(currentStep + 1);
-  };
+    setError('')
+    setCurrentStep(prev => prev + 1)
+  }
+
+  const prevStep = () => {
+    setError('')
+    setCurrentStep(prev => prev - 1)
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1] py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
+        {/* Botão Voltar */}
+        <div className="mb-8">
+          <Link
+            href="/"
+            className="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            <svg
+              className="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              />
+            </svg>
+            Voltar para a página inicial
+          </Link>
+        </div>
+
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent mb-4">
-            Agendar Horário
+            Agendar Serviço
           </h1>
           <p className="text-gray-600 text-lg">
             Escolha o serviço e horário de sua preferência
           </p>
         </div>
 
-        <div className="bg-white shadow-xl rounded-2xl p-8">
-          {error && (
-            <div className="mb-6 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg">
-              {error}
-            </div>
-          )}
-
-          {showSuccess && (
-            <div className="mb-6 bg-green-50 border border-green-200 text-green-700 p-4 rounded-lg">
-              Agendamento realizado com sucesso! Em breve você receberá um email de confirmação.
-            </div>
-          )}
-
-          {/* Indicador de Progresso */}
-          <div className="flex items-center justify-between mb-8">
-            {[1, 2, 3].map((step) => (
-              <div
-                key={step}
-                className={`flex items-center ${step < 3 ? 'flex-1' : ''}`}
-              >
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    step <= currentStep
-                      ? 'bg-[#FF69B4] text-white'
-                      : 'bg-gray-200 text-gray-500'
-                  }`}
-                >
-                  {step}
-                </div>
-                {step < 3 && (
-                  <div
-                    className={`flex-1 h-1 mx-4 ${
-                      step < currentStep ? 'bg-[#FF69B4]' : 'bg-gray-200'
-                    }`}
-                  />
-                )}
-              </div>
-            ))}
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-6">
+            {error}
           </div>
+        )}
 
-          {/* Passo 1: Seleção de Serviço */}
-          {currentStep === 1 && (
-            <div className="space-y-8">
-              {serviceCategories.map((category) => (
-                <div key={category.name} className="space-y-4">
-                  <h3 className="text-xl font-semibold text-[#FF69B4]">{category.name}</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {category.services.map(service => (
-                      <button
-                        key={service}
-                        onClick={() => setSelectedService(service)}
-                        className={`
-                          group relative p-6 rounded-xl transition-all duration-300 border
-                          ${selectedService === service 
-                            ? 'bg-pink-50 border-pink-200 text-gray-800 shadow-md' 
-                            : 'bg-white border-pink-50 hover:border-pink-200 text-gray-600 hover:bg-pink-50/50'}
-                        `}
-                      >
-                        <span className="text-lg font-light">{service}</span>
-                        {selectedService === service && (
-                          <svg className="absolute top-4 right-4 w-5 h-5 text-pink-300" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
-                          </svg>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+        {showSuccess && (
+          <div className="bg-green-50 border border-green-200 text-green-700 p-4 rounded-lg mb-6">
+            Agendamento realizado com sucesso! Em breve você receberá um email de confirmação.
+          </div>
+        )}
+
+        {currentStep === 1 && (
+          <div className="bg-white p-6 rounded-xl shadow-sm mb-6">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Serviço</h3>
+            
+            {/* Categorias */}
+            <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+              {categories.map(category => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id as Service['category'])}
+                  className={cn(
+                    "px-4 py-2 rounded-full whitespace-nowrap transition-colors duration-200",
+                    selectedCategory === category.id
+                      ? "bg-pink-500 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-pink-50"
+                  )}
+                >
+                  {category.name}
+                </button>
               ))}
             </div>
-          )}
 
-          {/* Passo 2: Seleção de Data e Hora */}
-          {currentStep === 2 && (
-            <div className="space-y-6">
-              <Calendar selectedDate={date} onDateSelect={setDate} />
-              <div className="mt-8">
-                <h3 className="text-xl font-light text-gray-800 mb-4">Horários Disponíveis</h3>
-                <TimeSlots
-                  selectedDate={date}
-                  selectedTime={selectedTime}
-                  onTimeSelect={setSelectedTime}
-                />
-              </div>
+            {/* Lista de Serviços */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {filteredServices.map(service => (
+                <button
+                  key={service.id}
+                  onClick={() => setSelectedService(service.name)}
+                  className={cn(
+                    "p-4 rounded-lg text-left transition-all duration-200 border",
+                    selectedService === service.name
+                      ? "bg-pink-50 border-pink-200 shadow-sm"
+                      : "bg-white border-gray-100 hover:bg-gray-50 hover:border-gray-200"
+                  )}
+                >
+                  <h4 className="font-medium text-gray-900">{service.name}</h4>
+                  <p className="text-sm text-gray-500 mt-1">{service.description}</p>
+                  <div className="flex justify-end items-center mt-2 text-sm">
+                    <span className="text-gray-500">{service.duration}</span>
+                  </div>
+                </button>
+              ))}
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Passo 3: Informações Pessoais */}
-          {currentStep === 3 && (
+        {currentStep === 2 && (
+          <div className="bg-white p-6 rounded-xl shadow-sm mb-6">
+            <Calendar selectedDate={date} onDateSelect={setDate} />
+            <div className="mt-8">
+              <h3 className="text-xl font-light text-gray-800 mb-4">Horários Disponíveis</h3>
+              <TimeSlots
+                selectedDate={date}
+                selectedTime={selectedTime}
+                onTimeSelect={setSelectedTime}
+              />
+            </div>
+          </div>
+        )}
+
+        {currentStep === 3 && (
+          <div className="bg-white p-6 rounded-xl shadow-sm mb-6">
             <form id="agendamentoForm" onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                  Nome completo
+                <label className="block text-sm text-gray-600 mb-2">
+                  Nome Completo
                 </label>
                 <input
                   type="text"
-                  id="name"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-[#FF69B4] focus:ring-[#FF69B4] bg-white/50"
+                  onChange={e => setName(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-pink-100 focus:ring-2 focus:ring-pink-100 focus:border-pink-200 transition-colors bg-white/50"
                   placeholder="Digite seu nome completo"
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm text-gray-600 mb-2">
                   Email
                 </label>
                 <input
                   type="email"
-                  id="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-[#FF69B4] focus:ring-[#FF69B4] bg-white/50"
+                  onChange={e => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-pink-100 focus:ring-2 focus:ring-pink-100 focus:border-pink-200 transition-colors bg-white/50"
                   placeholder="Digite seu email"
                 />
               </div>
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm text-gray-600 mb-2">
                   Telefone
                 </label>
                 <input
                   type="tel"
-                  id="phone"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-[#FF69B4] focus:ring-[#FF69B4] bg-white/50"
+                  onChange={e => setPhone(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-pink-100 focus:ring-2 focus:ring-pink-100 focus:border-pink-200 transition-colors bg-white/50"
                   placeholder="+49 XXX XXXXXXX"
                 />
               </div>
@@ -410,53 +273,55 @@ export default function AgendarPage() {
                   <p className="text-gray-600">
                     <span className="font-medium">Horário:</span> {selectedTime}
                   </p>
+                  {services.find(s => s.name === selectedService) && (
+                    <p className="text-gray-600">
+                      <span className="font-medium">Duração:</span> {services.find(s => s.name === selectedService)?.duration}
+                    </p>
+                  )}
                 </div>
               </div>
             </form>
-          )}
-
-          {/* Botões de Navegação */}
-          <div className="flex justify-between mt-8">
-            {currentStep > 1 && (
-              <button
-                onClick={() => setCurrentStep(currentStep - 1)}
-                type="button"
-                className="px-6 py-3 border border-[#FFB6C1] text-[#FF69B4] rounded-full hover:bg-pink-50 transition-colors duration-300"
-              >
-                Voltar
-              </button>
-            )}
-            {currentStep < 3 ? (
-              <button
-                onClick={handleNextStep}
-                type="button"
-                className="ml-auto px-8 py-3 bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] text-white rounded-full hover:opacity-90 transition-opacity duration-300"
-              >
-                Próximo
-              </button>
-            ) : (
-              <button
-                type="submit"
-                form="agendamentoForm"
-                disabled={isLoading}
-                className="ml-auto px-8 py-3 bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] text-white rounded-full hover:opacity-90 transition-opacity duration-300 flex items-center"
-              >
-                {isLoading ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Processando...
-                  </>
-                ) : (
-                  'Confirmar Agendamento'
-                )}
-              </button>
-            )}
           </div>
+        )}
+
+        <div className="flex justify-between">
+          {currentStep > 1 && (
+            <button
+              onClick={prevStep}
+              className="px-6 py-3 rounded-full border border-pink-200 text-gray-700 hover:bg-pink-50 transition-all duration-300"
+            >
+              Voltar
+            </button>
+          )}
+          {currentStep < 3 ? (
+            <button
+              onClick={nextStep}
+              className="ml-auto px-6 py-3 rounded-lg bg-pink-50 text-gray-800 border border-pink-200 hover:bg-pink-100 transition-all duration-300"
+            >
+              Próximo
+            </button>
+          ) : (
+            <button
+              type="submit"
+              form="agendamentoForm"
+              disabled={isLoading}
+              className="ml-auto px-8 py-3 bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] text-white rounded-full hover:opacity-90 transition-opacity duration-300 flex items-center"
+            >
+              {isLoading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Processando...
+                </>
+              ) : (
+                'Confirmar Agendamento'
+              )}
+            </button>
+          )}
         </div>
       </div>
     </div>
-  );
+  )
 } 

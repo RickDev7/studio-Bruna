@@ -10,8 +10,8 @@ export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('')
-  const [isAdmin, setIsAdmin] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
   
@@ -54,11 +54,11 @@ export function Navbar() {
         setIsAuthenticated(true)
         const { data: profile } = await supabase
           .from('profiles')
-          .select('is_admin')
+          .select('role')
           .eq('id', user.id)
           .single()
         
-        setIsAdmin(profile?.is_admin || false)
+        setIsAdmin(profile?.role === 'admin')
       }
     } catch (error) {
       console.error('Erro ao verificar usuário:', error)

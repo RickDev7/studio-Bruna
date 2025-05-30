@@ -15,6 +15,14 @@ export function AdminNavbar() {
     router.push('/login');
   };
 
+  const menuItems = [
+    { href: '/admin', label: 'Agendamentos' },
+    { href: '/admin/agendar', label: 'Novo Agendamento' },
+    { href: '/admin/servicos', label: 'Serviços' },
+    { href: '/admin/clientes', label: 'Clientes' },
+    { href: '/admin/configuracoes', label: 'Configurações' }
+  ];
+
   return (
     <nav className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,36 +34,49 @@ export function AdminNavbar() {
               </Link>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <Link
-                href="/admin"
-                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                  pathname === '/admin'
-                    ? 'border-pink-500 text-gray-900'
-                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                }`}
-              >
-                Agendamentos
-              </Link>
-              <Link
-                href="/admin/clientes"
-                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                  pathname === '/admin/clientes'
-                    ? 'border-pink-500 text-gray-900'
-                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                }`}
-              >
-                Clientes
-              </Link>
+              {menuItems.map(item => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                    pathname === item.href
+                      ? 'border-pink-500 text-gray-900'
+                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
             </div>
           </div>
+
           <div className="flex items-center">
             <button
               onClick={handleSignOut}
-              className="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+              className="ml-4 px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700"
             >
               Sair
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* Menu móvel */}
+      <div className="sm:hidden">
+        <div className="pt-2 pb-3 space-y-1">
+          {menuItems.map(item => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                pathname === item.href
+                  ? 'border-pink-500 text-pink-700 bg-pink-50'
+                  : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
       </div>
     </nav>

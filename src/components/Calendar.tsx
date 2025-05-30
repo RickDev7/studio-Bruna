@@ -7,9 +7,10 @@ import { businessHours, holidays } from '@/config/businessHours'
 interface CalendarProps {
   selectedDate: Date;
   onDateSelect: (date: Date) => void;
+  highlightedDates?: Date[];
 }
 
-export function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
+export function Calendar({ selectedDate, onDateSelect, highlightedDates = [] }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDay, setSelectedDay] = useState(selectedDate.getDate())
   
@@ -54,6 +55,14 @@ export function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return date < today;
+  };
+
+  const isHighlighted = (date: Date) => {
+    return highlightedDates.some(highlightedDate => (
+      date.getDate() === highlightedDate.getDate() &&
+      date.getMonth() === highlightedDate.getMonth() &&
+      date.getFullYear() === highlightedDate.getFullYear()
+    ));
   };
 
   // Gera o calendário do mês atual
@@ -136,6 +145,7 @@ export function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
           const date = new Date(currentYear, currentMonth, day);
           const isDisabled = isPastDate(date) || !isDateAvailable(date);
           const isCurrentMonth = date.getMonth() === currentMonth;
+          const hasAppointments = isHighlighted(date);
 
           return (
             <button
@@ -143,14 +153,18 @@ export function Calendar({ selectedDate, onDateSelect }: CalendarProps) {
               onClick={() => !isDisabled && onDateSelect(date)}
               disabled={isDisabled}
               className={`
-                text-center py-2 rounded-full mx-1
+                text-center py-2 rounded-full mx-1 relative
                 ${!isCurrentMonth ? 'text-gray-300' : ''}
                 ${isDisabled ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-pink-50'}
                 ${isToday(date) ? 'bg-pink-50 text-[#FF69B4]' : ''}
                 ${isSelected(date) ? 'bg-[#FF69B4] text-white hover:bg-[#FF69B4]' : ''}
+                ${hasAppointments && !isSelected(date) ? 'border-2 border-[#FF69B4]' : ''}
               `}
             >
               {day}
+              {hasAppointments && !isSelected(date) && (
+                <span className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-[#FF69B4] rounded-full"></span>
+              )}
             </button>
           );
         })}

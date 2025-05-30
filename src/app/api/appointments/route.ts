@@ -9,101 +9,35 @@ export async function POST(request: Request) {
     const supabase = createRouteHandlerClient({ cookies });
     const body = await request.json();
 
-    console.log('Dados recebidos:', body);
+    // Verificar autenticação
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+    }
 
-    // Verificar se o usuário está autenticado
-    const {
-      data: { user },
-      error: userError
-    } = await supabase.auth.getUser();
+    // Chamar a função RPC create_appointment
+    const { data, error } = await supabase.rpc('create_appointment', {
+      p_service: body.service,
+      p_date: body.date,
+      p_time: body.time,
+      p_user_id: user.id,
+      p_status: 'confirmed',
+      p_notes: body.notes
+    });
 
-    if (userError || !user) {
-      console.log('Usuário não autenticado');
+    if (error) {
+      console.error('Erro ao criar agendamento:', error);
       return NextResponse.json(
-        { error: 'Não autorizado' },
-        { status: 401 }
+        { error: error.message || 'Erro ao criar agendamento' },
+        { status: 500 }
       );
     }
 
-    console.log('Usuário autenticado:', user.id);
-
-    // Validar dados necessários
-    if (!body.service || !body.date || !body.time) {
-      console.log('Dados inválidos:', { service: body.service, date: body.date, time: body.time });
-      return NextResponse.json(
-        { error: 'Dados inválidos. Serviço, data e hora são obrigatórios.' },
-        { status: 400 }
-      );
-    }
-
-    // Formatar a data e hora
-    try {
-      const [hours, minutes] = body.time.split(':');
-      const scheduledDate = new Date(body.date);
-      scheduledDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-
-      console.log('Data formatada:', scheduledDate.toISOString());
-
-      // Criar o agendamento
-      try {
-        const { data: appointment, error: insertError } = await supabase
-          .from('appointments')
-          .insert({
-            user_id: user.id,
-            profile_id: user.id,
-            service: body.service,
-            scheduled_at: scheduledDate.toISOString(),
-            status: 'pending',
-            notes: body.notes || null
-          })
-          .select()
-          .single();
-
-        if (insertError) {
-          console.error('Erro detalhado do Supabase:', {
-            code: insertError.code,
-            message: insertError.message,
-            details: insertError.details,
-            hint: insertError.hint
-          });
-          
-          // Verificar se é um erro de permissão
-          if (insertError.code === 'PGRST301' || insertError.message?.includes('permission denied')) {
-            return NextResponse.json(
-              { error: 'Sem permissão para criar agendamento. Por favor, verifique suas permissões.' },
-              { status: 403 }
-            );
-          }
-
-          return NextResponse.json(
-            { error: insertError.message || 'Erro ao criar agendamento no banco de dados' },
-            { status: 500 }
-          );
-        }
-
-        console.log('Agendamento criado com sucesso:', appointment);
-        return NextResponse.json({ 
-          message: 'Agendamento criado com sucesso!',
-          appointment: appointment
-        });
-      } catch (supabaseError) {
-        console.error('Erro ao executar query no Supabase:', supabaseError);
-        return NextResponse.json(
-          { error: 'Erro interno ao criar agendamento' },
-          { status: 500 }
-        );
-      }
-    } catch (dateError) {
-      console.error('Erro ao formatar data:', dateError);
-      return NextResponse.json(
-        { error: 'Data ou hora inválida' },
-        { status: 400 }
-      );
-    }
+    return NextResponse.json(data);
   } catch (error) {
-    console.error('Erro geral:', error);
+    console.error('Erro:', error);
     return NextResponse.json(
-      { error: 'Erro ao processar a requisição' },
+      { error: 'Erro interno do servidor' },
       { status: 500 }
     );
   }

@@ -34,13 +34,24 @@ export async function middleware(request: NextRequest) {
 
   // Se estiver acessando área administrativa, verificar se é admin
   if (request.nextUrl.pathname.startsWith('/admin')) {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', session?.user?.id)
-      .single()
+    try {
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', session?.user?.id)
+        .single()
 
-    if (!profile || profile.role !== 'admin') {
+      if (error) {
+        console.error('Erro ao verificar perfil:', error)
+        return NextResponse.redirect(new URL('/dashboard', request.url))
+      }
+
+      if (!profile || profile.role !== 'admin') {
+        console.log('Acesso negado ao painel admin. Role:', profile?.role)
+        return NextResponse.redirect(new URL('/dashboard', request.url))
+      }
+    } catch (error) {
+      console.error('Erro ao verificar permissões:', error)
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
   }
