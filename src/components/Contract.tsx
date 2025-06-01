@@ -49,12 +49,12 @@ export function Contract({ planoNome, planoPreco }: ContractProps) {
               <div className="mb-8">
                 <h3>2. Gewähltes Paket / Plano Escolhido</h3>
                 <p>
-                  {planoNome === 'Plano Básico' && '☒ Basis-Paket / Essencial'}
-                  {planoNome !== 'Plano Básico' && '☐ Basis-Paket / Essencial'}
+                  {planoNome === 'Plano Essencial' && '☒ Basis-Paket / Essencial'}
+                  {planoNome !== 'Plano Essencial' && '☐ Basis-Paket / Essencial'}
                 </p>
                 <p>
-                  {planoNome === 'Plano Balance' && '☒ Ausgeglichenes Paket / Equilíbrio'}
-                  {planoNome !== 'Plano Balance' && '☐ Ausgeglichenes Paket / Equilíbrio'}
+                  {planoNome === 'Plano Equilíbrio' && '☒ Ausgeglichenes Paket / Equilíbrio'}
+                  {planoNome !== 'Plano Equilíbrio' && '☐ Ausgeglichenes Paket / Equilíbrio'}
                 </p>
                 <p>
                   {planoNome === 'Plano Premium' && '☒ Premium-Paket / Premium'}

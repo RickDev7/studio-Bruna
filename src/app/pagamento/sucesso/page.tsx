@@ -4,6 +4,8 @@ import React, { Suspense } from 'react';
 import Link from 'next/link';
 import { CheckCircle2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import { CheckCircle } from 'lucide-react';
+import { Navbar } from '@/components/Navbar';
 
 function SucessoContent() {
   const searchParams = useSearchParams();
@@ -11,8 +13,8 @@ function SucessoContent() {
   const valor = searchParams.get('valor');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1] py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto">
+    <div className="container mx-auto px-4 py-24">
+      <div className="max-w-3xl mx-auto">
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-[#FFC0CB] text-center">
           <div className="mb-8">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-[#FFB6C1] to-[#FFE4E1] mb-6">
@@ -88,8 +90,11 @@ function SucessoContent() {
 
 export default function SucessoPage() {
   return (
-    <Suspense fallback={<div>Carregando...</div>}>
-      <SucessoContent />
-    </Suspense>
+    <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB]/20 via-white to-[#FFE4E1]/20">
+      <Navbar />
+      <Suspense>
+        <SucessoContent />
+      </Suspense>
+    </div>
   );
 } 

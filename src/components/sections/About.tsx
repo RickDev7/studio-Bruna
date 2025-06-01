@@ -123,7 +123,7 @@ export function About() {
           </div>
 
           {/* Contatos */}
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#FFC0CB] transform hover:scale-105 transition-all duration-300">
+          <div id="contatos" className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#FFC0CB] transform hover:scale-105 transition-all duration-300">
             <h3 className="text-2xl font-bold text-[#FF69B4] mb-6">Contatos</h3>
             <div className="space-y-6">
               <div className="flex items-start space-x-4">

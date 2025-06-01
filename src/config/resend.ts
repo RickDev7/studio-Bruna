@@ -1,6 +1,10 @@
 import { Resend } from 'resend';
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY;
+// Chave hardcoded temporariamente para teste
+const RESEND_API_KEY = 're_Lj7VWUHK_DMe2CsVE4hw52DwHeVxEfWrZ';
+
+console.log('Verificando configuração do Resend:');
+console.log('RESEND_API_KEY está definida?', !!RESEND_API_KEY);
 
 if (!RESEND_API_KEY) {
   console.warn('⚠️ RESEND_API_KEY não está configurada nas variáveis de ambiente. O envio de emails estará desativado.');
@@ -9,18 +13,25 @@ if (!RESEND_API_KEY) {
 export const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
 
 export const resendConfig = {
-  fromEmail: 'bs.aestheticnails@resend.dev', // Você precisará verificar este domínio no Resend
+  // Durante os testes, use o email verificado
+  fromEmail: 'onboarding@resend.dev', // Email padrão do Resend para testes
   businessInfo: {
-    name: 'Bruna Silva - Aesthetic & Nails',
-    address: 'Cuxhaven, Germany',
-    phone: '+49 123456789',
-    email: 'bs.aestheticnails@gmail.com',
-    adminEmail: 'ricksilva.dev7@gmail.com'
+    name: 'BS Aesthetic & Nails',
+    address: 'Bei der Grodener Kirche 7',
+    phone: '+49 1520 8007814',
+    email: 'dev_henrique@outlook.com', // Email que receberá as notificações durante os testes
+    instagram: '@bs.aesthetic.nails',
+    adminEmail: 'dev_henrique@outlook.com', // Email que receberá as notificações durante os testes
+    whatsapp: '+49 1520 8007814',
   },
   templates: {
-    confirmation: 'confirmation',
-    reminder: 'reminder',
-    cancellation: 'cancellation',
-    reschedule: 'reschedule'
-  }
+    booking: {
+      confirmation: 'Confirmação de Agendamento',
+      pending: 'Solicitação de Agendamento Recebida',
+      cancelled: 'Agendamento Cancelado',
+    },
+    admin: {
+      newBooking: 'Nova Solicitação de Agendamento',
+    },
+  },
 }; 

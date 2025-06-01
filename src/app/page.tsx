@@ -22,8 +22,8 @@ export default function Home() {
         <Navbar />
         <main className="flex-1">
           <Hero />
-          <AllServices />
           <Services />
+          <AllServices />
           <About />
         </main>
         <Footer />

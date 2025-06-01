@@ -66,7 +66,7 @@ export function Footer() {
         </div>
         
         {/* Copyright */}
-        <div className="mt-8">
+        <div className="mt-12 text-center w-full">
           <p className="text-center text-xs leading-5 text-gray-500">
             © {new Date().getFullYear()} BS Aesthetic & Nails. Todos os direitos reservados.
           </p>

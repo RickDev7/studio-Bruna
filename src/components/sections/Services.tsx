@@ -9,7 +9,7 @@ import { TermsAndConditions } from '@/components/TermsAndConditions'
 const services = [
   {
     id: 'basico',
-    name: 'Plano Básico',
+    name: 'Plano Essencial',
     description: 'Cuidados básicos mensais',
     precoFidelidade: '40€',
     precoSemFidelidade: '45€',
@@ -23,7 +23,7 @@ const services = [
   },
   {
     id: 'balance',
-    name: 'Plano Balance',
+    name: 'Plano Equilíbrio',
     description: 'Autocuidado completo',
     precoFidelidade: '65€',
     precoSemFidelidade: '70€',

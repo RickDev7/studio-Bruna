@@ -30,7 +30,7 @@ export default function PlanosPage() {
   const planos = [
     {
       id: 'basico',
-      nome: "Plano Básico",
+      nome: "Plano Essencial",
       descricao: "Cuidados básicos mensais",
       precoFidelidade: "40€",
       precoSemFidelidade: "45€",
@@ -44,7 +44,7 @@ export default function PlanosPage() {
     },
     {
       id: 'balance',
-      nome: "Plano Balance",
+      nome: "Plano Equilíbrio",
       descricao: "Autocuidado completo",
       precoFidelidade: "65€",
       precoSemFidelidade: "70€",
@@ -80,15 +80,25 @@ export default function PlanosPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1] py-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1] py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent mb-4">
-            Nossos Planos
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Escolha o plano ideal para seus cuidados mensais
-          </p>
+        <div className="relative mb-16 pt-8">
+          <div className="absolute right-0 -top-2">
+            <Link 
+              href="/"
+              className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-full text-[#FF69B4] border-2 border-[#FFB6C1] hover:bg-[#FFB6C1] hover:text-white transition-all duration-300"
+            >
+              Voltar para o Início
+            </Link>
+          </div>
+          <div className="text-center mt-8">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent mb-6">
+              Nossos Planos
+            </h1>
+            <p className="text-gray-600 text-lg">
+              Escolha o plano ideal para seus cuidados mensais
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 plans-grid">

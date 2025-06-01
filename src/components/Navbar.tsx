@@ -22,7 +22,7 @@ export function Navbar() {
       setIsScrolled(window.scrollY > 20)
 
       if (pathname === '/') {
-        const sections = ['servicos', 'planos', 'sobre']
+        const sections = ['servicos', 'planos', 'sobre', 'contato']
         for (const section of sections) {
           const element = document.getElementById(section)
           if (element) {
@@ -99,6 +99,7 @@ export function Navbar() {
     { href: '#servicos', label: 'Serviços', action: () => scrollToSection('servicos') },
     { href: '#planos', label: 'Planos', action: () => scrollToSection('planos') },
     { href: '#sobre', label: 'Sobre', action: () => scrollToSection('sobre') },
+    { href: '#contatos', label: 'Contatos', action: () => scrollToSection('contatos') },
     { href: '/agendar', label: 'Agendar', action: () => router.push('/agendar') },
   ]
 

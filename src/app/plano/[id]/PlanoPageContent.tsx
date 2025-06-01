@@ -17,7 +17,7 @@ interface PlanoDetalhes {
 const planos: { [key: string]: PlanoDetalhes } = {
   'basico': {
     id: 'basico',
-    nome: 'Plano Básico',
+    nome: 'Plano Essencial',
     descricao: 'Cuidados básicos mensais para manter suas mãos e pés sempre bem cuidados.',
     precoFidelidade: '40€',
     precoSemFidelidade: '45€',
@@ -33,7 +33,7 @@ const planos: { [key: string]: PlanoDetalhes } = {
   },
   'balance': {
     id: 'balance',
-    nome: 'Plano Balance',
+    nome: 'Plano Equilíbrio',
     descricao: 'Autocuidado completo para você manter-se sempre impecável.',
     precoFidelidade: '65€',
     precoSemFidelidade: '70€',

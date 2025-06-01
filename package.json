@@ -6,12 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:email": "ts-node -r tsconfig-paths/register src/scripts/test-email.ts",
+    "icons": "node scripts/generate-icons.js"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
+    "@react-email/components": "^0.0.41",
+    "@react-email/render": "^1.1.2",
     "@stripe/stripe-js": "^2.4.0",
     "@supabase/auth-helpers-nextjs": "^0.9.0",
     "@supabase/supabase-js": "^2.39.3",
@@ -43,6 +47,8 @@
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "sharp": "^0.34.2",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5"
   }
 }

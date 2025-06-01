@@ -1,9 +1,31 @@
 import { resend, resendConfig } from '@/config/resend';
+import { render } from '@react-email/render';
+import BookingConfirmation from '@/components/emails/BookingConfirmation';
+import AdminNotification from '@/components/emails/AdminNotification';
 
 interface SendEmailProps {
   to: string;
   subject: string;
   html: string;
+}
+
+interface SendAppointmentConfirmationProps {
+  userName: string;
+  userEmail: string;
+  service: string;
+  date: string;
+  time: string;
+  status?: 'pending' | 'confirmed' | 'cancelled';
+}
+
+interface SendAdminNotificationProps {
+  clientName: string;
+  clientEmail: string;
+  clientPhone: string;
+  service: string;
+  date: string;
+  time: string;
+  message?: string;
 }
 
 const sendEmail = async ({ to, subject, html }: SendEmailProps) => {
@@ -27,20 +49,13 @@ const sendEmail = async ({ to, subject, html }: SendEmailProps) => {
   }
 };
 
-interface SendAppointmentConfirmationProps {
-  userName: string;
-  userEmail: string;
-  service: string;
-  date: string;
-  time: string;
-}
-
 export async function sendAppointmentConfirmation({
   userName,
   userEmail,
   service,
   date,
   time,
+  status = 'pending',
 }: SendAppointmentConfirmationProps) {
   if (!resend) {
     console.warn('Serviço de email não configurado. Email de confirmação não será enviado.');
@@ -48,43 +63,21 @@ export async function sendAppointmentConfirmation({
   }
 
   try {
+    const emailHtml = await render(
+      BookingConfirmation({
+        userName,
+        service,
+        date,
+        time,
+        status,
+      })
+    );
+
     const { data, error } = await resend.emails.send({
       from: resendConfig.fromEmail,
       to: userEmail,
-      subject: 'Confirmação de Agendamento - Studio Bruna',
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #FF69B4;">Confirmação de Agendamento</h2>
-          <p>Olá ${userName},</p>
-          <p>Seu agendamento foi confirmado com sucesso!</p>
-          
-          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-            <h3 style="color: #FF69B4; margin-top: 0;">Detalhes do Agendamento:</h3>
-            <p><strong>Serviço:</strong> ${service}</p>
-            <p><strong>Data:</strong> ${date}</p>
-            <p><strong>Horário:</strong> ${time}</p>
-          </div>
-          
-          <div style="margin-top: 20px;">
-            <p><strong>Local:</strong> ${resendConfig.businessInfo.address}</p>
-            <p>
-              Em caso de dúvidas, entre em contato:
-              <br>
-              📞 ${resendConfig.businessInfo.phone}
-              <br>
-              ✉️ ${resendConfig.businessInfo.email}
-            </p>
-          </div>
-          
-          <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-            <p style="color: #666; font-size: 14px;">
-              Atenciosamente,
-              <br>
-              Equipe ${resendConfig.businessInfo.name}
-            </p>
-          </div>
-        </div>
-      `,
+      subject: `Agendamento ${status === 'confirmed' ? 'Confirmado' : status === 'cancelled' ? 'Cancelado' : 'Recebido'} - Studio Bruna`,
+      html: emailHtml,
     });
 
     if (error) {
@@ -97,4 +90,52 @@ export async function sendAppointmentConfirmation({
     console.error('Erro no serviço de email:', error);
     return { success: false, error };
   }
-} 
+}
+
+export async function sendAdminNotification({
+  clientName,
+  clientEmail,
+  clientPhone,
+  service,
+  date,
+  time,
+  message,
+}: SendAdminNotificationProps) {
+  if (!resend) {
+    console.warn('Serviço de email não configurado. Notificação não será enviada.');
+    return { success: false, error: 'Serviço de email não configurado' };
+  }
+
+  try {
+    const emailHtml = await render(
+      AdminNotification({
+        clientName,
+        clientEmail,
+        clientPhone,
+        service,
+        date,
+        time,
+        message,
+      })
+    );
+
+    const { data, error } = await resend.emails.send({
+      from: resendConfig.fromEmail,
+      to: resendConfig.businessInfo.adminEmail,
+      subject: '📬 Nova Solicitação de Agendamento - Studio Bruna',
+      html: emailHtml,
+    });
+
+    if (error) {
+      console.error('Erro ao enviar notificação:', error);
+      return { success: false, error };
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error('Erro no serviço de email:', error);
+    return { success: false, error };
+  }
+}
+
+export default sendEmail; 

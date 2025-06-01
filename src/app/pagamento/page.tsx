@@ -4,6 +4,7 @@ import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Copy, Check, AlertCircle, Phone, Building } from 'lucide-react';
+import { Navbar } from '@/components/Navbar';
 
 function PagamentoContent() {
   const searchParams = useSearchParams();
@@ -47,7 +48,7 @@ function PagamentoContent() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1] py-16 px-4 sm:px-6 lg:px-8">
+    <div className="container mx-auto px-4 py-24">
       <div className="max-w-3xl mx-auto">
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-[#FFC0CB]">
           <div className="text-center mb-12">
@@ -141,8 +142,11 @@ function PagamentoContent() {
 
 export default function PagamentoPage() {
   return (
-    <Suspense fallback={<div>Carregando...</div>}>
-      <PagamentoContent />
-    </Suspense>
+    <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB]/20 via-white to-[#FFE4E1]/20">
+      <Navbar />
+      <Suspense>
+        <PagamentoContent />
+      </Suspense>
+    </div>
   );
 } 
