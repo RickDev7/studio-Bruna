@@ -185,22 +185,18 @@ export default function AgendarPage() {
 
             {/* Lista de Serviços */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filteredServices.map(service => (
+              {filteredServices.map((service) => (
                 <button
                   key={service.id}
-                  onClick={() => setSelectedService(service.name)}
+                  onClick={() => setSelectedService(service.id)}
                   className={cn(
                     "p-4 rounded-lg text-left transition-all duration-200 border",
-                    selectedService === service.name
-                      ? "bg-pink-50 border-pink-200 shadow-sm"
+                    selectedService === service.id
+                      ? "bg-pink-50 border-pink-200"
                       : "bg-white border-gray-100 hover:bg-gray-50 hover:border-gray-200"
                   )}
                 >
                   <h4 className="font-medium text-gray-900">{service.name}</h4>
-                  <p className="text-sm text-gray-500 mt-1">{service.description}</p>
-                  <div className="flex justify-end items-center mt-2 text-sm">
-                    <span className="text-gray-500">{service.duration}</span>
-                  </div>
                 </button>
               ))}
             </div>

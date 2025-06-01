@@ -1,36 +1,21 @@
 'use client'
 
+import { services } from '@/config/services'
+
 const servicos = [
   {
     categoria: 'Unhas',
-    items: [
-      'Manicure com Shellac',
-      'Pedicure com Shellac',
-      'Spa Pedicure',
-      'Unhas em gel',
-      'Reparos de unhas'
-    ]
+    items: services.filter(s => s.category === 'nails').map(s => s.name)
   },
   {
     categoria: 'Tratamentos Faciais',
-    items: [
-      'Limpeza facial',
-      'Tratamento anti-idade',
-      'Hidratação facial',
-      'Microagulhamento',
-      'Máscaras faciais'
-    ]
+    items: services.filter(s => s.category === 'face').map(s => s.name)
   },
   {
     categoria: 'Design e Embelezamento',
-    items: [
-      'Design de sobrancelhas',
-      'Coloração de sobrancelhas',
-      'Brow lamination',
-      'Lifting de pestanas'
-    ]
+    items: services.filter(s => s.category === 'eyebrows').map(s => s.name)
   }
-]
+];
 
 export function AllServices() {
   return (
@@ -101,5 +86,5 @@ export function AllServices() {
         </div>
       </div>
     </section>
-  )
+  );
 } 
