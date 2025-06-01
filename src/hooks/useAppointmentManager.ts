@@ -37,11 +37,11 @@ export function useAppointmentManager({ onSuccess, onError }: UseAppointmentMana
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userName: appointment.profile.full_name || 'Cliente',
-          userEmail: appointment.profile.email,
+          userName: appointment.profiles.full_name || 'Cliente',
+          userEmail: appointment.profiles.email,
           service: appointment.service,
-          date: new Date(appointment.scheduled_at).toLocaleDateString('pt-BR'),
-          time: new Date(appointment.scheduled_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+          date: appointment.date,
+          time: appointment.time,
           status: 'cancelado'
         }),
       });

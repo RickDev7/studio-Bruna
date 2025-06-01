@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
@@ -29,11 +29,7 @@ export default function ServicosPage() {
     'Design e Embelezamento'
   ]
 
-  useEffect(() => {
-    loadServices()
-  }, [])
-
-  const loadServices = async () => {
+  const loadServices = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('services')
@@ -50,7 +46,11 @@ export default function ServicosPage() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [supabase])
+
+  useEffect(() => {
+    loadServices()
+  }, [loadServices])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

@@ -18,7 +18,7 @@ export function AdminNavbar() {
       setUserEmail(session?.user?.email || null);
     };
     getSession();
-  }, []);
+  }, [supabase]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();

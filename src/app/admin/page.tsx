@@ -48,7 +48,7 @@ export default function AdminPage() {
     }
 
     checkAuth();
-  }, []);
+  }, [supabase, router]);
 
   if (isLoading) {
     return (

@@ -82,7 +82,7 @@ export function useAdminStats() {
     }
 
     fetchStats();
-  }, []);
+  }, [supabase]);
 
   return stats;
 } 

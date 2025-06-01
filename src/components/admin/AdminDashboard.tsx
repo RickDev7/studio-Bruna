@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { toast } from 'sonner';
 
@@ -22,11 +22,7 @@ export function AdminDashboard() {
   const [filter, setFilter] = useState<'all' | 'pending' | 'confirmed' | 'cancelled'>('all');
   const supabase = createClientComponentClient();
 
-  useEffect(() => {
-    loadAppointments();
-  }, []);
-
-  async function loadAppointments() {
+  const loadAppointments = useCallback(async () => {
     try {
       setLoading(true);
       let query = supabase
@@ -61,7 +57,11 @@ export function AdminDashboard() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [filter, supabase]);
+
+  useEffect(() => {
+    loadAppointments();
+  }, [loadAppointments]);
 
   async function updateAppointmentStatus(id: string, status: 'confirmed' | 'cancelled') {
     try {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/config/supabase";
@@ -23,35 +23,34 @@ export default function PagamentosAdmin() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Carrega pedidos do Supabase
-  useEffect(() => {
-    const carregarPedidos = async () => {
-      try {
-        setError(null);
-        const { data, error } = await supabase
-          .from("pedidos")
-          .select("*")
-          .order("status", { ascending: true })
-          .order("created_at", { ascending: false });
+  const carregarPedidos = useCallback(async () => {
+    try {
+      setError(null);
+      const { data, error } = await supabase
+        .from("pedidos")
+        .select("*")
+        .order("status", { ascending: true })
+        .order("created_at", { ascending: false });
 
-        if (error) {
-          throw error;
-        }
-
-        if (data) {
-          setPedidos(data as Pedido[]);
-        }
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Erro ao carregar pedidos';
-        console.error('Erro ao carregar pedidos:', err);
-        setError(errorMessage);
-      } finally {
-        setLoading(false);
+      if (error) {
+        throw error;
       }
-    };
 
-    carregarPedidos();
+      if (data) {
+        setPedidos(data as Pedido[]);
+      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Erro ao carregar pedidos';
+      console.error('Erro ao carregar pedidos:', err);
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    carregarPedidos();
+  }, [carregarPedidos]);
 
   const enviarEmails = async (pedido: Pedido) => {
     try {

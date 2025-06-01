@@ -7,12 +7,13 @@ interface PlansModalProps {
   onClose: () => void;
   planos: Array<{
     id: string;
-    nome: string;
-    descricao: string;
+    name: string;
+    description: string;
     precoFidelidade: string;
     precoSemFidelidade: string;
     beneficios: string[];
-    imagem?: string;
+    imagem: string;
+    destaque?: boolean;
   }>;
 }
 
@@ -35,7 +36,7 @@ export function PlansModal({ isOpen, onClose, planos }: PlansModalProps) {
         <div className="overflow-y-auto p-6 space-y-12">
           {planos.map((plano) => (
             <div key={plano.id} className="pb-12 border-b border-gray-200 last:border-0 last:pb-0">
-              <PlanDetails plano={plano} isModal={true} />
+              <PlanDetails plan={plano} isOpen={true} onClose={() => {}} />
             </div>
           ))}
         </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
@@ -16,6 +16,28 @@ export function Navbar() {
   const router = useRouter()
   
   const supabase = createClientComponentClient()
+
+  const checkUser = useCallback(async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        setIsAuthenticated(true)
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single()
+        
+        setIsAdmin(profile?.role === 'admin')
+      }
+    } catch (error) {
+      console.error('Erro ao verificar usuário:', error)
+    }
+  }, [supabase])
+
+  useEffect(() => {
+    checkUser()
+  }, [checkUser])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,28 +64,6 @@ export function Navbar() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [pathname])
-
-  useEffect(() => {
-    checkUser()
-  }, [])
-
-  const checkUser = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        setIsAuthenticated(true)
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('role')
-          .eq('id', user.id)
-          .single()
-        
-        setIsAdmin(profile?.role === 'admin')
-      }
-    } catch (error) {
-      console.error('Erro ao verificar usuário:', error)
-    }
-  }
 
   const handleLogout = async () => {
     try {

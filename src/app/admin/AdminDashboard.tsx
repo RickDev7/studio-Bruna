@@ -46,10 +46,76 @@ export function AdminDashboard({ initialAppointments }: AdminDashboardProps) {
   const router = useRouter()
   const supabase = createClientComponentClient()
 
-  // Configurar Supabase Realtime para notificações em tempo real
   useEffect(() => {
     console.log('Configurando Realtime...')
     
+    // Função para buscar um agendamento específico com dados do perfil
+    const fetchAppointment = async (appointmentId: string) => {
+      try {
+        console.log('Buscando detalhes do agendamento:', appointmentId)
+        
+        const { data: appointment, error } = await supabase
+          .from('appointments')
+          .select(`
+            id,
+            user_id,
+            profile_id,
+            service,
+            scheduled_at,
+            status,
+            notes,
+            created_at,
+            updated_at,
+            profiles:profile_id (
+              full_name,
+              email
+            )
+          `)
+          .eq('id', appointmentId)
+          .single<AppointmentWithProfiles>()
+
+        if (error) {
+          console.error('Erro detalhado ao buscar agendamento:', {
+            message: error.message,
+            code: error.code,
+            details: error.details,
+            hint: error.hint
+          })
+          toast.error('Erro ao buscar detalhes do agendamento')
+          return
+        }
+
+        console.log('Detalhes do agendamento recebidos:', appointment)
+
+        if (appointment) {
+          // Formatar os dados do agendamento para corresponder à interface Appointment
+          const formattedAppointment: Appointment = {
+            ...appointment,
+            profile: {
+              full_name: appointment.profiles.full_name,
+              email: appointment.profiles.email
+            }
+          }
+
+          setAppointments(current => {
+            // Verificar se o agendamento já existe na lista
+            const exists = current.some(app => app.id === appointmentId)
+            if (exists) {
+              // Atualizar o agendamento existente
+              return current.map(app => 
+                app.id === appointmentId ? formattedAppointment : app
+              )
+            }
+            // Adicionar novo agendamento no início da lista
+            return [formattedAppointment, ...current]
+          })
+        }
+      } catch (error) {
+        console.error('Erro ao buscar agendamento:', error)
+        toast.error('Erro ao buscar detalhes do agendamento')
+      }
+    }
+
     // Inscrever-se para atualizações em tempo real
     const channel = supabase
       .channel('appointments-changes')
@@ -98,74 +164,7 @@ export function AdminDashboard({ initialAppointments }: AdminDashboardProps) {
       console.log('Limpando inscrição do canal...')
       supabase.removeChannel(channel)
     }
-  }, [supabase, router])
-
-  // Função para buscar um agendamento específico com dados do perfil
-  const fetchAppointment = async (appointmentId: string) => {
-    try {
-      console.log('Buscando detalhes do agendamento:', appointmentId)
-      
-      const { data: appointment, error } = await supabase
-        .from('appointments')
-        .select(`
-          id,
-          user_id,
-          profile_id,
-          service,
-          scheduled_at,
-          status,
-          notes,
-          created_at,
-          updated_at,
-          profiles:profile_id (
-            full_name,
-            email
-          )
-        `)
-        .eq('id', appointmentId)
-        .single<AppointmentWithProfiles>()
-
-      if (error) {
-        console.error('Erro detalhado ao buscar agendamento:', {
-          message: error.message,
-          code: error.code,
-          details: error.details,
-          hint: error.hint
-        })
-        toast.error('Erro ao buscar detalhes do agendamento')
-        return
-      }
-
-      console.log('Detalhes do agendamento recebidos:', appointment)
-
-      if (appointment) {
-        // Formatar os dados do agendamento para corresponder à interface Appointment
-        const formattedAppointment: Appointment = {
-          ...appointment,
-          profile: {
-            full_name: appointment.profiles.full_name,
-            email: appointment.profiles.email
-          }
-        }
-
-        setAppointments(current => {
-          // Verificar se o agendamento já existe na lista
-          const exists = current.some(app => app.id === appointmentId)
-          if (exists) {
-            // Atualizar o agendamento existente
-            return current.map(app => 
-              app.id === appointmentId ? formattedAppointment : app
-            )
-          }
-          // Adicionar novo agendamento no início da lista
-          return [formattedAppointment, ...current]
-        })
-      }
-    } catch (error) {
-      console.error('Erro ao buscar agendamento:', error)
-      toast.error('Erro ao buscar detalhes do agendamento')
-    }
-  }
+  }, [router, supabase])
 
   const sendStatusEmail = async (appointment: Appointment, newStatus: 'confirmed' | 'cancelled') => {
     try {

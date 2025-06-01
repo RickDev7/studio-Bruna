@@ -48,8 +48,8 @@ class ReminderService {
 
           // Enviar email de lembrete
           await this.sendReminder(reminder, {
-            userName: appointment.user_name,
-            userEmail: appointment.user_email,
+            userName: appointment.profiles.full_name || 'Cliente',
+            userEmail: appointment.profiles.email,
             service: appointment.service,
             date: appointment.date,
             time: appointment.time

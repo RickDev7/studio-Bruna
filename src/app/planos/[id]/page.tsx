@@ -6,8 +6,8 @@ import { PlanDetails } from '@/components/PlanDetails';
 const planos = [
   {
     id: 'basico',
-    nome: 'Plano Essencial',
-    descricao: 'Cuidados básicos mensais para manter suas unhas sempre bonitas e saudáveis.',
+    name: 'Plano Essencial',
+    description: 'Cuidados básicos mensais para manter suas unhas sempre bonitas e saudáveis.',
     precoFidelidade: '40€',
     precoSemFidelidade: '45€',
     beneficios: [
@@ -19,8 +19,8 @@ const planos = [
   },
   {
     id: 'balance',
-    nome: 'Plano Equilíbrio',
-    descricao: 'Autocuidado completo com serviços premium para sua beleza e bem-estar.',
+    name: 'Plano Equilíbrio',
+    description: 'Autocuidado completo com serviços premium para sua beleza e bem-estar.',
     precoFidelidade: '65€',
     precoSemFidelidade: '70€',
     beneficios: [
@@ -31,12 +31,13 @@ const planos = [
       '10% de desconto em serviços adicionais',
       'Prioridade no agendamento'
     ],
-    imagem: '/images/plano-equilibrio.jpg'
+    imagem: '/images/plano-equilibrio.jpg',
+    destaque: true
   },
   {
     id: 'premium',
-    nome: 'Plano Premium',
-    descricao: 'Experiência VIP com tratamentos exclusivos e benefícios especiais.',
+    name: 'Plano Premium',
+    description: 'Experiência VIP com tratamentos exclusivos e benefícios especiais.',
     precoFidelidade: '115€',
     precoSemFidelidade: '130€',
     beneficios: [
@@ -77,11 +78,11 @@ export default function PlanPage() {
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-2xl shadow-sm p-8">
-          <PlanDetails plano={plano} />
+          <PlanDetails plan={plano} isOpen={true} onClose={() => {}} />
           
           <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href={`/pagamento?plano=${encodeURIComponent(plano.nome)}&valor=${encodeURIComponent(plano.precoFidelidade)}&tipo=fidelidade`}
+              href={`/pagamento?plano=${encodeURIComponent(plano.name)}&valor=${encodeURIComponent(plano.precoFidelidade)}&tipo=fidelidade`}
               className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium rounded-full text-white bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] hover:opacity-90 transition-all duration-300"
             >
               Assinar Plano

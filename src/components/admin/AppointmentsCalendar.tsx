@@ -54,8 +54,8 @@ export function AppointmentsCalendar({ onDateSelect }: AppointmentsCalendarProps
           return {
             ...rest,
             profiles: {
-              full_name: profiles?.full_name || null,
-              email: profiles?.email || ''
+              full_name: profiles?.[0]?.full_name || null,
+              email: profiles?.[0]?.email || ''
             }
           } as Appointment;
         });
@@ -70,7 +70,7 @@ export function AppointmentsCalendar({ onDateSelect }: AppointmentsCalendarProps
     }
 
     fetchAppointments();
-  }, [selectedDate]);
+  }, [selectedDate, supabase]);
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);

@@ -42,8 +42,7 @@ export default function NovoAgendamentoPage() {
         notes: '',
         user_name: clientName,
         user_email: clientEmail,
-        user_phone: clientPhone,
-        profile_id: '123e4567-e89b-12d3-a456-426614174000' // ID fixo para teste
+        user_phone: clientPhone
       })
     } catch (err) {
       console.error('Erro ao criar agendamento:', err)

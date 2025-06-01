@@ -142,7 +142,7 @@ export function useAvailableSlots({ selectedDate, dayConfig }: UseAvailableSlots
     return () => {
       isMounted = false;
     };
-  }, [selectedDate, dayConfig]);
+  }, [selectedDate, dayConfig, supabase]);
 
   return {
     availableSlots,
