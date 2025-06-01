@@ -10,7 +10,8 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**',
       }
-    ]
+    ],
+    domains: ['images.unsplash.com'],
   },
   typescript: {
     ignoreBuildErrors: false,

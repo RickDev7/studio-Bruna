@@ -1,10 +1,12 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Star } from 'lucide-react'
 import '@/styles/plans.css'
 import Link from 'next/link'
+import Image from 'next/image'
 import { TermsAndConditions } from '@/components/TermsAndConditions'
+import { PlanDetails } from '@/components/PlanDetails'
 
 const services = [
   {
@@ -19,7 +21,8 @@ const services = [
       '1 Pedicure simples',
       '10% de desconto em serviços adicionais'
     ],
-    destaque: false
+    destaque: false,
+    imagem: '/images/plano-basico.png'
   },
   {
     id: 'balance',
@@ -36,7 +39,8 @@ const services = [
       '10% de desconto em serviços adicionais',
       'Prioridade no agendamento'
     ],
-    destaque: true
+    destaque: true,
+    imagem: '/images/plano-equilibrio.png'
   },
   {
     id: 'premium',
@@ -54,11 +58,15 @@ const services = [
       '15% de desconto em serviços adicionais',
       'Prioridade no agendamento'
     ],
-    destaque: false
+    destaque: false,
+    imagem: '/images/plano-premium.png'
   }
 ]
 
 export function Services() {
+  const [selectedPlan, setSelectedPlan] = useState<typeof services[0] | null>(null)
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -80,6 +88,16 @@ export function Services() {
       planCards.forEach((card) => observer.unobserve(card))
     }
   }, [])
+
+  const handleOpenDetails = (plan: typeof services[0]) => {
+    setSelectedPlan(plan)
+    setIsDrawerOpen(true)
+  }
+
+  const handleCloseDetails = () => {
+    setIsDrawerOpen(false)
+    setTimeout(() => setSelectedPlan(null), 300) // Limpa o plano selecionado após a animação
+  }
 
   return (
     <div className="py-24 sm:py-32">
@@ -119,6 +137,16 @@ export function Services() {
                       </div>
                     )}
 
+                    <div className="relative mb-8">
+                      <Image
+                        src={service.imagem}
+                        alt={service.name}
+                        width={500}
+                        height={300}
+                        className="rounded-2xl object-cover w-full h-[300px]"
+                      />
+                    </div>
+
                     <div className="text-center mb-8">
                       <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 bg-gradient-to-br from-[#FFB6C1] to-[#FFE4E1]">
                         <Icon className={`w-8 h-8 ${service.destaque ? 'text-[#FF69B4]' : 'text-[#FFB6C1]'}`} />
@@ -127,8 +155,7 @@ export function Services() {
                       <p className="text-gray-600">{service.description}</p>
                     </div>
 
-                    {/* Preços e Botões */}
-                    <div className="space-y-4">
+                    <div className="space-y-6">
                       {/* Com Fidelização */}
                       <div className="bg-gradient-to-r from-[#FFB6C1] to-[#FFC0CB] p-6 rounded-2xl text-white transform hover:scale-105 transition-all duration-300">
                         <div className="flex items-center justify-between mb-2">
@@ -171,10 +198,21 @@ export function Services() {
                           Escolher Sem Fidelização
                         </Link>
                       </div>
-                    </div>
 
-                    <div className="text-center mt-2">
-                      <TermsAndConditions />
+                      <Link
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          handleOpenDetails(service)
+                        }}
+                        className="block w-full py-2 px-4 text-[#FF69B4] text-center hover:underline"
+                      >
+                        Saiba mais
+                      </Link>
+
+                      <div className="text-center mt-2">
+                        <TermsAndConditions />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -183,6 +221,14 @@ export function Services() {
           </div>
         </div>
       </section>
+
+      {selectedPlan && (
+        <PlanDetails
+          plan={selectedPlan}
+          isOpen={isDrawerOpen}
+          onClose={handleCloseDetails}
+        />
+      )}
     </div>
   )
 }

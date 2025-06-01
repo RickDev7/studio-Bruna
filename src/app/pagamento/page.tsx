@@ -126,12 +126,12 @@ function PagamentoContent() {
             </div>
 
             <div className="text-center mt-8">
-              <Link 
-                href="/planos"
-                className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-full text-[#FF69B4] border-2 border-[#FFB6C1] hover:bg-[#FFB6C1] hover:text-white transition-all duration-300"
+              <a 
+                className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-full text-[#FF69B4] border-2 border-[#FFB6C1] hover:bg-[#FFB6C1] hover:text-white transition-all duration-300" 
+                href="/#planos"
               >
                 Voltar para os Planos
-              </Link>
+              </a>
             </div>
           </div>
         </div>
