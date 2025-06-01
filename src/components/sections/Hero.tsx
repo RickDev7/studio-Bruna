@@ -33,8 +33,8 @@ export function Hero() {
           alt="Studio Bruna - Estética & Unhas"
           fill
           sizes="100vw"
-          style={{ objectFit: 'cover' }}
-          className="opacity-20"
+          style={{ objectFit: 'cover', objectPosition: 'center 40%' }}
+          className="opacity-50"
           priority
         />
       </div>
