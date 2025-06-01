@@ -26,42 +26,6 @@ export function DashboardClient({ initialProfile, userId }: DashboardClientProps
   const router = useRouter()
   const supabase = createClientComponentClient()
 
-  const makeAdmin = async () => {
-    try {
-      setLoading(true)
-      
-      // Primeiro, verificar se já existe algum admin
-      const { data: admins, error: adminsError } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('role', 'admin')
-
-      if (adminsError) throw adminsError
-
-      if (admins && admins.length > 0) {
-        throw new Error('Já existe um administrador no sistema')
-      }
-
-      // Se não houver admin, fazer a promoção
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ role: 'admin' })
-        .eq('id', userId)
-
-      if (updateError) throw updateError
-
-      // Atualizar o estado local
-      setProfile(prev => prev ? { ...prev, role: 'admin' } : null)
-      toast.success('Perfil atualizado com sucesso! Agora você é um administrador.')
-      router.refresh()
-    } catch (error: any) {
-      console.error('Erro:', error)
-      toast.error(error.message || 'Erro ao atualizar perfil')
-    } finally {
-      setLoading(false)
-    }
-  }
-
   const signOut = async () => {
     try {
       setLoading(true)
@@ -125,22 +89,6 @@ export function DashboardClient({ initialProfile, userId }: DashboardClientProps
           </div>
         </div>
       </div>
-
-      {profile.role !== 'admin' && (
-        <div className="bg-white shadow rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4">Acesso Administrativo</h2>
-          <p className="text-gray-600 mb-4">
-            Para acessar o painel administrativo e gerenciar os agendamentos, você precisa ter privilégios de administrador.
-          </p>
-          <button
-            onClick={makeAdmin}
-            disabled={loading}
-            className="bg-pink-600 text-white px-4 py-2 rounded-md hover:bg-pink-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? 'Processando...' : 'Tornar-se Administrador'}
-          </button>
-        </div>
-      )}
     </div>
   )
 } 

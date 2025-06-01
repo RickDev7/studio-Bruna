@@ -139,7 +139,9 @@ export function Navbar() {
                 key={item.href}
                 onClick={item.action}
                 className={`text-base font-medium transition-all duration-300 ${
-                  isActive(item.href)
+                  item.label === 'Agendar'
+                    ? 'bg-pink-100 px-4 py-2 rounded-full hover:bg-pink-200'
+                    : isActive(item.href)
                     ? 'text-[#FF69B4] scale-105'
                     : 'text-gray-600 hover:text-[#FF69B4] hover:scale-105'
                 }`}
@@ -183,7 +185,9 @@ export function Navbar() {
                   key={item.href}
                   onClick={item.action}
                   className={`block w-full px-3 py-2 rounded-md text-base font-medium transition-all duration-300 text-left ${
-                    isActive(item.href)
+                    item.label === 'Agendar'
+                      ? 'bg-pink-100 hover:bg-pink-200 text-[#FF69B4]'
+                      : isActive(item.href)
                       ? 'text-[#FF69B4] bg-pink-50'
                       : 'text-gray-600 hover:text-[#FF69B4] hover:bg-pink-50'
                   }`}

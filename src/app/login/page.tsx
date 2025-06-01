@@ -78,7 +78,12 @@ export default function LoginPage() {
         return
       }
 
-      router.push('/admin')
+      // Redireciona para o painel admin se for o email autorizado
+      if (formData.email === 'bs.aestheticnails@gmail.com') {
+        router.push('/admin')
+      } else {
+        router.push('/dashboard')
+      }
       router.refresh()
     } catch (error) {
       console.error('Erro de login:', error)
