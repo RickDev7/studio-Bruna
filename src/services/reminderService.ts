@@ -1,9 +1,25 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import type { Reminder, Appointment } from '@/types/appointments';
-import { resendConfig } from '@/config/resend';
+import emailjs from '@emailjs/browser';
+
+const EMAIL_CONFIG = {
+  serviceId: 'service_qe1ai6q',
+  templateId: 'template_gx390pv',
+  publicKey: 'N1LpI9fHAIo0az4XG',
+} as const;
 
 class ReminderService {
   private supabase = createClientComponentClient();
+
+  constructor() {
+    // Inicializa o EmailJS
+    emailjs.init({
+      publicKey: EMAIL_CONFIG.publicKey,
+      limitRate: {
+        throttle: 2000,
+      },
+    });
+  }
 
   // Agendar lembretes para um agendamento
   async scheduleReminders(appointment: Appointment) {
@@ -106,24 +122,27 @@ class ReminderService {
     time: string;
   }) {
     try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await emailjs.send(
+        EMAIL_CONFIG.serviceId,
+        EMAIL_CONFIG.templateId,
+        {
+          to_name: appointmentDetails.userName,
+          to_email: appointmentDetails.userEmail,
+          service_name: appointmentDetails.service,
+          appointment_date: appointmentDetails.date,
+          appointment_time: appointmentDetails.time,
+          appointment_status: 'lembrete',
         },
-        body: JSON.stringify({
-          ...appointmentDetails,
-          isReminder: true,
-        }),
-      });
+        EMAIL_CONFIG.publicKey
+      );
 
-      if (!response.ok) {
-        throw new Error('Falha ao enviar lembrete');
+      if (response.status !== 200) {
+        throw new Error('Erro ao enviar email de lembrete');
       }
 
       return { success: true };
     } catch (error) {
-      console.error('Erro ao enviar lembrete:', error);
+      console.error('Erro ao enviar email de lembrete:', error);
       return { success: false, error };
     }
   }

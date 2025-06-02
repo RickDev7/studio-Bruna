@@ -1,122 +1,115 @@
 'use client'
 
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { businessHours, holidays } from '@/config/businessHours'
 
 interface CalendarProps {
-  selectedDate: Date;
-  onDateSelect: (date: Date) => void;
-  highlightedDates?: Date[];
+  selectedDate: Date
+  onDateSelect: (date: Date) => void
+  highlightedDates?: Date[]
+  disabledDates?: Date[]
 }
 
-export function Calendar({ selectedDate, onDateSelect, highlightedDates = [] }: CalendarProps) {
+export function Calendar({
+  selectedDate,
+  onDateSelect,
+  highlightedDates = [],
+  disabledDates = []
+}: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(new Date())
-  const [selectedDay, setSelectedDay] = useState(selectedDate.getDate())
-  
-  const currentMonth = currentDate.getMonth()
-  const currentYear = currentDate.getFullYear()
-  
-  const days = Array.from({ length: 31 }, (_, i) => i + 1)
 
-  const monthNames = [
+  const months = [
     'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-  ];
+  ]
 
-  const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+  const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
 
-  const handlePreviousMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1));
-  };
+  const getDaysInMonth = (date: Date) => {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+  }
 
-  const handleNextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
-  };
+  const getFirstDayOfMonth = (date: Date) => {
+    return new Date(date.getFullYear(), date.getMonth(), 1).getDay()
+  }
 
   const isToday = (date: Date) => {
-    const today = new Date();
-    return (
-      date.getDate() === today.getDate() &&
-      date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear()
-    );
-  };
+    const today = new Date()
+    return date.toDateString() === today.toDateString()
+  }
 
   const isSelected = (date: Date) => {
-    return (
-      date.getDate() === selectedDate.getDate() &&
-      date.getMonth() === selectedDate.getMonth() &&
-      date.getFullYear() === selectedDate.getFullYear()
-    );
-  };
-
-  const isPastDate = (date: Date) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return date < today;
-  };
+    return date.toDateString() === selectedDate.toDateString()
+  }
 
   const isHighlighted = (date: Date) => {
-    return highlightedDates.some(highlightedDate => (
-      date.getDate() === highlightedDate.getDate() &&
-      date.getMonth() === highlightedDate.getMonth() &&
-      date.getFullYear() === highlightedDate.getFullYear()
-    ));
-  };
+    return highlightedDates.some(d => d.toDateString() === date.toDateString())
+  }
 
-  // Gera o calendário do mês atual
-  React.useEffect(() => {
-    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)
-    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0)
-    
-    const startDate = new Date(firstDay)
-    startDate.setDate(startDate.getDate() - startDate.getDay())
-    
-    const endDate = new Date(lastDay)
-    if (endDate.getDay() !== 6) {
-      endDate.setDate(endDate.getDate() + (6 - endDate.getDay()))
-    }
-    
-    const weeks: Date[][] = []
-    let currentWeek: Date[] = []
-    
-    const current = new Date(startDate)
-    while (current <= endDate) {
-      if (currentWeek.length === 7) {
-        weeks.push(currentWeek)
-        currentWeek = []
-      }
-      currentWeek.push(new Date(current))
-      current.setDate(current.getDate() + 1)
-    }
-    if (currentWeek.length > 0) {
-      weeks.push(currentWeek)
-    }
-    
-    setSelectedDay(selectedDate.getDate())
-  }, [currentDate, selectedDate])
+  const isDisabled = (date: Date) => {
+    return disabledDates.some(d => d.toDateString() === date.toDateString())
+  }
 
-  // Verifica se uma data está disponível para agendamento
-  const isDateAvailable = (date: Date) => {
-    // Não permite datas passadas
+  const isPastDate = (date: Date) => {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
-    if (date.getTime() < today.getTime()) return false
+    return date < today
+  }
 
-    // Verifica se é feriado
-    const dateString = date.toISOString().split('T')[0]
-    if (holidays.includes(dateString)) return false
+  const handlePreviousMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))
+  }
 
-    // Verifica horário de funcionamento
-    const dayOfWeek = date.getDay()
-    const dayConfig = businessHours[dayOfWeek]
-    return dayConfig.isOpen
+  const handleNextMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))
+  }
+
+  const renderCalendarDays = () => {
+    const daysInMonth = getDaysInMonth(currentDate)
+    const firstDayOfMonth = getFirstDayOfMonth(currentDate)
+    const days = []
+
+    // Dias do mês anterior
+    for (let i = 0; i < firstDayOfMonth; i++) {
+      days.push(
+        <div key={`empty-${i}`} className="text-center py-3" />
+      )
+    }
+
+    // Dias do mês atual
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day)
+      const disabled = isPastDate(date) || isDisabled(date)
+
+      days.push(
+        <button
+          key={day}
+          onClick={() => !disabled && onDateSelect(date)}
+          disabled={disabled}
+          className={`
+            relative w-full h-12 rounded-lg transition-colors duration-200
+            ${disabled ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-pink-50'}
+            ${isSelected(date) ? 'bg-[#FF69B4] text-white hover:bg-[#FF69B4]' : ''}
+            ${isToday(date) ? 'bg-pink-50 text-[#FF69B4]' : ''}
+            ${isHighlighted(date) && !isSelected(date) ? 'border-2 border-[#FF69B4]' : ''}
+          `}
+        >
+          <span className="text-sm">{day}</span>
+          {isHighlighted(date) && (
+            <span className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-[#FF69B4] rounded-full" />
+          )}
+        </button>
+      )
+    }
+
+    return days
   }
 
   return (
     <div className="bg-white rounded-xl shadow-sm">
-      <div className="flex items-center justify-between p-4">
+      {/* Cabeçalho do Calendário */}
+      <div className="flex items-center justify-between p-4 border-b border-gray-100">
         <button
           onClick={handlePreviousMonth}
           className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200"
@@ -124,7 +117,7 @@ export function Calendar({ selectedDate, onDateSelect, highlightedDates = [] }: 
           <ChevronLeft className="w-5 h-5 text-gray-600" />
         </button>
         <h2 className="text-lg font-medium text-gray-900">
-          {monthNames[currentMonth]} {currentYear}
+          {months[currentDate.getMonth()]} {currentDate.getFullYear()}
         </h2>
         <button
           onClick={handleNextMonth}
@@ -134,41 +127,34 @@ export function Calendar({ selectedDate, onDateSelect, highlightedDates = [] }: 
         </button>
       </div>
 
+      {/* Dias da Semana */}
       <div className="grid grid-cols-7 gap-1 p-4">
-        {weekDays.map((day) => (
+        {weekDays.map(day => (
           <div key={day} className="text-center text-sm font-medium text-gray-500 py-2">
             {day}
           </div>
         ))}
+        {/* Dias do Mês */}
+        {renderCalendarDays()}
+      </div>
 
-        {Array.from({ length: 31 }, (_, i) => i + 1).map((day, index) => {
-          const date = new Date(currentYear, currentMonth, day);
-          const isDisabled = isPastDate(date) || !isDateAvailable(date);
-          const isCurrentMonth = date.getMonth() === currentMonth;
-          const hasAppointments = isHighlighted(date);
-
-          return (
-            <button
-              key={index}
-              onClick={() => !isDisabled && onDateSelect(date)}
-              disabled={isDisabled}
-              className={`
-                text-center py-2 rounded-full mx-1 relative
-                ${!isCurrentMonth ? 'text-gray-300' : ''}
-                ${isDisabled ? 'text-gray-300 cursor-not-allowed' : 'hover:bg-pink-50'}
-                ${isToday(date) ? 'bg-pink-50 text-[#FF69B4]' : ''}
-                ${isSelected(date) ? 'bg-[#FF69B4] text-white hover:bg-[#FF69B4]' : ''}
-                ${hasAppointments && !isSelected(date) ? 'border-2 border-[#FF69B4]' : ''}
-              `}
-            >
-              {day}
-              {hasAppointments && !isSelected(date) && (
-                <span className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-[#FF69B4] rounded-full"></span>
-              )}
-            </button>
-          );
-        })}
+      {/* Legenda */}
+      <div className="px-4 pb-4 pt-2 border-t border-gray-100">
+        <div className="flex items-center justify-center space-x-4 text-sm text-gray-500">
+          <div className="flex items-center">
+            <div className="w-3 h-3 rounded-full bg-[#FF69B4] mr-2" />
+            <span>Selecionado</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-3 h-3 rounded-full bg-pink-50 mr-2" />
+            <span>Hoje</span>
+          </div>
+          <div className="flex items-center">
+            <div className="w-3 h-3 rounded-full border-2 border-[#FF69B4] mr-2" />
+            <span>Com Agendamento</span>
+          </div>
+        </div>
       </div>
     </div>
-  );
+  )
 } 

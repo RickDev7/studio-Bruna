@@ -2,98 +2,203 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Agendamento - Bruna Silva - Aesthetic & Nails</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
             color: #333;
-        }
-        .container {
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .header {
-            background: linear-gradient(to right, #FFC0CB, #FFB6C1);
-            color: white;
-            padding: 20px;
             text-align: center;
-            border-radius: 10px 10px 0 0;
+            margin-bottom: 30px;
         }
-        .content {
-            background: #fff;
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .title {
+            color: #FF69B4;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+            padding: 0;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        .booking-details {
+            background-color: #fdf5f8;
+            border-radius: 8px;
             padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 0 0 10px 10px;
+            margin: 20px 0;
         }
-        .details {
-            background: #f9f9f9;
+        .detail-row {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #f0e0e9;
+            padding-bottom: 10px;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .detail-label {
+            font-weight: bold;
+            color: #FF69B4;
+            width: 120px;
+            flex-shrink: 0;
+        }
+        .detail-value {
+            color: #444;
+            flex-grow: 1;
+        }
+        .notes {
+            background-color: #fff5f9;
+            border-left: 4px solid #FF69B4;
             padding: 15px;
-            border-radius: 5px;
-            margin: 15px 0;
-        }
-        .details li {
-            margin: 10px 0;
-            list-style: none;
-        }
-        .business-info {
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 15px 0;
-            text-align: center;
+            margin: 20px 0;
+            font-style: italic;
         }
         .footer {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
             color: #666;
             font-size: 14px;
         }
-        .important-note {
-            background: #fff3f3;
+        .button {
+            display: inline-block;
+            background-color: #FF69B4;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .button:hover {
+            background-color: #ff4da6;
+        }
+        .message {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 16px;
+            color: #666;
+        }
+        .status-confirmed {
+            color: #28a745;
+        }
+        .status-cancelled {
+            color: #dc3545;
+        }
+        .status-rescheduled {
+            color: #ffc107;
+        }
+        .address {
+            text-align: center;
+            margin: 20px 0;
             padding: 15px;
-            border-left: 4px solid #FFC0CB;
-            margin: 15px 0;
+            background-color: #fdf5f8;
+            border-radius: 8px;
+        }
+        .social-links {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #FF69B4;
+            text-decoration: none;
+        }
+        .emoji {
+            font-size: 20px;
+            margin-left: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="email-container">
         <div class="header">
-            <h2>Confirmação de Agendamento - {{business_name}}</h2>
+            <img src="https://studio-brunaa.vercel.app/logo.svg" alt="Studio Bruna" class="logo">
+            <h1 class="title">Seu Agendamento foi {{appointment_status}}! <span class="emoji">💅</span></h1>
+            <p class="subtitle">Olá {{to_name}}, aqui estão os detalhes do seu agendamento</p>
         </div>
-        
-        <div class="content">
-            <p>Olá {{to_name}},</p>
 
-            <p>Recebemos sua solicitação de agendamento. Aqui estão os detalhes:</p>
+        <div class="message">
+            <p>
+            {{#eq appointment_status "confirmado"}}
+                Seu horário foi confirmado com sucesso! Aguardamos você no dia e horário marcados.
+            {{/eq}}
+            {{#eq appointment_status "cancelado"}}
+                Seu agendamento foi cancelado. Se precisar remarcar, entre em contato conosco.
+            {{/eq}}
+            {{#eq appointment_status "reagendado"}}
+                Seu horário foi reagendado conforme solicitado. Veja os novos detalhes abaixo.
+            {{/eq}}
+            {{#eq appointment_status "lembrete"}}
+                Este é um lembrete do seu agendamento. Não se esqueça!
+            {{/eq}}
+            </p>
+        </div>
 
-            <div class="details">
-                <ul>
-                    <li><strong>Serviço:</strong> {{service}}</li>
-                    <li><strong>Data:</strong> {{date}}</li>
-                    <li><strong>Horário:</strong> {{time}}</li>
-                </ul>
+        <div class="booking-details">
+            <div class="detail-row">
+                <div class="detail-label">Serviço:</div>
+                <div class="detail-value">{{service_name}}</div>
             </div>
-
-            <div class="important-note">
-                <p><strong>Importante:</strong> Em breve entraremos em contato para confirmar seu agendamento.</p>
+            <div class="detail-row">
+                <div class="detail-label">Data:</div>
+                <div class="detail-value">{{appointment_date}}</div>
             </div>
-
-            <div class="business-info">
-                <h3>{{business_name}}</h3>
-                <p>{{business_address}}</p>
-                <p>Telefone: {{business_phone}}</p>
+            <div class="detail-row">
+                <div class="detail-label">Horário:</div>
+                <div class="detail-value">{{appointment_time}}</div>
             </div>
+        </div>
 
-            <p>Caso precise reagendar ou cancelar, por favor entre em contato conosco através do telefone ou WhatsApp.</p>
+        <div class="address">
+            <h3>Endereço do Studio</h3>
+            <p>Rua Exemplo, 123 - Bairro<br>
+            Cidade - Estado<br>
+            CEP: 00000-000</p>
+        </div>
 
-            <p>Agradecemos a preferência!</p>
+        <div class="notes">
+            <strong>Observações Importantes:</strong><br>
+            • Por favor, chegue 5 minutos antes do seu horário<br>
+            • Em caso de imprevisto, avise com antecedência<br>
+            • Traga sua máscara
+        </div>
+
+        <div class="social-links">
+            <p>Siga-nos nas redes sociais:</p>
+            <a href="https://instagram.com/studio.brunaa" target="_blank">Instagram</a>
+            <a href="https://facebook.com/studiobruna" target="_blank">Facebook</a>
+            <a href="https://wa.me/+5511999999999" target="_blank">WhatsApp</a>
         </div>
 
         <div class="footer">
-            <p>Atenciosamente,<br>
-            {{business_name}}</p>
+            <p>Este é um email automático do sistema de agendamentos.<br>
+            Por favor, não responda este email.</p>
+            <p>© 2024 Bruna Silva - Aesthetic & Nails. Todos os direitos reservados.</p>
         </div>
     </div>
 </body>

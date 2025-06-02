@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import emailjs from '@emailjs/browser';
 import type { 
   Appointment, 
   AppointmentHistory, 
@@ -13,10 +14,26 @@ interface UseAppointmentManagerProps {
   onError?: (error: string) => void;
 }
 
+const EMAIL_CONFIG = {
+  serviceId: 'service_qe1ai6q',
+  templateId: 'template_gx390pv',
+  publicKey: 'N1LpI9fHAIo0az4XG',
+} as const;
+
 export function useAppointmentManager({ onSuccess, onError }: UseAppointmentManagerProps = {}) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const supabase = createClientComponentClient();
+
+  // Inicializa o EmailJS
+  useEffect(() => {
+    emailjs.init({
+      publicKey: EMAIL_CONFIG.publicKey,
+      limitRate: {
+        throttle: 2000,
+      },
+    });
+  }, []);
 
   const cancelAppointment = async (appointment: Appointment, reason: string) => {
     setIsLoading(true);
@@ -31,23 +48,22 @@ export function useAppointmentManager({ onSuccess, onError }: UseAppointmentMana
       if (updateError) throw updateError;
 
       // Enviar email de cancelamento
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await emailjs.send(
+        EMAIL_CONFIG.serviceId,
+        EMAIL_CONFIG.templateId,
+        {
+          to_name: appointment.profiles.full_name || 'Cliente',
+          to_email: appointment.profiles.email,
+          service_name: appointment.service,
+          appointment_date: appointment.date,
+          appointment_time: appointment.time,
+          appointment_status: 'cancelado',
         },
-        body: JSON.stringify({
-          userName: appointment.profiles.full_name || 'Cliente',
-          userEmail: appointment.profiles.email,
-          service: appointment.service,
-          date: appointment.date,
-          time: appointment.time,
-          status: 'cancelado'
-        }),
-      });
+        EMAIL_CONFIG.publicKey
+      );
 
-      if (!response.ok) {
-        console.warn('Erro ao enviar email de cancelamento:', await response.text());
+      if (response.status !== 200) {
+        console.warn('Erro ao enviar email de cancelamento:', response);
       }
 
       onSuccess?.();
@@ -88,23 +104,22 @@ export function useAppointmentManager({ onSuccess, onError }: UseAppointmentMana
       if (updateError) throw updateError;
 
       // Enviar email de reagendamento
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await emailjs.send(
+        EMAIL_CONFIG.serviceId,
+        EMAIL_CONFIG.templateId,
+        {
+          to_name: appointment.profiles.full_name || 'Cliente',
+          to_email: appointment.profiles.email,
+          service_name: appointment.service,
+          appointment_date: data.new_date,
+          appointment_time: data.new_time,
+          appointment_status: 'reagendado',
         },
-        body: JSON.stringify({
-          userName: appointment.profiles.full_name || 'Cliente',
-          userEmail: appointment.profiles.email,
-          service: appointment.service,
-          date: data.new_date,
-          time: data.new_time,
-          status: 'reagendado'
-        }),
-      });
+        EMAIL_CONFIG.publicKey
+      );
 
-      if (!response.ok) {
-        console.warn('Erro ao enviar email de reagendamento:', await response.text());
+      if (response.status !== 200) {
+        console.warn('Erro ao enviar email de reagendamento:', response);
       }
 
       onSuccess?.();

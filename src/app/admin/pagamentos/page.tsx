@@ -4,6 +4,9 @@ import { useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { supabase } from "@/config/supabase";
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { toast } from 'sonner';
+import emailjs from '@emailjs/browser';
 
 // Definição dos tipos
 type PedidoStatus = "pendente" | "pago";
@@ -16,6 +19,12 @@ interface Pedido {
   status: PedidoStatus;
   created_at: string;
 }
+
+const EMAIL_CONFIG = {
+  serviceId: 'service_qe1ai6q',
+  templateId: 'template_gx390pv',
+  publicKey: 'N1LpI9fHAIo0az4XG',
+} as const;
 
 export default function PagamentosAdmin() {
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
@@ -51,6 +60,44 @@ export default function PagamentosAdmin() {
   useEffect(() => {
     carregarPedidos();
   }, [carregarPedidos]);
+
+  // Inicializa o EmailJS
+  useEffect(() => {
+    emailjs.init({
+      publicKey: EMAIL_CONFIG.publicKey,
+      limitRate: {
+        throttle: 2000,
+      },
+    });
+  }, []);
+
+  const handleSendReceipt = async (payment: any) => {
+    try {
+      const response = await emailjs.send(
+        EMAIL_CONFIG.serviceId,
+        EMAIL_CONFIG.templateId,
+        {
+          user_name: payment.client_name || 'Cliente',
+          email: payment.client_email,
+          service: payment.service,
+          date: payment.date,
+          time: payment.time,
+          payment_amount: payment.amount,
+          payment_method: payment.method,
+        },
+        EMAIL_CONFIG.publicKey
+      );
+
+      if (response.status !== 200) {
+        throw new Error('Erro ao enviar recibo');
+      }
+
+      toast.success('Recibo enviado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao enviar recibo:', error);
+      toast.error('Erro ao enviar recibo');
+    }
+  };
 
   const enviarEmails = async (pedido: Pedido) => {
     try {

@@ -129,7 +129,7 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* Calendário e lista de agendamentos */}
+          {/* Conteúdo principal */}
           <div className="lg:col-span-9">
             <div className="bg-white rounded-xl shadow-sm p-6">
               <AppointmentsCalendar />

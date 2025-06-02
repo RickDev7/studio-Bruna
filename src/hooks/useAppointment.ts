@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { formatarDataBanco } from '@/utils/formatters';
+import emailjs from '@emailjs/browser';
 
 interface UseAppointmentProps {
   onSuccess?: () => void;
@@ -17,10 +18,26 @@ interface CreateAppointmentData {
   user_phone: string;
 }
 
+const EMAIL_CONFIG = {
+  serviceId: 'service_qe1ai6q',
+  templateId: 'template_gx390pv',
+  publicKey: 'N1LpI9fHAIo0az4XG',
+} as const;
+
 export function useAppointment({ onSuccess, onError }: UseAppointmentProps = {}) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const supabase = createClientComponentClient();
+
+  // Inicializa o EmailJS
+  useEffect(() => {
+    emailjs.init({
+      publicKey: EMAIL_CONFIG.publicKey,
+      limitRate: {
+        throttle: 2000,
+      },
+    });
+  }, []);
 
   const createAppointment = async (data: CreateAppointmentData) => {
     setIsLoading(true);
@@ -90,30 +107,29 @@ export function useAppointment({ onSuccess, onError }: UseAppointmentProps = {})
           notes: data.notes || '',
           profile_id: profileId,
           created_at: new Date().toISOString(),
-          user_id: null // Definindo explicitamente como null já que não estamos usando
+          user_id: null
         });
 
       if (appointmentError) throw appointmentError;
 
       // Enviar email de confirmação
       try {
-        const response = await fetch('/api/send-email', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await emailjs.send(
+          EMAIL_CONFIG.serviceId,
+          EMAIL_CONFIG.templateId,
+          {
+            to_name: data.user_name,
+            to_email: data.user_email,
+            service_name: data.service,
+            appointment_date: data.date,
+            appointment_time: data.time,
+            appointment_status: 'confirmado',
           },
-          body: JSON.stringify({
-            userName: data.user_name,
-            userEmail: data.user_email,
-            service: data.service,
-            date: data.date,
-            time: data.time,
-            isAppointmentConfirmation: true
-          }),
-        });
+          EMAIL_CONFIG.publicKey
+        );
 
-        if (!response.ok) {
-          console.warn('Erro ao enviar email de confirmação:', await response.text());
+        if (response.status !== 200) {
+          console.warn('Erro ao enviar email de confirmação:', response);
         }
       } catch (emailError) {
         console.warn('Erro ao enviar email de confirmação:', emailError);

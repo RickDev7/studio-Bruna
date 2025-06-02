@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  const envVars = {
-    RESEND_API_KEY_EXISTS: !!process.env.RESEND_API_KEY,
-    NODE_ENV: process.env.NODE_ENV,
-  };
-
-  return NextResponse.json({
-    message: 'Verificação de variáveis de ambiente',
-    environment: envVars,
+  return Response.json({
+    DATABASE_URL_EXISTS: !!process.env.DATABASE_URL,
+    NEXTAUTH_SECRET_EXISTS: !!process.env.NEXTAUTH_SECRET,
+    NEXTAUTH_URL_EXISTS: !!process.env.NEXTAUTH_URL,
+    EMAILJS_PUBLIC_KEY_EXISTS: !!process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+    EMAILJS_SERVICE_ID_EXISTS: !!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+    EMAILJS_USER_TEMPLATE_ID_EXISTS: !!process.env.NEXT_PUBLIC_EMAILJS_USER_TEMPLATE_ID,
+    EMAILJS_ADMIN_TEMPLATE_ID_EXISTS: !!process.env.NEXT_PUBLIC_EMAILJS_ADMIN_TEMPLATE_ID,
+    ADMIN_EMAIL_EXISTS: !!process.env.NEXT_PUBLIC_ADMIN_EMAIL,
   });
 } 

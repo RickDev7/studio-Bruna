@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Calendar } from '@/components/Calendar'
 import { TimeSlots } from '@/components/TimeSlots'
+import emailjs from '@emailjs/browser'
+import { Service } from '@/config/services'
 
 // Função auxiliar para formatar a data
 function formatarData(data: Date): string {
@@ -27,6 +29,17 @@ export function Scheduling() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [currentStep, setCurrentStep] = useState(1)
+  const [selectedCategory, setSelectedCategory] = useState<Service['category']>('nails')
+
+  // Inicializa o EmailJS
+  useEffect(() => {
+    emailjs.init({
+      publicKey: 'N1LpI9fHAIo0az4XG',
+      limitRate: {
+        throttle: 2000,
+      },
+    });
+  }, []);
 
   const services = [
     'Manicure',
@@ -71,22 +84,22 @@ export function Scheduling() {
     try {
       const dataFormatada = formatarData(date)
       
-      // Enviar email de confirmação
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // Enviar email usando EmailJS
+      const response = await emailjs.send(
+        'service_qe1ai6q',
+        'template_gx390pv',
+        {
+          to_name: name,
+          to_email: email,
+          service_name: selectedService,
+          appointment_date: dataFormatada,
+          appointment_time: selectedTime,
+          appointment_status: 'confirmado',
         },
-        body: JSON.stringify({
-          userName: name,
-          userEmail: email,
-          service: selectedService,
-          date: dataFormatada,
-          time: selectedTime,
-        }),
-      });
+        'N1LpI9fHAIo0az4XG'
+      );
 
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error('Erro ao enviar email de confirmação');
       }
 
