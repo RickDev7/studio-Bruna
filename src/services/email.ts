@@ -229,7 +229,7 @@ ${message ? `\nMensagem do cliente:\n${message}` : ''}
   }
 }
 
-export default sendEmail;
+export default sendEmail; 
 
 // Serviço de email temporário
 export async function sendAppointmentConfirmationEmail(

@@ -6,6 +6,26 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+interface NavItemProps {
+  href: string;
+  children: React.ReactNode;
+  isActive?: boolean;
+}
+
+const NavItem = ({ href, children, isActive }: NavItemProps) => (
+  <Link
+    href={href}
+    className={`
+      px-4 py-2 text-sm font-medium transition-colors duration-200
+      ${isActive 
+        ? 'text-[#FF69B4] border-b-2 border-[#FF69B4]' 
+        : 'text-gray-600 hover:text-[#FF69B4]'}
+    `}
+  >
+    {children}
+  </Link>
+);
+
 export function AdminNavbar() {
   const pathname = usePathname();
   const router = useRouter();
@@ -25,53 +45,63 @@ export function AdminNavbar() {
     router.push('/login');
   };
 
-  const menuItems = [
-    { href: '/admin', label: 'Agendamentos' },
-    { href: '/admin/agendar', label: 'Novo Agendamento' },
-    { href: '/admin/servicos', label: 'Serviços' },
-    { href: '/admin/clientes', label: 'Clientes' },
-    { href: '/admin/configuracoes', label: 'Configurações' }
-  ];
-
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="bg-white border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Link href="/admin" className="text-xl font-bold text-pink-600">
+              <Link href="/admin" className="text-[#FF69B4] font-bold text-xl">
                 Painel Admin
               </Link>
             </div>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              {menuItems.map(item => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    pathname === item.href
-                      ? 'border-pink-500 text-gray-900'
-                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+            
+            <div className="hidden sm:ml-6 sm:flex sm:space-x-4">
+              <NavItem 
+                href="/admin/agendamentos" 
+                isActive={pathname === '/admin/agendamentos'}
+              >
+                Agendamentos
+              </NavItem>
+              <NavItem 
+                href="/admin/agendar"
+                isActive={pathname === '/admin/agendar'}
+              >
+                Novo Agendamento
+              </NavItem>
+              <NavItem 
+                href="/admin/servicos"
+                isActive={pathname === '/admin/servicos'}
+              >
+                Serviços
+              </NavItem>
+              <NavItem 
+                href="/admin/clientes"
+                isActive={pathname === '/admin/clientes'}
+              >
+                Clientes
+              </NavItem>
+              <NavItem 
+                href="/admin/configuracoes"
+                isActive={pathname === '/admin/configuracoes'}
+              >
+                Configurações
+              </NavItem>
             </div>
           </div>
 
           <div className="flex items-center">
-            {userEmail && (
-              <span className="text-sm text-gray-600 mr-4">
+            <div className="flex-shrink-0 flex items-center">
+              <span className="text-sm text-gray-500 mr-4">
                 {userEmail}
               </span>
-            )}
-            <button
-              onClick={handleSignOut}
-              className="ml-4 px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700"
-            >
-              Sair
-            </button>
+              <Link
+                href="/logout"
+                className="text-sm font-medium text-gray-600 hover:text-[#FF69B4]"
+              >
+                Sair
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -79,19 +109,36 @@ export function AdminNavbar() {
       {/* Menu móvel */}
       <div className="sm:hidden">
         <div className="pt-2 pb-3 space-y-1">
-          {menuItems.map(item => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                pathname === item.href
-                  ? 'border-pink-500 text-pink-700 bg-pink-50'
-                  : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700'
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
+          <NavItem 
+            href="/admin/agendamentos" 
+            isActive={pathname === '/admin/agendamentos'}
+          >
+            Agendamentos
+          </NavItem>
+          <NavItem 
+            href="/admin/agendar"
+            isActive={pathname === '/admin/agendar'}
+          >
+            Novo Agendamento
+          </NavItem>
+          <NavItem 
+            href="/admin/servicos"
+            isActive={pathname === '/admin/servicos'}
+          >
+            Serviços
+          </NavItem>
+          <NavItem 
+            href="/admin/clientes"
+            isActive={pathname === '/admin/clientes'}
+          >
+            Clientes
+          </NavItem>
+          <NavItem 
+            href="/admin/configuracoes"
+            isActive={pathname === '/admin/configuracoes'}
+          >
+            Configurações
+          </NavItem>
         </div>
       </div>
     </nav>

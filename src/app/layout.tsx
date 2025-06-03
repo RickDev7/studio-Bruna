@@ -35,9 +35,9 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <EmailJSProvider>
-          <main className="min-h-screen bg-gray-50">
-            {children}
-          </main>
+        <main className="min-h-screen bg-gray-50">
+          {children}
+        </main>
           <EmailJSDebug />
           <EmailTest />
         </EmailJSProvider>

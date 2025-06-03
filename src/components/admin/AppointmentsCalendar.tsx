@@ -38,22 +38,22 @@ export function AppointmentsCalendar() {
   const fetchAppointments = async () => {
     try {
       setIsLoading(true)
-      const { data, error } = await supabase
-        .from('appointments')
-        .select(`
-          id,
-          service,
-          date,
-          time,
-          status,
-          notes,
-          user_id,
-          profiles!inner (
+        const { data, error } = await supabase
+          .from('appointments')
+          .select(`
             id,
-            full_name,
-            email
-          )
-        `)
+            service,
+            date,
+            time,
+            status,
+            notes,
+            user_id,
+            profiles!inner (
+            id,
+              full_name,
+              email
+            )
+          `)
         .order('date', { ascending: true })
         .order('time', { ascending: true })
 
@@ -61,21 +61,21 @@ export function AppointmentsCalendar() {
 
       const formattedAppointments = (data || []).map(appointment => ({
         ...appointment,
-        profiles: {
+            profiles: {
           id: appointment.profiles?.[0]?.id || '',
           full_name: appointment.profiles?.[0]?.full_name || null,
           email: appointment.profiles?.[0]?.email || ''
-        }
+            }
       })) as EditingAppointment[]
 
       setAppointments(formattedAppointments)
     } catch (error) {
       console.error('Erro ao buscar agendamentos:', error)
       toast.error('Erro ao carregar agendamentos')
-    } finally {
+      } finally {
       setIsLoading(false)
+      }
     }
-  }
 
   useEffect(() => {
     fetchAppointments()
@@ -253,26 +253,26 @@ export function AppointmentsCalendar() {
     <div className="space-y-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="lg:sticky lg:top-4 lg:self-start">
-          <Calendar
-            selectedDate={selectedDate}
-            onDateSelect={handleDateSelect}
-            highlightedDates={appointments.map(a => new Date(a.date))}
-          />
+      <Calendar
+        selectedDate={selectedDate}
+        onDateSelect={handleDateSelect}
+        highlightedDates={appointments.map(a => new Date(a.date))}
+      />
         </div>
 
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h3 className="text-xl font-semibold text-gray-900">
-              Agendamentos para {selectedDate.toLocaleDateString('pt-BR')}
-            </h3>
+            Agendamentos para {selectedDate.toLocaleDateString('pt-BR')}
+          </h3>
           </div>
 
           <div className="bg-gray-50 rounded-lg p-4">
-            {getAppointmentsForDate(selectedDate).length === 0 ? (
+          {getAppointmentsForDate(selectedDate).length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-gray-500">Nenhum agendamento para esta data</p>
+            <p className="text-gray-500">Nenhum agendamento para esta data</p>
               </div>
-            ) : (
+          ) : (
               <div className="space-y-4 max-h-[calc(100vh-400px)] overflow-y-auto pr-2">
                 {getAppointmentsForDate(selectedDate).map((appointment) => {
                   const editedAppointment = editedAppointments[appointment.id]
