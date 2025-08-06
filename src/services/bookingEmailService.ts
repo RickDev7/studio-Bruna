@@ -13,29 +13,29 @@ interface BookingEmailData {
 }
 
 export async function sendBookingEmails(data: BookingEmailData) {
-  // Inicializa o EmailJS
-  if (!initEmailJS()) {
-    const missingVars = Object.entries({
-      publicKey: !!emailjsConfig.publicKey,
-      serviceId: !!emailjsConfig.serviceId,
-      userTemplateId: !!emailjsConfig.userTemplateId,
-      adminTemplateId: !!emailjsConfig.adminTemplateId,
-      adminEmail: !!emailjsConfig.adminEmail
-    }).filter(([_, value]) => !value).map(([key]) => key);
+  // Verifica as variáveis essenciais
+  const essentialConfig = {
+    publicKey: !!emailjsConfig.publicKey,
+    serviceId: !!emailjsConfig.serviceId,
+    userTemplateId: !!emailjsConfig.userTemplateId
+  };
 
+  const missingEssentials = Object.entries(essentialConfig)
+    .filter(([_, value]) => !value)
+    .map(([key]) => key);
+
+  if (missingEssentials.length > 0) {
     console.error('❌ Falha na inicialização do EmailJS:', {
-      error: 'Variáveis de ambiente faltando',
-      missingVars,
-      config: {
-        publicKey: !!emailjsConfig.publicKey,
-        serviceId: !!emailjsConfig.serviceId,
-        userTemplateId: !!emailjsConfig.userTemplateId,
-        adminTemplateId: !!emailjsConfig.adminTemplateId,
-        adminEmail: !!emailjsConfig.adminEmail
-      }
+      error: 'Variáveis essenciais faltando',
+      missingVars: missingEssentials,
+      config: essentialConfig
     });
+    throw new Error(`Não foi possível inicializar o serviço de email. Variáveis essenciais faltando: ${missingEssentials.join(', ')}`);
+  }
 
-    throw new Error(`Não foi possível inicializar o serviço de email. Variáveis faltando: ${missingVars.join(', ')}`);
+  // Inicializa o EmailJS apenas com as configurações essenciais
+  if (!initEmailJS()) {
+    throw new Error('Não foi possível inicializar o serviço de email');
   }
 
   // Busca os nomes dos serviços
@@ -74,7 +74,7 @@ export async function sendBookingEmails(data: BookingEmailData) {
 
   try {
     // Envia email para o cliente
-    const userEmailPromise = emailjs.send(
+    const userResponse = await emailjs.send(
       emailjsConfig.serviceId,
       emailjsConfig.userTemplateId,
       {
@@ -83,32 +83,48 @@ export async function sendBookingEmails(data: BookingEmailData) {
       }
     );
 
-    // Envia email para o admin
-    const adminEmailPromise = emailjs.send(
-      emailjsConfig.serviceId,
-      emailjsConfig.adminTemplateId,
-      {
-        ...adminTemplateData,
-        to_email: emailjsConfig.adminEmail
-      }
-    );
-
-    // Aguarda o envio dos dois emails
-    const [userResponse, adminResponse] = await Promise.all([
-      userEmailPromise,
-      adminEmailPromise
-    ]);
-
-    console.log('✅ Emails enviados com sucesso:', {
-      userStatus: userResponse.status,
-      adminStatus: adminResponse.status
+    console.log('✅ Email do cliente enviado com sucesso:', {
+      userStatus: userResponse.status
     });
 
-    return {
-      success: true,
-      userEmailStatus: userResponse.status,
-      adminEmailStatus: adminResponse.status
-    };
+    // Tenta enviar email para o admin se as configurações estiverem presentes
+    if (emailjsConfig.adminTemplateId && emailjsConfig.adminEmail) {
+      try {
+        const adminResponse = await emailjs.send(
+          emailjsConfig.serviceId,
+          emailjsConfig.adminTemplateId,
+          {
+            ...adminTemplateData,
+            to_email: emailjsConfig.adminEmail
+          }
+        );
+
+        console.log('✅ Email do admin enviado com sucesso:', {
+          adminStatus: adminResponse.status
+        });
+
+        return {
+          success: true,
+          userEmailStatus: userResponse.status,
+          adminEmailStatus: adminResponse.status
+        };
+      } catch (adminError) {
+        console.warn('⚠️ Não foi possível enviar o email para o admin:', adminError);
+        // Continua mesmo se o email do admin falhar
+        return {
+          success: true,
+          userEmailStatus: userResponse.status,
+          adminEmailStatus: 'failed'
+        };
+      }
+    } else {
+      console.warn('⚠️ Email do admin não enviado: configuração incompleta');
+      return {
+        success: true,
+        userEmailStatus: userResponse.status,
+        adminEmailStatus: 'skipped'
+      };
+    }
 
   } catch (error) {
     console.error('❌ Erro ao enviar emails:', error);

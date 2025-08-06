@@ -72,13 +72,11 @@ export const initEmailJS = (): boolean => {
   if (isInitialized) return true;
 
   try {
-    // Verifica se todas as variáveis necessárias estão presentes
+    // Verifica apenas as variáveis essenciais
     if (!emailjsConfig.publicKey || 
         !emailjsConfig.serviceId || 
-        !emailjsConfig.userTemplateId || 
-        !emailjsConfig.adminTemplateId || 
-        !emailjsConfig.adminEmail) {
-      console.warn('⚠️ EmailJS não foi inicializado: configuração incompleta');
+        !emailjsConfig.userTemplateId) {
+      console.warn('⚠️ EmailJS não foi inicializado: configuração essencial incompleta');
       return false;
     }
 
