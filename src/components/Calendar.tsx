@@ -125,7 +125,7 @@ export function Calendar({
               status === 'past' || status === 'future'
                 ? 'text-gray-300 cursor-not-allowed bg-gray-50'
                 : status === 'disabled'
-                ? 'text-gray-300 cursor-not-allowed bg-red-50'
+                ? 'text-gray-300 cursor-not-allowed bg-gray-50'
                 : status === 'closed'
                 ? 'text-gray-300 cursor-not-allowed bg-gray-100'
                 : status === 'selected'
@@ -144,11 +144,7 @@ export function Calendar({
             {status === 'highlighted' && (
               <span className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-[#FF69B4] rounded-full" />
             )}
-            {status === 'disabled' && (
-              <span className="absolute bottom-1 left-1/2 transform -translate-x-1/2 text-[10px] text-red-400">
-                Feriado
-              </span>
-            )}
+
             {status === 'closed' && (
               <span className="absolute bottom-1 left-1/2 transform -translate-x-1/2 text-[10px] text-gray-400">
                 Fechado
@@ -210,10 +206,7 @@ export function Calendar({
             <div className="w-3 h-3 rounded-full border-2 border-[#FF69B4] mr-2" />
             <span>Com Agendamento</span>
           </div>
-          <div className="flex items-center">
-            <div className="w-3 h-3 rounded-full bg-red-50 mr-2" />
-            <span>Feriado</span>
-          </div>
+
           <div className="flex items-center">
             <div className="w-3 h-3 rounded-full bg-gray-100 mr-2" />
             <span>Fechado</span>
