@@ -15,7 +15,14 @@ interface BookingEmailData {
 export async function sendBookingEmails(data: BookingEmailData) {
   // Inicializa o EmailJS
   if (!initEmailJS()) {
-    throw new Error('Não foi possível inicializar o serviço de email');
+    console.error('❌ Falha na inicialização do EmailJS. Verificando variáveis de ambiente:', {
+      publicKey: !!emailjsConfig.publicKey,
+      serviceId: !!emailjsConfig.serviceId,
+      userTemplateId: !!emailjsConfig.userTemplateId,
+      adminTemplateId: !!emailjsConfig.adminTemplateId,
+      adminEmail: !!emailjsConfig.adminEmail
+    });
+    throw new Error('Não foi possível inicializar o serviço de email. Verifique as variáveis de ambiente.');
   }
 
   // Busca os nomes dos serviços

@@ -30,29 +30,31 @@ const getEmailJSConfig = (): EmailJSConfig => {
   };
 
   // Debug das variáveis de ambiente
-  console.log('🔍 Verificando variáveis de ambiente do EmailJS:', {
-    publicKey: config.publicKey ? '✅' : '❌',
-    serviceId: config.serviceId ? '✅' : '❌',
-    userTemplateId: config.userTemplateId ? '✅' : '❌',
-    adminTemplateId: config.adminTemplateId ? '✅' : '❌',
-    adminEmail: config.adminEmail ? '✅' : '❌',
-  });
+  if (process.env.NODE_ENV === 'development') {
+    console.log('🔍 Verificando variáveis de ambiente do EmailJS:', {
+      publicKey: config.publicKey ? '✅' : '❌',
+      serviceId: config.serviceId ? '✅' : '❌',
+      userTemplateId: config.userTemplateId ? '✅' : '❌',
+      adminTemplateId: config.adminTemplateId ? '✅' : '❌',
+      adminEmail: config.adminEmail ? '✅' : '❌',
+    });
+  }
 
   // Verifica se todas as variáveis necessárias estão presentes
   const missingVars = Object.entries(config)
     .filter(([_, value]) => !value)
     .map(([key]) => key);
 
-  if (missingVars.length > 0) {
+  if (missingVars.length > 0 && process.env.NODE_ENV === 'development') {
     console.warn('⚠️ Variáveis de ambiente faltando:', missingVars.join(', '));
     console.info(`
       Para corrigir, adicione as seguintes variáveis ao arquivo .env.local:
       
-      NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=pELxsCwl_sYWMQ5Ds
-      NEXT_PUBLIC_EMAILJS_SERVICE_ID=service_fvd89oq
-      NEXT_PUBLIC_EMAILJS_USER_TEMPLATE_ID=template_j4rdnu5
-      NEXT_PUBLIC_EMAILJS_ADMIN_TEMPLATE_ID=template_ynhvu4y
-      NEXT_PUBLIC_ADMIN_EMAIL=bs.aestheticnails@gmail.com
+      NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=seu_public_key
+      NEXT_PUBLIC_EMAILJS_SERVICE_ID=seu_service_id
+      NEXT_PUBLIC_EMAILJS_USER_TEMPLATE_ID=seu_template_id_usuario
+      NEXT_PUBLIC_EMAILJS_ADMIN_TEMPLATE_ID=seu_template_id_admin
+      NEXT_PUBLIC_ADMIN_EMAIL=seu_email_admin
     `);
   }
 
