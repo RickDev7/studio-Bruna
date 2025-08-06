@@ -43,33 +43,39 @@ export interface Database {
           id: string
           created_at: string
           user_id: string
-          service: string
-          date: string
-          time: string
+          service_id: string
+          scheduled_at: string
           status: 'pending' | 'confirmed' | 'cancelled' | 'rescheduled'
           notes: string | null
+          user_name: string
+          user_email: string
+          user_phone: string
           updated_at: string
         }
         Insert: {
           id?: string
           created_at?: string
-          user_id: string
-          service: string
-          date: string
-          time: string
+          user_id?: string
+          service_id: string
+          scheduled_at: string
           status?: 'pending' | 'confirmed' | 'cancelled' | 'rescheduled'
           notes?: string | null
+          user_name: string
+          user_email: string
+          user_phone: string
           updated_at?: string
         }
         Update: {
           id?: string
           created_at?: string
           user_id?: string
-          service?: string
-          date?: string
-          time?: string
+          service_id?: string
+          scheduled_at?: string
           status?: 'pending' | 'confirmed' | 'cancelled' | 'rescheduled'
           notes?: string | null
+          user_name?: string
+          user_email?: string
+          user_phone?: string
           updated_at?: string
         }
       }

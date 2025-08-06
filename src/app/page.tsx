@@ -1,33 +1,25 @@
-import { Metadata } from 'next'
-import { ClientProvider } from '@/components/ClientProvider'
-import { Navbar } from '@/components/Navbar'
-import { Hero } from '@/components/sections/Hero'
-import { Services } from '@/components/sections/Services'
-import { AllServices } from '@/components/sections/AllServices'
-import { About } from '@/components/sections/About'
-import { Footer } from '@/components/sections/Footer'
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Bruna Silva - Aesthetic & Nails',
-  description: 'Serviços de estética e beleza em Cuxhaven',
-  other: {
-    'google': 'notranslate'
-  }
-}
+import React, { Suspense } from 'react';
+import dynamic from 'next/dynamic';
+
+const HomeClient = dynamic(() => import('@/components/HomeClient'), {
+  loading: () => (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-pink-500"></div>
+    </div>
+  ),
+  ssr: false
+});
 
 export default function Home() {
   return (
-    <ClientProvider>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-1">
-          <Hero />
-          <Services />
-          <AllServices />
-          <About />
-        </main>
-        <Footer />
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-pink-500"></div>
       </div>
-    </ClientProvider>
-  )
+    }>
+      <HomeClient />
+    </Suspense>
+  );
 }

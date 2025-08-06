@@ -52,11 +52,11 @@ export function BusinessHours() {
       <div className="mt-4 pt-4 border-t border-gray-100">
         <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-600">
-            {config.name} • {config.address}
+            {config.business.name} • {config.contact.address.street}, {config.contact.address.city}
           </span>
         </div>
         <div className="mt-2 text-sm text-gray-600">
-          {config.phone} • {config.email}
+          {config.contact.phone} • {config.contact.email}
         </div>
       </div>
     </div>

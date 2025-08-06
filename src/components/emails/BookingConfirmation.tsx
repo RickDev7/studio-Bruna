@@ -1,144 +1,135 @@
-import {
-  Html,
-  Text,
-  Container,
-  Heading,
-  Section,
-  Row,
-  Column,
-} from '@react-email/components';
-import * as React from 'react';
+import React from 'react';
 
 interface BookingConfirmationProps {
-  userName: string;
+  name: string;
   service: string;
   date: string;
   time: string;
-  status?: 'pending' | 'confirmed' | 'cancelled';
 }
 
-export default function BookingConfirmation({
-  userName,
-  service,
-  date,
-  time,
-  status = 'pending',
-}: BookingConfirmationProps) {
-  const statusMessages = {
-    pending: {
-      title: '🕒 Solicitação de Agendamento Recebida',
-      message: 'Em breve entraremos em contato para confirmar seu agendamento.',
-      color: '#f59e0b',
-    },
-    confirmed: {
-      title: '✅ Agendamento Confirmado',
-      message: 'Seu horário está confirmado! Aguardamos você.',
-      color: '#10b981',
-    },
-    cancelled: {
-      title: '❌ Agendamento Cancelado',
-      message: 'Seu agendamento foi cancelado. Entre em contato caso deseje reagendar.',
-      color: '#ef4444',
-    },
-  };
-
+export function BookingConfirmation({ name, service, date, time }: BookingConfirmationProps) {
   return (
-    <Html>
-      <Container
-        style={{
-          fontFamily: 'Arial, sans-serif',
-          backgroundColor: '#fdf2f8', // Rosa claro
-          padding: '40px 0',
-        }}
-      >
-        <Section style={{
-          maxWidth: '600px',
-          margin: '0 auto',
-          backgroundColor: '#ffffff',
-          padding: '30px',
-          borderRadius: '8px',
-          boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
-        }}>
-          <Heading style={{ 
-            fontSize: '24px', 
-            marginBottom: '20px',
-            color: statusMessages[status].color,
-            textAlign: 'center' as const,
-          }}>
-            {statusMessages[status].title}
-          </Heading>
+    <div style={{ margin: 0, padding: 0, backgroundColor: '#f5f5f5', fontFamily: 'Arial, sans-serif' }}>
+      <table width="100%" cellPadding="0" cellSpacing="0" style={{ backgroundColor: '#f5f5f5' }}>
+        <tbody>
+          <tr>
+            <td align="center" style={{ padding: '40px 20px' }}>
+              <table width="100%" cellPadding="0" cellSpacing="0" style={{ maxWidth: '600px', backgroundColor: '#ffffff', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                <tbody>
+                  {/* Header */}
+                  <tr>
+                    <td align="center" style={{ padding: '40px 20px', borderRadius: '8px 8px 0 0', backgroundColor: '#FFC0CB' }}>
+                      <h1 style={{ color: '#ffffff', fontSize: '24px', margin: 0 }}>Wir haben Ihre Anfrage erhalten!</h1>
+                    </td>
+                  </tr>
 
-          <Text style={{ fontSize: '16px', marginBottom: '25px' }}>
-            Olá {userName},
-          </Text>
+                  {/* Content */}
+                  <tr>
+                    <td style={{ padding: '30px 20px' }}>
+                      <p style={{ fontSize: '18px', color: '#333333', margin: '0 0 20px 0' }}>Hallo {name},</p>
+                      
+                      <p style={{ fontSize: '16px', color: '#333333', lineHeight: 1.5, marginBottom: '25px' }}>
+                        Vielen Dank für Ihr Interesse! Wir haben Ihre Terminanfrage erhalten und werden uns in Kürze mit Ihnen in Verbindung setzen, um die Details zu bestätigen.
+                      </p>
 
-          <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '25px' }}>
-            <tbody>
-              <tr>
-                <td style={labelStyle}>💅 Serviço:</td>
-                <td style={valueStyle}>{service}</td>
-              </tr>
-              <tr>
-                <td style={labelStyle}>📅 Data:</td>
-                <td style={valueStyle}>{date}</td>
-              </tr>
-              <tr>
-                <td style={labelStyle}>⏰ Horário:</td>
-                <td style={valueStyle}>{time}</td>
-              </tr>
-            </tbody>
-          </table>
+                      {/* Appointment Details */}
+                      <table width="100%" cellPadding="0" cellSpacing="0" style={{ border: '1px solid #eee', borderRadius: '8px', marginBottom: '25px' }}>
+                        <tbody>
+                          <tr>
+                            <td style={{ padding: '15px', backgroundColor: '#f8f9fa' }}>
+                              <table width="100%" cellPadding="0" cellSpacing="0">
+                                <tbody>
+                                  <tr>
+                                    <td style={{ padding: '8px 0' }}><strong style={{ color: '#333' }}>Dienstleistung:</strong> {service}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={{ padding: '8px 0' }}><strong style={{ color: '#333' }}>Datum:</strong> {date}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={{ padding: '8px 0' }}><strong style={{ color: '#333' }}>Uhrzeit:</strong> {time}</td>
+                                  </tr>
+                                  <tr>
+                                    <td style={{ padding: '12px 0', borderTop: '1px solid #eee' }}>
+                                      <strong style={{ color: '#333' }}>Adresse:</strong><br/>
+                                      <a 
+                                        href="https://maps.app.goo.gl/amTiE5dBr3j7pDt36"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{ color: '#FFC0CB', textDecoration: 'none', display: 'inline-block', marginTop: '4px' }}
+                                      >
+                                        📍 Bei der Grodener Kirche 7<br/>
+                                        <span style={{ paddingLeft: '20px' }}>27472 Cuxhaven, Alemanha</span>
+                                      </a>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
 
-          <div style={{
-            padding: '15px',
-            backgroundColor: '#fdf2f8',
-            borderLeft: '4px solid #ec4899',
-            marginBottom: '25px',
-          }}>
-            <Text style={{ margin: '0', color: '#333' }}>
-              {statusMessages[status].message}
-            </Text>
-          </div>
+                      {/* Contact Options */}
+                      <table width="100%" cellPadding="0" cellSpacing="0" style={{ margin: '30px 0' }}>
+                        <tbody>
+                          <tr>
+                            <td align="center">
+                              <a 
+                                href="mailto:bs.aestheticnails@gmail.com"
+                                style={{
+                                  display: 'inline-block',
+                                  padding: '12px 24px',
+                                  backgroundColor: '#FFC0CB',
+                                  color: '#ffffff',
+                                  textDecoration: 'none',
+                                  borderRadius: '4px',
+                                  fontWeight: 'bold',
+                                  marginBottom: '10px'
+                                }}
+                              >
+                                ✉️ Per E-Mail kontaktieren
+                              </a>
+                              <br />
+                              <a 
+                                href="https://wa.me/4915208007814"
+                                style={{
+                                  display: 'inline-block',
+                                  padding: '12px 24px',
+                                  border: '2px solid #FFC0CB',
+                                  color: '#FFC0CB',
+                                  textDecoration: 'none',
+                                  borderRadius: '4px',
+                                  fontWeight: 'bold'
+                                }}
+                              >
+                                💬 Per WhatsApp schreiben
+                              </a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
 
-          <Section style={{
-            backgroundColor: '#f9fafb',
-            padding: '20px',
-            borderRadius: '8px',
-            marginTop: '30px',
-          }}>
-            <Text style={{ 
-              fontSize: '14px', 
-              color: '#666',
-              textAlign: 'center' as const,
-              margin: '0',
-            }}>
-              BS Aesthetic & Nails
-              <br />
-              Bei der Grodener Kirche 7
-              <br />
-              📞 +49 1520 8007814
-              <br />
-              📷 @bs.aesthetic.nails
-            </Text>
-          </Section>
-        </Section>
-      </Container>
-    </Html>
+                      <p style={{ color: '#666666', fontSize: '14px', textAlign: 'center' }}>
+                        Wenn Sie Änderungen vornehmen möchten, kontaktieren Sie uns bitte.
+                      </p>
+                    </td>
+                  </tr>
+
+                  {/* Footer */}
+                  <tr>
+                    <td style={{ backgroundColor: '#f8f9fa', padding: '20px', textAlign: 'center', borderTop: '1px solid #eee', borderRadius: '0 0 8px 8px' }}>
+                      <p style={{ margin: 0, color: '#666666', fontSize: '14px' }}>
+                        BS Estética & Unhas<br />
+                        Vielen Dank für Ihr Vertrauen 💖
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   );
 }
-
-const labelStyle = {
-  padding: '12px 15px',
-  fontWeight: 600,
-  backgroundColor: '#fdf2f8',
-  width: '35%',
-  verticalAlign: 'top' as const,
-  borderBottom: '1px solid #f3f4f6',
-};
-
-const valueStyle = {
-  padding: '12px 15px',
-  backgroundColor: '#fff',
-  color: '#333',
-  borderBottom: '1px solid #f3f4f6',
-}; 

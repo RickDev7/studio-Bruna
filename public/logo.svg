@@ -1,17 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <!-- Fundo rosa -->
-  <rect width="512" height="512" fill="#FFC0CB" rx="64" ry="64"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <defs>
+    <style>
+      .bg { fill: #BCA4A4; }
+      .text { fill: #FFFFFF; }
+      .monogram { fill: #FFFFFF; }
+      .butterfly { fill: #FFFFFF; }
+      .star { fill: #FFFFFF; }
+    </style>
+  </defs>
   
-  <!-- Letras BS em branco -->
-  <text x="50%" y="50%" 
-        text-anchor="middle" 
-        dominant-baseline="central"
-        fill="white"
-        font-family="Arial, sans-serif"
-        font-weight="bold"
-        font-size="280px"
-        letter-spacing="-20">
-    BS
-  </text>
+  <!-- Fundo -->
+  <rect class="bg" width="500" height="500" />
+  
+  <!-- Logo B com estrelas -->
+  <g transform="translate(150, 100)">
+    <!-- B monograma -->
+    <path class="monogram" d="M50 0 L150 0 Q200 0 200 50 L200 100 Q200 150 150 150 L50 150 Z" />
+    <!-- Estrelas -->
+    <path class="star" d="M180 20 L185 15 L190 20 L185 25 Z" />
+    <path class="star" d="M160 40 L165 35 L170 40 L165 45 Z" />
+  </g>
+  
+  <!-- Borboleta -->
+  <path class="butterfly" d="M50 150 Q60 140 70 150 Q80 160 70 170 Q60 160 50 150" />
+  
+  <!-- Texto Bruna Silva -->
+  <path class="text" d="M100 250 Q120 240 140 250 Q160 260 180 250 Q200 240 220 250 L240 260 Q260 270 280 260" />
+  
+  <!-- Texto AESTHETIC & NAILS -->
+  <text class="text" x="250" y="350" text-anchor="middle" font-family="Arial" font-size="24">AESTHETIC &amp; NAILS</text>
+  
+  <!-- Linhas decorativas -->
+  <line class="text" x1="150" y1="360" x2="350" y2="360" stroke="#FFFFFF" stroke-width="2" />
 </svg> 

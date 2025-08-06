@@ -3,24 +3,27 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import { GoogleButton } from '@/components/GoogleButton'
 import { PasswordInput } from '@/components/PasswordInput'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/config/supabase-client'
 import { toast } from 'sonner'
 
 export default function LoginPage() {
   const router = useRouter()
+  const supabase = createClient()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
+    form: ''
   })
   const [errors, setErrors] = useState({
     email: '',
     password: '',
     form: ''
   })
-  const supabase = createClientComponentClient()
 
   const validateForm = () => {
     const newErrors = {
@@ -78,12 +81,7 @@ export default function LoginPage() {
         return
       }
 
-      // Redireciona para o painel admin se for o email autorizado
-      if (formData.email === 'bs.aestheticnails@gmail.com') {
-        router.push('/admin')
-      } else {
-        router.push('/dashboard')
-      }
+      router.push('/dashboard')
       router.refresh()
     } catch (error) {
       console.error('Erro de login:', error)

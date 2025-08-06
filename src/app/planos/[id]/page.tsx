@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { PlanDetails } from '@/components/PlanDetails';
 
 const planos = [
@@ -63,12 +64,12 @@ export default function PlanPage() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Plano não encontrado</h1>
           <p className="text-gray-600 mb-8">O plano que você está procurando não existe.</p>
-          <a
+          <Link
             href="/planos"
             className="inline-flex items-center px-6 py-3 text-base font-medium rounded-full text-white bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] hover:opacity-90 transition-all duration-300"
           >
             Ver todos os planos
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -81,19 +82,19 @@ export default function PlanPage() {
           <PlanDetails plan={plano} isOpen={true} onClose={() => {}} />
           
           <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+            <Link
               href={`/pagamento?plano=${encodeURIComponent(plano.name)}&valor=${encodeURIComponent(plano.precoFidelidade)}&tipo=fidelidade`}
               className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium rounded-full text-white bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] hover:opacity-90 transition-all duration-300"
             >
               Assinar Plano
-            </a>
+            </Link>
             
-            <a
+            <Link
               href="/planos"
               className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium rounded-full text-[#FF69B4] bg-white border-2 border-[#FFB6C1] hover:bg-pink-50 transition-all duration-300"
             >
               Voltar para Planos
-            </a>
+            </Link>
           </div>
         </div>
       </div>

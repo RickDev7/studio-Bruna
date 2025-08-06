@@ -1,26 +1,25 @@
 import { Flower, Sparkles, Heart, Gem } from 'lucide-react'
+import { services } from '@/config/services'
 
 export function Problems() {
-  const services = [
+  const categorias = [
     {
       icon: <Flower className="w-6 h-6 text-[#FFC0CB]" />,
       title: "Tratamentos Faciais",
-      description: "Limpeza de pele, máscaras revitalizantes, microagulhamento e outros tratamentos para uma pele radiante e saudável."
+      description: services.filter(s => s.category === 'face').map(s => s.name).join(', '),
+      category: 'face'
     },
     {
       icon: <Sparkles className="w-6 h-6 text-[#FFC0CB]" />,
-      title: "Estética Corporal",
-      description: "Massagens modeladoras, drenagem linfática, tratamentos redutores e protocolos personalizados para seu corpo."
+      title: "Unhas",
+      description: services.filter(s => s.category === 'nails').map(s => s.name).join(', '),
+      category: 'nails'
     },
     {
       icon: <Heart className="w-6 h-6 text-[#FFC0CB]" />,
-      title: "Bem-estar",
-      description: "Massagens relaxantes, aromaterapia e tratamentos holísticos para equilibrar corpo e mente."
-    },
-    {
-      icon: <Gem className="w-6 h-6 text-[#FFC0CB]" />,
-      title: "Procedimentos Especiais",
-      description: "Design de sobrancelhas, extensão de cílios e outros serviços para realçar sua beleza natural."
+      title: "Design e Embelezamento",
+      description: services.filter(s => s.category === 'eyebrows').map(s => s.name).join(', '),
+      category: 'eyebrows'
     }
   ]
 
@@ -36,14 +35,14 @@ export function Problems() {
           </p>
         </div>
 
-        <div className="mt-20 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {services.map((service, index) => (
+        <div className="mt-20 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {categorias.map((categoria, index) => (
             <div key={index} className="relative bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
               <div className="absolute -top-4 left-6 bg-[#FFE4E8] rounded-full p-3">
-                {service.icon}
+                {categoria.icon}
               </div>
-              <h3 className="mt-8 text-lg font-medium text-gray-900">{service.title}</h3>
-              <p className="mt-2 text-base text-gray-500">{service.description}</p>
+              <h3 className="mt-8 text-lg font-medium text-gray-900">{categoria.title}</h3>
+              <p className="mt-2 text-base text-gray-500">{categoria.description}</p>
             </div>
           ))}
         </div>

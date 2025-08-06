@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Calendar } from '@/components/Calendar'
 import { TimeSlots } from '@/components/TimeSlots'
 import emailjs from '@emailjs/browser'
-import { Service } from '@/config/services'
+import { Service, services } from '@/config/services'
 
 // Função auxiliar para formatar a data
 function formatarData(data: Date): string {
@@ -40,17 +40,6 @@ export function Scheduling() {
       },
     });
   }, []);
-
-  const services = [
-    'Manicure',
-    'Pedicure',
-    'Design de Unhas',
-    'Limpeza de Pele',
-    'Lifting de Cílios',
-    'Lifting de Sobrancelhas',
-    'Hidratação Labial',
-    'Técnica com Fio'
-  ]
 
   const validateForm = () => {
     if (!selectedService) return 'Por favor, selecione um serviço'
@@ -158,17 +147,19 @@ export function Scheduling() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {services.map(service => (
               <button
-                key={service}
-                onClick={() => setSelectedService(service)}
+                key={service.id}
+                onClick={() => setSelectedService(service.id)}
                 className={`
                   group relative p-6 rounded-xl transition-all duration-300 border
-                  ${selectedService === service 
+                  ${selectedService === service.id 
                     ? 'bg-pink-50 border-pink-200 text-gray-800' 
                     : 'bg-white border-pink-50 hover:border-pink-200 text-gray-600 hover:bg-pink-50/50'}
                 `}
               >
-                <span className="text-lg font-light">{service}</span>
-                {selectedService === service && (
+                <span className="text-lg font-light">{service.name}</span>
+                <p className="text-sm text-gray-500 mt-1">{service.description}</p>
+                {/* Preço removido pois não está definido no tipo Service */}
+                {selectedService === service.id && (
                   <svg className="absolute top-4 right-4 w-5 h-5 text-pink-300" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
                   </svg>
@@ -236,7 +227,7 @@ export function Scheduling() {
             <h4 className="text-lg font-medium text-gray-800 mb-4">Resumo do Agendamento</h4>
             <div className="space-y-2">
               <p className="text-gray-600">
-                <span className="font-medium">Serviço:</span> {selectedService}
+                <span className="font-medium">Serviço:</span> {services.find(s => s.id === selectedService)?.name}
               </p>
               <p className="text-gray-600">
                 <span className="font-medium">Data:</span> {formatarData(date)}

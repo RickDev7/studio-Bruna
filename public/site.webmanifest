@@ -1,11 +1,6 @@
 {
   "name": "Bruna Silva - Aesthetic & Nails",
-  "short_name": "BS Aesthetic",
-  "description": "Serviços profissionais de estética e unhas em Cuxhaven, Alemanha.",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#FF69B4",
+  "short_name": "BS Aesthetic & Nails",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -18,16 +13,7 @@
       "type": "image/png"
     }
   ],
-  "orientation": "portrait",
-  "lang": "pt-BR",
-  "dir": "ltr",
-  "categories": ["beauty", "lifestyle", "health"],
-  "screenshots": [],
-  "shortcuts": [
-    {
-      "name": "Agendar",
-      "url": "/agendar",
-      "description": "Agende seu horário"
-    }
-  ]
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone"
 } 

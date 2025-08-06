@@ -8,28 +8,9 @@ interface EmailJSConfig {
   adminEmail: string;
 }
 
-// Função para validar uma variável de ambiente específica
-const validateEnvVar = (key: string): string => {
-  // Verifica se estamos no lado do cliente
-  if (typeof window === 'undefined') {
-    return '';
-  }
-
-  // Acessa a variável de ambiente
-  const value = process.env[key] || '';
-
-  // Verifica se a variável existe e tem valor
-  if (!value) {
-    console.warn(`⚠️ Variável de ambiente ${key} não está configurada`);
-    return '';
-  }
-
-  return value;
-};
-
 // Função para obter e validar as variáveis de ambiente
 const getEmailJSConfig = (): EmailJSConfig => {
-  // No lado do servidor, retornamos um objeto vazio
+  // Verifica se estamos no lado do cliente
   if (typeof window === 'undefined') {
     return {
       publicKey: '',
@@ -40,7 +21,6 @@ const getEmailJSConfig = (): EmailJSConfig => {
     };
   }
 
-  // Valores das variáveis de ambiente
   const config = {
     publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || '',
     serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
@@ -48,6 +28,15 @@ const getEmailJSConfig = (): EmailJSConfig => {
     adminTemplateId: process.env.NEXT_PUBLIC_EMAILJS_ADMIN_TEMPLATE_ID || '',
     adminEmail: process.env.NEXT_PUBLIC_ADMIN_EMAIL || '',
   };
+
+  // Debug das variáveis de ambiente
+  console.log('🔍 Verificando variáveis de ambiente do EmailJS:', {
+    publicKey: config.publicKey ? '✅' : '❌',
+    serviceId: config.serviceId ? '✅' : '❌',
+    userTemplateId: config.userTemplateId ? '✅' : '❌',
+    adminTemplateId: config.adminTemplateId ? '✅' : '❌',
+    adminEmail: config.adminEmail ? '✅' : '❌',
+  });
 
   // Verifica se todas as variáveis necessárias estão presentes
   const missingVars = Object.entries(config)
@@ -59,10 +48,10 @@ const getEmailJSConfig = (): EmailJSConfig => {
     console.info(`
       Para corrigir, adicione as seguintes variáveis ao arquivo .env.local:
       
-      NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=N1LpI9fHAIo0az4XG
-      NEXT_PUBLIC_EMAILJS_SERVICE_ID=service_qe1ai6q
-      NEXT_PUBLIC_EMAILJS_USER_TEMPLATE_ID=template_gx390pv
-      NEXT_PUBLIC_EMAILJS_ADMIN_TEMPLATE_ID=template_amxl97d
+      NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=pELxsCwl_sYWMQ5Ds
+      NEXT_PUBLIC_EMAILJS_SERVICE_ID=service_fvd89oq
+      NEXT_PUBLIC_EMAILJS_USER_TEMPLATE_ID=template_j4rdnu5
+      NEXT_PUBLIC_EMAILJS_ADMIN_TEMPLATE_ID=template_ynhvu4y
       NEXT_PUBLIC_ADMIN_EMAIL=bs.aestheticnails@gmail.com
     `);
   }

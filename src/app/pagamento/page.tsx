@@ -3,7 +3,7 @@
 import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Copy, Check, AlertCircle, Phone, Building } from 'lucide-react';
+import { Copy, Check, AlertCircle, Phone } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
 
 function PagamentoContent() {
@@ -64,38 +64,37 @@ function PagamentoContent() {
               <h2 className="text-lg font-medium mb-2">Plano Selecionado</h2>
               <p className="text-2xl font-bold mb-2">{plano}</p>
               <p className="text-lg">{tipo === 'fidelidade' ? 'Com Fidelização' : 'Sem Fidelização'}</p>
-              <p className="text-3xl font-bold mt-4">{valor}</p>
+              <p className="text-3xl font-bold mt-4">{valor}/mês</p>
             </div>
-          </div>
 
-          {/* Dados Bancários */}
-          <div className="space-y-8">
-            <div className="space-y-6">
-              {dadosBancarios.map(({ label, value, id }) => (
+            {/* Dados Bancários */}
+            <div className="space-y-4">
+              {dadosBancarios.map((dado) => (
                 <div
-                  key={id}
-                  className="group relative bg-white rounded-xl border border-[#FFB6C1] p-4 transition-all duration-300 hover:shadow-md hover:border-[#FF69B4]"
+                  key={dado.id}
+                  className="bg-white p-4 rounded-xl border border-[#FFB6C1] flex items-center justify-between"
                 >
-                  <label className="block text-sm font-medium text-gray-600 mb-1">{label}</label>
-                  <div className="flex items-center justify-between">
-                    <p className="text-gray-800 font-medium">{value}</p>
-                    <button
-                      onClick={() => handleCopy(value, id)}
-                      className="ml-2 p-2 text-gray-500 hover:text-[#FF69B4] rounded-lg transition-colors duration-200 hover:bg-pink-50"
-                      title="Copiar"
-                    >
-                      {copiedField === id ? (
-                        <Check className="w-5 h-5 text-green-500" />
-                      ) : (
-                        <Copy className="w-5 h-5" />
-                      )}
-                    </button>
+                  <div className="text-left">
+                    <p className="text-sm text-gray-500">{dado.label}</p>
+                    <p className="text-lg font-medium text-gray-800">{dado.value}</p>
                   </div>
+                  <button
+                    onClick={() => handleCopy(dado.value, dado.id)}
+                    className="p-2 hover:bg-pink-50 rounded-full transition-colors"
+                    aria-label={`Copiar ${dado.label}`}
+                  >
+                    {copiedField === dado.id ? (
+                      <Check className="w-5 h-5 text-green-500" />
+                    ) : (
+                      <Copy className="w-5 h-5 text-[#FF69B4]" />
+                    )}
+                  </button>
                 </div>
               ))}
             </div>
 
-            <div className="bg-gradient-to-r from-[#FFE4E1] to-[#FFF0F5] p-6 rounded-xl border border-[#FFB6C1]">
+            {/* Informações Importantes */}
+            <div className="mt-8 bg-gradient-to-r from-[#FFE4E1] to-[#FFF0F5] p-6 rounded-xl border border-[#FFB6C1]">
               <div className="flex items-start">
                 <AlertCircle className="w-6 h-6 text-[#FF69B4] mr-3 flex-shrink-0 mt-1" />
                 <div>
@@ -125,13 +124,14 @@ function PagamentoContent() {
               </div>
             </div>
 
-            <div className="text-center mt-8">
-              <a 
-                className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-full text-[#FF69B4] border-2 border-[#FFB6C1] hover:bg-[#FFB6C1] hover:text-white transition-all duration-300" 
+            {/* Botão Voltar */}
+            <div className="mt-8">
+              <Link
                 href="/#planos"
+                className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-full text-[#FF69B4] border-2 border-[#FFB6C1] hover:bg-[#FFB6C1] hover:text-white transition-all duration-300"
               >
                 Voltar para os Planos
-              </a>
+              </Link>
             </div>
           </div>
         </div>

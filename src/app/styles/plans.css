@@ -1,29 +1,53 @@
 /* Animações para os cards de planos */
-.plan-card {
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: center;
-  opacity: 0;
-  transform: translateY(20px);
+.group {
+  will-change: transform;
 }
 
-.plan-card.animate-in {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
+.group:hover {
+  z-index: 10;
 }
 
-.plan-card:hover {
-  transform: translateY(-12px);
+/* Efeito de entrada suave */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Efeito de hover nos cards */
-.plan-card > div {
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 192, 203, 0.1);
-  transition: all 0.3s ease;
+.group {
+  animation: fadeInUp 0.6s ease-out forwards;
 }
 
-.plan-card:hover > div {
-  border-color: rgba(255, 192, 203, 0.3);
+/* Otimização de performance */
+.group {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+/* Efeitos de hover suaves */
+.group:hover .bg-gradient-to-br {
+  opacity: 1;
+}
+
+/* Animação do ícone */
+.group:hover .transform {
+  transform: scale(1.1) rotate(0deg);
+}
+
+/* Transição suave dos textos */
+.group:hover .text-gray-600 {
+  color: #1a1a1a;
+}
+
+/* Efeito de profundidade */
+.group:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 /* Badge "Mais Popular" */
@@ -72,6 +96,7 @@
 .price-tag {
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   transform-origin: center;
+  will-change: transform;
 }
 
 .plan-card:hover .price-tag {
@@ -96,89 +121,45 @@
 
 /* Animação de fade in para o título */
 .animate-fade-in {
+  opacity: 0;
   animation: fadeIn 0.8s ease-out forwards;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-10px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
+/* Animação de entrada sequencial dos cards */
+.plan-card:nth-child(1) { animation-delay: 0.2s; }
+.plan-card:nth-child(2) { animation-delay: 0.4s; }
+.plan-card:nth-child(3) { animation-delay: 0.6s; }
+
 /* Efeito de hover nos botões */
-.plan-button {
-  position: relative;
-  overflow: hidden;
-}
-
-.plan-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-}
-
-.plan-button:hover::before {
-  transform: translateX(100%);
-}
-
-/* Efeito de hover nos ícones */
-.feature-item svg {
-  transition: transform 0.3s ease;
-}
-
-.feature-item:hover svg {
-  transform: scale(1.2);
-}
-
-/* Delays de animação */
-.animate-delay-100 {
-  animation-delay: 100ms;
-}
-
-.animate-delay-200 {
-  animation-delay: 200ms;
-}
-
-.animate-delay-300 {
-  animation-delay: 300ms;
-}
-
-/* Sombra especial para o plano popular */
-.shadow-pink-xl {
-  box-shadow: 0 20px 25px -5px rgba(255, 192, 203, 0.1),
-              0 10px 10px -5px rgba(255, 192, 203, 0.04);
+.hover-glow:hover {
+  box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
 }
 
 /* Efeito de gradiente animado */
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.gradient-animate {
+  background-size: 200% 200%;
+  animation: gradientMove 3s ease infinite;
 }
 
-.bg-gradient-animate {
-  background-size: 200% 200%;
-  animation: gradient 15s ease infinite;
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Otimizações de performance */
+.plan-card {
+  backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 } 

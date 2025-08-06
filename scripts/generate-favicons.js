@@ -2,48 +2,54 @@ const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 
-const inputImage = path.join(__dirname, '../public/logo.svg');
+const inputImage = path.join(__dirname, '../public/images/logo.png.jpg');
 const outputDir = path.join(__dirname, '../public');
 
 async function generateFavicons() {
   try {
-    // Remover favicon existente se houver
-    const faviconPath = path.join(outputDir, 'favicon.ico');
-    if (fs.existsSync(faviconPath)) {
-      fs.unlinkSync(faviconPath);
-    }
-
-    // Gerar favicon.ico (32x32)
+    // Gerar favicon.png (16x16)
     await sharp(inputImage)
-      .resize(32, 32, {
+      .resize(16, 16, {
         fit: 'contain',
-        background: { r: 0, g: 0, b: 0, alpha: 0 }
+        background: { r: 255, g: 255, b: 255, alpha: 1 }
       })
       .toFormat('png')
       .toFile(path.join(outputDir, 'favicon.png'));
 
-    // Renomear para .ico
-    fs.renameSync(
-      path.join(outputDir, 'favicon.png'),
-      path.join(outputDir, 'favicon.ico')
-    );
-
-    // Gerar apple-icon.png (180x180)
+    // Gerar apple-touch-icon.png (180x180)
     await sharp(inputImage)
       .resize(180, 180, {
         fit: 'contain',
-        background: { r: 0, g: 0, b: 0, alpha: 0 }
+        background: { r: 255, g: 255, b: 255, alpha: 1 }
       })
-      .png()
-      .toFile(path.join(outputDir, 'apple-icon.png'));
+      .toFormat('png')
+      .toFile(path.join(outputDir, 'apple-touch-icon.png'));
+
+    // Gerar android-chrome-192x192.png
+    await sharp(inputImage)
+      .resize(192, 192, {
+        fit: 'contain',
+        background: { r: 255, g: 255, b: 255, alpha: 1 }
+      })
+      .toFormat('png')
+      .toFile(path.join(outputDir, 'android-chrome-192x192.png'));
+
+    // Gerar android-chrome-512x512.png
+    await sharp(inputImage)
+      .resize(512, 512, {
+        fit: 'contain',
+        background: { r: 255, g: 255, b: 255, alpha: 1 }
+      })
+      .toFormat('png')
+      .toFile(path.join(outputDir, 'android-chrome-512x512.png'));
 
     // Gerar og-image.png (1200x630)
     await sharp(inputImage)
       .resize(1200, 630, {
         fit: 'contain',
-        background: { r: 0, g: 0, b: 0, alpha: 0 }
+        background: { r: 255, g: 255, b: 255, alpha: 1 }
       })
-      .png()
+      .toFormat('png')
       .toFile(path.join(outputDir, 'og-image.png'));
 
     console.log('Favicons gerados com sucesso!');

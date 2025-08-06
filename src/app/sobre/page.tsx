@@ -8,7 +8,7 @@ export default function SobrePage() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent mb-4">
-            Sobre o Studio Bruna
+            Sobre a Bruna Silva - Aesthetic & Nails
           </h1>
           <p className="text-gray-600 text-lg">
             Conheça nossa história e compromisso com a beleza
@@ -61,7 +61,7 @@ export default function SobrePage() {
             <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#FFC0CB] transform hover:scale-105 transition-all duration-300">
               <h3 className="text-2xl font-bold text-[#FF69B4] mb-4">Nossa História</h3>
               <p className="text-gray-600 leading-relaxed">
-                O Studio Bruna nasceu do sonho de proporcionar serviços de estética de alta qualidade em Cuxhaven.
+                A Bruna Silva - Aesthetic & Nails nasceu do sonho de proporcionar serviços de estética de alta qualidade em Cuxhaven.
                 Com anos de experiência e formação especializada, nossa equipe se dedica a oferecer o melhor em
                 cuidados de beleza, combinando técnicas tradicionais com as mais recentes inovações do setor.
               </p>

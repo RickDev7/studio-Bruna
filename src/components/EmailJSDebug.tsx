@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { emailjsConfig } from '@/config/emailjs';
-import { useEmailJSContext } from './EmailJSProvider';
 
 interface ConfigStatus {
   name: string;
@@ -13,9 +12,10 @@ interface ConfigStatus {
 
 export function EmailJSDebug() {
   const [configStatus, setConfigStatus] = useState<ConfigStatus[]>([]);
-  const { isReady } = useEmailJSContext();
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
+    setIsReady(true);
     const status: ConfigStatus[] = [
       {
         name: 'Chave Pública',
@@ -67,6 +67,7 @@ export function EmailJSDebug() {
           <span className={`text-xs px-2 py-1 rounded ${allConfigured ? 'bg-green-500' : 'bg-red-500'}`}>
             {allConfigured ? '✅ Config OK' : `❌ ${missingCount} pendente${missingCount > 1 ? 's' : ''}`}
           </span>
+          {/* Remover ou corrigir a importação de './EmailJSProvider' */}
           <span className={`text-xs px-2 py-1 rounded ${isReady ? 'bg-green-500' : 'bg-yellow-500'}`}>
             {isReady ? '✅ Inicializado' : '⚠️ Aguardando'}
           </span>

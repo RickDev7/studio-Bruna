@@ -1,74 +1,64 @@
 'use client'
 
-import { useEffect } from 'react'
+import React from 'react';
+import { Calendar, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 import Image from 'next/image'
 
 export function Hero() {
-  useEffect(() => {
-    const handleScroll = () => {
-      const elements = document.querySelectorAll('.animate-on-scroll')
-      elements.forEach((element) => {
-        const rect = element.getBoundingClientRect()
-        const isVisible = rect.top <= window.innerHeight * 0.75
-
-        if (isVisible) {
-          element.classList.add('opacity-100', 'translate-y-0')
-          element.classList.remove('opacity-0', 'translate-y-4')
-        }
-      })
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    handleScroll()
-
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
   return (
-    <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#FFC0CB]/20">
-      {/* Imagem de fundo com efeito parallax */}
-      <div className="absolute inset-0 overflow-hidden">
+    <div className="relative h-[600px] md:h-[700px] lg:h-[800px] w-full overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
         <Image
           src="/images/hero-nails.jpg"
-          alt="Studio Bruna - Estética & Unhas"
+          alt="Hero background"
           fill
-          sizes="100vw"
-          style={{ objectFit: 'cover', objectPosition: 'center 40%' }}
-          className="opacity-50"
           priority
+          quality={100}
+          style={{ objectFit: 'cover', objectPosition: 'center' }}
         />
+        {/* Gradiente */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/30" />
       </div>
 
-      {/* Conteúdo principal */}
-      <div className="relative w-full py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center space-y-12">
-            {/* Título com animação */}
-            <div className="space-y-4 animate-fade-in">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent">
-                Bruna Silva - Aesthetic & Nails
-              </h1>
-              <p className="text-xl sm:text-2xl leading-relaxed text-gray-600 max-w-xl mx-auto">
-                Realce sua beleza natural com nossos serviços especializados em estética e cuidados pessoais.
-              </p>
-            </div>
+      {/* Conteúdo */}
+      <div className="relative h-full flex items-center justify-center">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight animate-fadeIn">
+            <span className="block text-white mb-4 drop-shadow-lg">
+              Bruna Silva
+            </span>
+            <span className="block bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] bg-clip-text text-transparent">
+              Aesthetic & Nails
+            </span>
+          </h1>
 
-            {/* Botões com animação */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 animate-fade-in-up">
-              <a
-                href="/agendar"
-                className="w-full sm:w-auto rounded-full bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] px-8 py-4 text-lg font-semibold text-white shadow-lg hover:from-[#FF69B4] hover:to-[#FFB6C1] transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
-              >
-                Agendar Horário
-              </a>
-              <a
-                href="#servicos"
-                className="w-full sm:w-auto text-lg font-semibold leading-6 text-gray-700 hover:text-[#FF69B4] transition-colors duration-200 flex items-center justify-center group"
-              >
-                Ver Serviços 
-                <span className="ml-2 transform group-hover:translate-x-1 transition-transform duration-200">→</span>
-              </a>
-            </div>
+          <p className="mt-6 text-lg sm:text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed animate-fadeIn delay-200">
+            <span className="block font-medium drop-shadow-lg">
+              Permita-se um momento de beleza!
+            </span>
+            <span className="block mt-2 font-light text-white/80">
+              Tratamentos profissionais de beleza e cuidados para seu bem-estar e autoestima.
+            </span>
+          </p>
+
+          <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center animate-fadeIn delay-300">
+            <Link
+              href="/agendar"
+              className="group w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-white bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] hover:opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            >
+              <Calendar className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+              Agendar agora
+            </Link>
+
+            <Link
+              href="/#servicos"
+              className="group w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-white bg-white/10 backdrop-blur-sm border border-white/30 hover:bg-white/20 transition-all duration-300 transform hover:scale-105"
+            >
+              Nossos Serviços
+              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+            </Link>
           </div>
         </div>
       </div>

@@ -14,8 +14,7 @@ export interface Appointment {
   id: string;
   user_id: string;
   service: string;
-  date: string;
-  time: string;
+  scheduled_at: string;
   status: AppointmentStatus;
   notes?: string;
   created_at: string;
@@ -44,10 +43,8 @@ export interface AppointmentHistory {
   action: 'created' | 'updated' | 'deleted';
   old_status?: AppointmentStatus;
   new_status?: AppointmentStatus;
-  old_date?: string;
-  new_date?: string;
-  old_time?: string;
-  new_time?: string;
+  old_scheduled_at?: string;
+  new_scheduled_at?: string;
   notes?: string;
   changed_by: string;
 }

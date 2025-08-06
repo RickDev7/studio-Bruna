@@ -20,11 +20,11 @@ function SucessoContent() {
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-[#FFB6C1] to-[#FFE4E1] mb-6">
               <CheckCircle2 className="w-12 h-12 text-[#FF69B4]" />
             </div>
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 text-center">
               Obrigado por escolher a Bruna Silva - Aesthetic & Nails
             </h1>
-            <p className="text-gray-600 text-lg mb-6">
-              Obrigado por escolher o Studio Bruna
+            <p className="mt-4 text-xl text-gray-600 text-center">
+              Seu agendamento foi confirmado com sucesso!
             </p>
           </div>
 
@@ -79,7 +79,7 @@ function SucessoContent() {
               rel="noopener noreferrer"
               className="block w-full py-3 px-4 rounded-full font-medium text-[#FF69B4] border-2 border-[#FFB6C1] hover:bg-[#FFB6C1] hover:text-white transition-all duration-300 text-center"
             >
-              Falar com o Studio
+              Falar com a Bruna Silva - Aesthetic & Nails
             </a>
           </div>
         </div>

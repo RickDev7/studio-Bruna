@@ -3,12 +3,11 @@
 import { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { emailjsConfig } from '@/config/emailjs';
-import { useEmailJSContext } from './EmailJSProvider';
 
 export function EmailTest() {
   const [isSending, setIsSending] = useState(false);
   const [result, setResult] = useState<string>('');
-  const { isReady } = useEmailJSContext();
+  const isReady = true; // Assuming EmailJS is always ready for development
 
   const handleTestEmail = async () => {
     if (!isReady) {

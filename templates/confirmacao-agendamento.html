@@ -1,99 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmação de Agendamento</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anfrage erhalten</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #F5F5F5; font-family: 'Helvetica Neue', Arial, sans-serif;">
-    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
-        <tr>
-            <td align="center" style="padding: 40px 0;">
-                <table role="presentation" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse; background-color: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <!-- Cabeçalho -->
-                    <tr>
-                        <td style="background-color: #FFC0CB; padding: 40px 20px; text-align: center; border-radius: 12px 12px 0 0;">
-                            <h2 style="color: white; font-size: 28px; margin: 0; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                                Confirmação de Agendamento - {{business_name}}
-                            </h2>
-                        </td>
-                    </tr>
+<body style="margin:0; padding:0; background-color:#f5f5f5; font-family: Arial, sans-serif;">
 
-                    <!-- Conteúdo -->
-                    <tr>
-                        <td style="padding: 40px 30px;">
-                            <p style="font-size: 20px; color: #2D3748; margin-bottom: 25px;">
-                                Olá {{to_name}},
-                            </p>
-
-                            <p style="color: #4A4A4A; line-height: 1.7;">
-                                Que ótimo ter você conosco! Recebemos sua solicitação de agendamento e aqui estão os detalhes:
-                            </p>
-
-                            <!-- Detalhes do Agendamento -->
-                            <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F8FAFC; margin: 25px 0; border-radius: 12px; border: 1px solid #E2E8F0;">
-                                <tr>
-                                    <td style="padding: 25px;">
-                                        <p style="margin: 15px 0;">• <strong>Serviço:</strong> {{service}}</p>
-                                        <p style="margin: 15px 0;">• <strong>Data:</strong> {{date}}</p>
-                                        <p style="margin: 15px 0;">• <strong>Horário:</strong> {{time}}</p>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <!-- Nota Importante -->
-                            <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background-color: #FFF5F5; margin: 25px 0; border-radius: 12px; border-left: 4px solid #FFC0CB;">
-                                <tr>
-                                    <td style="padding: 20px;">
-                                        <p style="margin: 0;"><strong>⚠️ Importante:</strong> Em breve entraremos em contato para confirmar seu agendamento. Fique atenta ao seu telefone!</p>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <!-- Informações do Estabelecimento -->
-                            <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background-color: #F8FAFC; margin: 25px 0; border-radius: 12px; border: 1px solid #E2E8F0;">
-                                <tr>
-                                    <td style="padding: 30px; text-align: center;">
-                                        <h3 style="color: #2D3748; margin-bottom: 15px; font-size: 22px;">{{business_name}}</h3>
-                                        <p style="margin: 10px 0; color: #4A5568;">{{business_address}}</p>
-                                        <p style="margin: 10px 0; color: #4A5568;">📞 {{business_phone}}</p>
-                                        <p style="margin: 10px 0;">
-                                            <a href="https://maps.google.com/?q={{business_address}}" style="color: #FFC0CB; text-decoration: none;">📍 Ver no Google Maps</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <p style="color: #4A4A4A; line-height: 1.7;">
-                                Caso precise reagendar ou cancelar, por favor entre em contato conosco através do telefone ou WhatsApp com pelo menos 24 horas de antecedência.
-                            </p>
-
-                            <p style="color: #4A4A4A; line-height: 1.7;">
-                                Mal podemos esperar para receber você! ✨
-                            </p>
-
-                            <!-- Links Sociais -->
-                            <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin-top: 20px;">
-                                <tr>
-                                    <td align="center">
-                                        <a href="https://instagram.com/{{instagram_handle}}" style="color: #FFC0CB; text-decoration: none; margin: 0 10px;">📸 Instagram</a>
-                                        <a href="https://wa.me/{{whatsapp_number}}" style="color: #FFC0CB; text-decoration: none; margin: 0 10px;">💬 WhatsApp</a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <!-- Rodapé -->
-                    <tr>
-                        <td style="text-align: center; padding: 30px; background-color: #F8FAFC; border-top: 1px solid #E2E8F0; border-radius: 0 0 12px 12px;">
-                            <p style="color: #718096; margin: 0;">Atenciosamente,</p>
-                            <p style="color: #718096; font-style: italic; margin-top: 10px;">Equipe {{business_name}}</p>
-                        </td>
-                    </tr>
-                </table>
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f5f5f5;">
+    <tr>
+      <td align="center" style="padding: 40px 20px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; background-color:#ffffff; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+          
+          <!-- Kopfzeile -->
+          <tr>
+            <td align="center" bgcolor="#FFC0CB" style="padding: 40px 20px; border-radius:8px 8px 0 0;">
+              <h1 style="color:#ffffff; font-size:24px; margin:0;">Wir haben Ihre Anfrage erhalten!</h1>
             </td>
-        </tr>
-    </table>
+          </tr>
+
+          <!-- Begrüßung und Nachricht -->
+          <tr>
+            <td style="padding: 30px 20px;">
+              <p style="font-size:18px; color:#333333; margin:0 0 20px 0;">Hallo {{from_name}},</p>
+
+              <p style="font-size:16px; color:#333333; line-height:1.5; margin-bottom:25px;">
+                Vielen Dank für Ihr Interesse! Wir haben Ihre Terminanfrage erhalten und werden uns in Kürze mit Ihnen in Verbindung setzen, um die Details zu bestätigen.
+              </p>
+
+              <!-- Anfragedetails -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #eee; border-radius: 8px; margin-bottom: 25px;">
+                <tr>
+                  <td style="padding: 15px; background-color: #f8f9fa;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="padding: 8px 0;"><strong style="color:#333;">Dienstleistung:</strong> {{service}}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 8px 0;"><strong style="color:#333;">Datum:</strong> {{date}}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 8px 0;"><strong style="color:#333;">Uhrzeit:</strong> {{time}}</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 8px 0;">
+                          <strong style="color:#333;">Adresse:</strong> 
+                          <a href="{{address_link}}" style="color: #FFC0CB; text-decoration: none;" target="_blank">
+                            📍 {{address}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Kontaktoptionen -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+                <tr>
+                  <td align="center">
+                    <a href="mailto:bs.aestheticnails@gmail.com" style="display:inline-block; padding:12px 24px; background-color:#FFC0CB; color:#ffffff; text-decoration:none; border-radius:4px; font-weight:bold; margin-bottom:10px;">✉️ Per E-Mail kontaktieren</a>
+                    <br />
+                    <a href="https://wa.me/4915208007814" style="display:inline-block; padding:12px 24px; border:2px solid #FFC0CB; color:#FFC0CB; text-decoration:none; border-radius:4px; font-weight:bold;">💬 Per WhatsApp schreiben</a>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="color:#666666; font-size:14px; text-align:center;">
+                Wenn Sie Änderungen vornehmen möchten, kontaktieren Sie uns bitte.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Fußzeile -->
+          <tr>
+            <td style="background-color:#f8f9fa; padding:20px; text-align:center; border-top:1px solid #eee; border-radius:0 0 8px 8px;">
+              <p style="margin:0; color:#666666; font-size:14px;">
+                BS Estética & Unhas<br />
+                Vielen Dank für Ihr Vertrauen 💖
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
 </body>
-</html> 
+</html>

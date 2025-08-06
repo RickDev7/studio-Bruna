@@ -24,7 +24,7 @@ class ReminderService {
   // Agendar lembretes para um agendamento
   async scheduleReminders(appointment: Appointment) {
     try {
-      const appointmentDate = new Date(`${appointment.date}T${appointment.time}`);
+      const appointmentDate = new Date(appointment.scheduled_at);
       
       // Agendar lembrete por email para 24h antes
       const reminder = {
@@ -67,8 +67,8 @@ class ReminderService {
             userName: appointment.profiles.full_name || 'Cliente',
             userEmail: appointment.profiles.email,
             service: appointment.service,
-            date: appointment.date,
-            time: appointment.time
+            date: new Date(appointment.scheduled_at).toLocaleDateString(),
+            time: new Date(appointment.scheduled_at).toLocaleTimeString()
           });
 
           // Atualizar status do lembrete

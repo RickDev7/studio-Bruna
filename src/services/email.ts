@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 interface SendEmailProps {
@@ -53,9 +53,17 @@ const createTransporter = () => {
 // Função auxiliar para formatar data e hora
 const formatDateTime = (date: string, time: string) => {
   try {
-    const [year, month, day] = date.split('-').map(Number);
-    const [hours, minutes] = time.split(':').map(Number);
-    const dateObj = new Date(year, month - 1, day, hours, minutes);
+    let dateObj: Date;
+    
+    // Verifica se a data está no formato DD/MM/YYYY
+    if (date.includes('/')) {
+      dateObj = parse(date + ' ' + time, 'dd/MM/yyyy HH:mm', new Date());
+    } else {
+      // Assume formato YYYY-MM-DD
+      const [year, month, day] = date.split('-').map(Number);
+      const [hours, minutes] = time.split(':').map(Number);
+      dateObj = new Date(year, month - 1, day, hours, minutes);
+    }
 
     const formattedDate = format(dateObj, "dd 'de' MMMM 'de' yyyy", { locale: ptBR });
     const formattedTime = format(dateObj, 'HH:mm');
@@ -118,7 +126,7 @@ export async function sendAppointmentConfirmation({
     const { formattedDate, formattedTime } = formatDateTime(date, time);
 
     // Email para o cliente
-    const clientSubject = 'Confirmação de Agendamento - Studio Bruna';
+    const clientSubject = 'Confirmação de Agendamento - Bruna Silva - Aesthetic & Nails';
     const clientText = `
 Olá ${userName},
 
@@ -143,7 +151,7 @@ Observações importantes:
 Qualquer dúvida, entre em contato conosco.
 
 Atenciosamente,
-Studio Bruna
+Bruna Silva - Aesthetic & Nails
     `.trim();
 
     const clientResult = await sendEmail({

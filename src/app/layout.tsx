@@ -1,25 +1,23 @@
-import './globals.css'
+import React from 'react'
 import { Inter } from 'next/font/google'
-import type { Metadata, Viewport } from 'next'
-import { EmailJSProvider } from '@/components/EmailJSProvider'
-import { EmailJSDebug } from '@/components/EmailJSDebug'
-import { EmailTest } from '@/components/EmailTest'
+import './globals.css'
+import { AppProviders } from '@/components/AppProviders'
+import { Metadata } from 'next'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const viewport: Viewport = {
-  themeColor: '#FFC0CB',
-}
-
 export const metadata: Metadata = {
-  title: 'BS Aesthetic & Nails',
-  description: 'Serviços de estética e unhas em Cuxhaven',
-  metadataBase: new URL('http://localhost:3002'),
-  manifest: '/manifest.json',
-  icons: [
-    { rel: 'icon', url: '/favicon.png', type: 'image/png' },
-    { rel: 'apple-touch-icon', url: '/apple-touch-icon.png' },
-  ]
+  title: 'Bruna Silva - Aesthetic & Nails',
+  description: 'Serviços profissionais de estética e beleza em Cuxhaven.',
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/apple-touch-icon.png',
+    other: {
+      rel: 'apple-touch-icon-precomposed',
+      url: '/apple-touch-icon.png',
+    },
+  },
 }
 
 export default function RootLayout({
@@ -28,19 +26,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.png" />
       </head>
-      <body className={inter.className}>
-        <EmailJSProvider>
-        <main className="min-h-screen bg-gray-50">
-          {children}
-        </main>
-          <EmailJSDebug />
-          <EmailTest />
-        </EmailJSProvider>
+      <body className={inter.className} suppressHydrationWarning>
+        <div id="app" className="min-h-screen bg-gray-50">
+          <AppProviders>
+            {children}
+          </AppProviders>
+        </div>
       </body>
     </html>
   )

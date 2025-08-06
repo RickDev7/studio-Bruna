@@ -1,16 +1,48 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
+import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import type { Database } from '@/types/database.types'
 
 export async function middleware(request: NextRequest) {
+  try {
   const res = NextResponse.next()
-  const supabase = createMiddlewareClient<Database>({ req: request, res })
+    
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  // Debug das variáveis de ambiente
-  console.log('DEBUG - Variáveis de ambiente:')
-  console.log('NEXT_PUBLIC_SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
-  console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+    if (!supabaseUrl) {
+      throw new Error('NEXT_PUBLIC_SUPABASE_URL não está definida');
+    }
+
+    if (!supabaseAnonKey) {
+      throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEY não está definida');
+    }
+
+    const supabase = createServerClient(
+      supabaseUrl,
+      supabaseAnonKey,
+      {
+        cookies: {
+          get(name: string) {
+            return request.cookies.get(name)?.value
+          },
+          set(name: string, value: string, options: any) {
+            res.cookies.set({
+              name,
+              value,
+              ...options,
+            })
+          },
+          remove(name: string, options: any) {
+            res.cookies.set({
+              name,
+              value: '',
+              ...options,
+            })
+          },
+        },
+      }
+    )
 
   const {
     data: { session },
@@ -44,6 +76,10 @@ export async function middleware(request: NextRequest) {
   }
 
   return res
+  } catch (error) {
+    console.error('Erro no middleware:', error);
+    return NextResponse.next();
+  }
 }
 
 export const config = {

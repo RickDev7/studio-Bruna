@@ -1,88 +1,81 @@
-import { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useState, useEffect } from 'react'
+import { createClient } from '@/config/supabase-client'
 
 interface AdminStats {
-  todayAppointments: number;
-  weekAppointments: number;
-  totalClients: number;
-  isLoading: boolean;
-  error: string | null;
+  totalAppointments: number
+  confirmedAppointments: number
+  pendingAppointments: number
+  canceledAppointments: number
+  totalClients: number
+  totalRevenue: number
 }
 
 export function useAdminStats() {
   const [stats, setStats] = useState<AdminStats>({
-    todayAppointments: 0,
-    weekAppointments: 0,
+    totalAppointments: 0,
+    confirmedAppointments: 0,
+    pendingAppointments: 0,
+    canceledAppointments: 0,
     totalClients: 0,
-    isLoading: true,
-    error: null
-  });
-
-  const supabase = createClientComponentClient();
+    totalRevenue: 0
+  })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    async function fetchStats() {
+    const fetchStats = async () => {
       try {
-        // Data de hoje
-        const today = new Date();
-        const todayStr = today.toISOString().split('T')[0];
+        const supabase = createClient()
 
-        // Data de início da semana (domingo)
-        const startOfWeek = new Date(today);
-        startOfWeek.setDate(today.getDate() - today.getDay());
-        const startOfWeekStr = startOfWeek.toISOString().split('T')[0];
-
-        // Data de fim da semana (sábado)
-        const endOfWeek = new Date(startOfWeek);
-        endOfWeek.setDate(startOfWeek.getDate() + 6);
-        const endOfWeekStr = endOfWeek.toISOString().split('T')[0];
-
-        // Buscar agendamentos de hoje
-        const { data: todayAppointments, error: todayError } = await supabase
+        // Buscar estatísticas de agendamentos
+        const { data: appointments, error: appointmentsError } = await supabase
           .from('appointments')
-          .select('id')
-          .eq('date', todayStr)
-          .eq('status', 'confirmed');
+          .select('status')
 
-        if (todayError) throw todayError;
+        if (appointmentsError) throw appointmentsError
 
-        // Buscar agendamentos da semana
-        const { data: weekAppointments, error: weekError } = await supabase
-          .from('appointments')
-          .select('id')
-          .gte('date', startOfWeekStr)
-          .lte('date', endOfWeekStr)
-          .eq('status', 'confirmed');
-
-        if (weekError) throw weekError;
-
-        // Buscar total de clientes únicos
-        const { data: uniqueClients, error: clientsError } = await supabase
+        // Buscar total de clientes
+        const { count: clientsCount, error: clientsError } = await supabase
           .from('profiles')
-          .select('id')
-          .neq('role', 'admin');
+          .select('id', { count: 'exact', head: true })
+          .eq('role', 'client')
 
-        if (clientsError) throw clientsError;
+        if (clientsError) throw clientsError
 
-        setStats({
-          todayAppointments: todayAppointments?.length || 0,
-          weekAppointments: weekAppointments?.length || 0,
-          totalClients: uniqueClients?.length || 0,
-          isLoading: false,
-          error: null
-        });
-      } catch (err: any) {
-        console.error('Erro ao buscar estatísticas:', err);
-        setStats(prev => ({
-          ...prev,
-          isLoading: false,
-          error: 'Erro ao carregar estatísticas'
-        }));
+        // Calcular estatísticas
+        const stats = appointments?.reduce((acc, curr) => ({
+          ...acc,
+          totalAppointments: acc.totalAppointments + 1,
+          confirmedAppointments: curr.status === 'confirmed' ? acc.confirmedAppointments + 1 : acc.confirmedAppointments,
+          pendingAppointments: curr.status === 'pending' ? acc.pendingAppointments + 1 : acc.pendingAppointments,
+          canceledAppointments: curr.status === 'canceled' ? acc.canceledAppointments + 1 : acc.canceledAppointments,
+        }), {
+          totalAppointments: 0,
+          confirmedAppointments: 0,
+          pendingAppointments: 0,
+          canceledAppointments: 0,
+          totalClients: clientsCount || 0,
+          totalRevenue: 0 // Implementar cálculo de receita se necessário
+        })
+
+        setStats(stats || {
+          totalAppointments: 0,
+          confirmedAppointments: 0,
+          pendingAppointments: 0,
+          canceledAppointments: 0,
+          totalClients: clientsCount || 0,
+          totalRevenue: 0
+        })
+      } catch (error) {
+        console.error('Erro ao buscar estatísticas:', error)
+        setError(error instanceof Error ? error.message : 'Erro ao buscar estatísticas')
+      } finally {
+        setLoading(false)
       }
     }
 
-    fetchStats();
-  }, [supabase]);
+    fetchStats()
+  }, [])
 
-  return stats;
+  return { stats, loading, error }
 } 

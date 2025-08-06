@@ -1,44 +1,182 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
+import type { Database } from '@/lib/database.types'
 
-export const dynamic = 'force-dynamic';
+// Configuração do Supabase
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-export async function POST(request: Request) {
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Variáveis de ambiente do Supabase não configuradas')
+}
+
+// Cliente Supabase com configuração otimizada
+const supabase = createClient<Database>(supabaseUrl, supabaseKey, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+    storage: undefined
+  },
+  global: {
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
+    },
+    fetch: (url, options) => {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 segundos timeout
+
+      return fetch(url, {
+        ...options,
+        signal: controller.signal,
+        keepalive: true,
+        cache: 'no-store'
+      }).finally(() => {
+        clearTimeout(timeoutId)
+      })
+    }
+  },
+  db: {
+    schema: 'public'
+  },
+  realtime: {
+    params: {
+      eventsPerSecond: 2
+    }
+  }
+})
+
+export async function GET(req: Request) {
   try {
-    const supabase = createRouteHandlerClient({ cookies });
-    const body = await request.json();
+    console.log('[API] ➤ Recebendo requisição GET /api/appointments')
 
-    // Verificar autenticação
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+    const { searchParams } = new URL(req.url)
+    const startDate = searchParams.get('startDate')
+    const endDate = searchParams.get('endDate')
+
+    console.log('[API] ➤ Parâmetros recebidos:', { startDate, endDate })
+
+    if (!startDate || !endDate) {
+      return NextResponse.json({
+        error: 'Parâmetros inválidos',
+        details: 'startDate e endDate são obrigatórios',
+        params: { startDate, endDate }
+      }, { status: 400 })
     }
 
-    // Chamar a função RPC create_appointment
-    const { data, error } = await supabase.rpc('create_appointment', {
-      p_service: body.service,
-      p_date: body.date,
-      p_time: body.time,
-      p_user_id: user.id,
-      p_status: 'confirmed',
-      p_notes: body.notes
-    });
+    const startDateTime = new Date(startDate)
+    const endDateTime = new Date(endDate)
+
+    if (isNaN(startDateTime.getTime()) || isNaN(endDateTime.getTime())) {
+      return NextResponse.json({
+        error: 'Formato de data inválido',
+        details: 'As datas devem estar no formato ISO 8601',
+        params: { startDate, endDate }
+      }, { status: 400 })
+    }
+
+    console.log('[API] ➤ Consultando Supabase com:', {
+      scheduled_at: { gte: startDate, lt: endDate },
+      status: ['confirmed', 'rescheduled']
+    })
+
+    // Tentativa de consulta com retry automático
+    const { data, error } = await supabase
+      .from('appointments')
+      .select('scheduled_at, status')
+      .gte('scheduled_at', startDate)
+      .lt('scheduled_at', endDate)
+      .or('status.eq.confirmed,status.eq.rescheduled')
 
     if (error) {
-      console.error('Erro ao criar agendamento:', error);
-      return NextResponse.json(
-        { error: error.message || 'Erro ao criar agendamento' },
-        { status: 500 }
-      );
+      console.error('[API] ❌ Erro Supabase:', error)
+      
+      // Tratamento específico para erros comuns
+      if (error.message?.includes('fetch failed') || 
+          error.message?.includes('network') ||
+          error.message?.includes('AbortError') ||
+          error.message?.includes('timeout')) {
+        return NextResponse.json({
+          error: 'Erro de conexão',
+          details: 'Não foi possível conectar ao banco de dados',
+          message: 'Verifique sua conexão e tente novamente em alguns instantes',
+          retry: true,
+          attempt: 1
+        }, { 
+          status: 503,
+          headers: {
+            'Retry-After': '3',
+            'Cache-Control': 'no-store, no-cache, must-revalidate'
+          }
+        })
+      }
+
+      if (error.message?.includes('does not exist')) {
+        return NextResponse.json({
+          error: 'Erro de configuração',
+          details: 'Estrutura do banco de dados não está correta',
+          message: error.message
+        }, { 
+          status: 500,
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate'
+          }
+        })
+      }
+
+      return NextResponse.json({
+        error: 'Erro ao consultar agendamentos',
+        details: error.message,
+        hint: error.hint,
+        code: error.code
+      }, { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate'
+        }
+      })
     }
 
-    return NextResponse.json(data);
-  } catch (error) {
-    console.error('Erro:', error);
-    return NextResponse.json(
-      { error: 'Erro interno do servidor' },
-      { status: 500 }
-    );
+    const appointments = data?.map(a => ({
+      scheduled_at: a.scheduled_at,
+      status: a.status
+    })) ?? []
+
+    console.log('[API] ✅ Agendamentos encontrados:', appointments.length)
+
+    return NextResponse.json({
+      data: appointments,
+      count: appointments.length,
+      range: { start: startDate, end: endDate }
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Content-Type': 'application/json'
+      }
+    })
+
+  } catch (err) {
+    console.error('[API] ❗ Erro não tratado:', err)
+
+    // Se for erro de rede, retornar 503
+    if (err instanceof Error && 
+       (err.message.includes('fetch failed') || 
+        err.message.includes('network') || 
+        err.message.includes('Máximo de tentativas excedido'))) {
+      return NextResponse.json({
+        error: 'Serviço temporariamente indisponível',
+        details: 'Não foi possível conectar ao banco de dados',
+        message: 'Por favor, tente novamente em alguns instantes',
+        retry: true
+      }, { status: 503 })
+    }
+
+    return NextResponse.json({
+      error: 'Erro interno do servidor',
+      message: err instanceof Error ? err.message : String(err),
+      ...(process.env.NODE_ENV === 'development' && {
+        stack: err instanceof Error ? err.stack : undefined
+      })
+    }, { status: 500 })
   }
-} 
+}

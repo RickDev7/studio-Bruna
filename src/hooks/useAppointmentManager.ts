@@ -55,8 +55,8 @@ export function useAppointmentManager({ onSuccess, onError }: UseAppointmentMana
           to_name: appointment.profiles.full_name || 'Cliente',
           to_email: appointment.profiles.email,
           service_name: appointment.service,
-          appointment_date: appointment.date,
-          appointment_time: appointment.time,
+          appointment_date: new Date(appointment.scheduled_at).toLocaleDateString(),
+          appointment_time: new Date(appointment.scheduled_at).toLocaleTimeString(),
           appointment_status: 'cancelado',
         },
         EMAIL_CONFIG.publicKey
@@ -90,12 +90,14 @@ export function useAppointmentManager({ onSuccess, onError }: UseAppointmentMana
 
       if (fetchError) throw fetchError;
 
+      // Combinar nova data e hora em um único timestamp
+      const scheduled_at = new Date(`${data.new_date}T${data.new_time}`);
+
       // Atualizar o agendamento
       const { error: updateError } = await supabase
         .from('appointments')
         .update({
-          date: data.new_date,
-          time: data.new_time,
+          scheduled_at,
           status: 'confirmed',
           notes: data.notes || 'Reagendado'
         })
@@ -173,7 +175,7 @@ export function useAppointmentManager({ onSuccess, onError }: UseAppointmentMana
         .from('appointments')
         .select('*')
         .eq('user_id', user_id)
-        .order('date', { ascending: false });
+        .order('scheduled_at', { ascending: false });
 
       if (error) throw error;
       return data as Appointment[];

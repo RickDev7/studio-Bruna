@@ -15,50 +15,30 @@ interface BusinessConfig {
   }
 }
 
-export const businessConfig: BusinessConfig = {
-  name: 'Studio Bruna',
-  address: 'Endereço do Studio',
-  phone: 'Telefone do Studio',
-  email: 'bs.aestheticnails@gmail.com',
-  businessHours: {
-    monday: {
-      start: '09:00',
-      end: '18:00',
-      lunchStart: '13:00',
-      lunchEnd: '14:00'
-    },
-    tuesday: {
-      start: '09:00',
-      end: '18:00',
-      lunchStart: '13:00',
-      lunchEnd: '14:00'
-    },
-    wednesday: {
-      start: '09:00',
-      end: '18:00',
-      lunchStart: '13:00',
-      lunchEnd: '14:00'
-    },
-    thursday: {
-      start: '09:00',
-      end: '18:00',
-      lunchStart: '13:00',
-      lunchEnd: '14:00'
-    },
-    friday: {
-      start: '09:00',
-      end: '18:00',
-      lunchStart: '13:00',
-      lunchEnd: '14:00'
-    },
-    saturday: {
-      start: '09:00',
-      end: '14:00'
-    },
-    sunday: {
-      start: '',
-      end: ''
+export const businessConfig = {
+  contact: {
+    phone: '+49 1520 800 7814',
+    email: 'bs.aestheticnails@gmail.com',
+    whatsapp: '+49 1520 800 7814',
+    instagram: 'bs.aesthetic.nails',
+    facebook: 'https://www.facebook.com/people/Bruna-Silva-Aesthetic-Nails/61573618850298/',
+    address: {
+      street: 'Bei der Grodener Kirche 7',
+      city: 'Cuxhaven',
+      state: 'Niedersachsen',
+      country: 'Deutschland',
+      postalCode: '27472',
+      googleMaps: 'https://maps.app.goo.gl/SFVgUBGxE3Lv7HKKA'
     }
+  },
+  business: {
+    name: 'Bruna Silva - Aesthetic & Nails',
+    shortName: 'BS Aesthetic & Nails',
+    description: 'Seu espaço de beleza e bem-estar em Cuxhaven',
+    currency: 'EUR',
+    currencySymbol: '€',
+    language: 'pt-BR',
+    timezone: 'Europe/Berlin'
   }
 }
 

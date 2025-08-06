@@ -28,7 +28,7 @@ create trigger handle_business_config_updated_at
 -- Inserir configuração inicial
 insert into public.business_config (name, address, phone, email, business_hours)
 values (
-  'Studio Bruna',
+  'Bruna Silva - Aesthetic & Nails',
   'Endereço do Studio',
   'Telefone do Studio',
   'bs.aestheticnails@gmail.com',

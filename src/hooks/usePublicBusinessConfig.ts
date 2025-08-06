@@ -28,25 +28,42 @@ export function usePublicBusinessConfig() {
     }
 
     loadConfig()
-  }, [])
+  }, [supabase])
+
+  interface DayHours {
+    start: string;
+    end: string;
+    lunchStart?: string;
+    lunchEnd?: string;
+  }
 
   const isBusinessOpen = (date: Date) => {
+    // Horário de funcionamento fixo
+    const hours: Record<string, DayHours> = {
+      monday: { start: '09:00', end: '13:00' },
+      tuesday: { start: '09:00', end: '18:00', lunchStart: '13:00', lunchEnd: '15:00' },
+      wednesday: { start: '09:00', end: '13:00' },
+      thursday: { start: '09:00', end: '18:00', lunchStart: '13:00', lunchEnd: '15:00' },
+      friday: { start: '09:00', end: '13:00' },
+      saturday: { start: '09:30', end: '17:00' },
+      sunday: { start: '', end: '' }
+    }
+
     const weekDay = date.toLocaleDateString('en-US', { weekday: 'long' }).toLowerCase()
-    const dayOfWeek = weekDay as keyof typeof config.businessHours
-    const hours = config.businessHours[dayOfWeek]
+    const dayHours = hours[weekDay as keyof typeof hours]
     
-    if (!hours.start || !hours.end) return false
+    if (!dayHours.start || !dayHours.end) return false
 
     const now = date.getHours() * 60 + date.getMinutes()
-    const [startHour, startMinute] = hours.start.split(':').map(Number)
-    const [endHour, endMinute] = hours.end.split(':').map(Number)
+    const [startHour, startMinute] = dayHours.start.split(':').map(Number)
+    const [endHour, endMinute] = dayHours.end.split(':').map(Number)
     const start = startHour * 60 + startMinute
     const end = endHour * 60 + endMinute
 
     // Se tem horário de almoço, verifica se está no intervalo
-    if (hours.lunchStart && hours.lunchEnd) {
-      const [lunchStartHour, lunchStartMinute] = hours.lunchStart.split(':').map(Number)
-      const [lunchEndHour, lunchEndMinute] = hours.lunchEnd.split(':').map(Number)
+    if (dayHours.lunchStart && dayHours.lunchEnd) {
+      const [lunchStartHour, lunchStartMinute] = dayHours.lunchStart.split(':').map(Number)
+      const [lunchEndHour, lunchEndMinute] = dayHours.lunchEnd.split(':').map(Number)
       const lunchStart = lunchStartHour * 60 + lunchStartMinute
       const lunchEnd = lunchEndHour * 60 + lunchEndMinute
 
@@ -56,13 +73,24 @@ export function usePublicBusinessConfig() {
     return now >= start && now < end
   }
 
-  const getBusinessHours = (dayOfWeek: keyof typeof config.businessHours) => {
-    const hours = config.businessHours[dayOfWeek]
-    if (!hours.start || !hours.end) return 'Fechado'
+  const getBusinessHours = (dayOfWeek: string) => {
+    // Horário de funcionamento fixo
+    const hours: Record<string, DayHours> = {
+      monday: { start: '09:00', end: '13:00' },
+      tuesday: { start: '09:00', end: '18:00', lunchStart: '13:00', lunchEnd: '15:00' },
+      wednesday: { start: '09:00', end: '13:00' },
+      thursday: { start: '09:00', end: '18:00', lunchStart: '13:00', lunchEnd: '15:00' },
+      friday: { start: '09:00', end: '13:00' },
+      saturday: { start: '09:30', end: '17:00' },
+      sunday: { start: '', end: '' }
+    }
 
-    let schedule = `${hours.start} às ${hours.end}`
-    if (hours.lunchStart && hours.lunchEnd) {
-      schedule += ` (Almoço: ${hours.lunchStart} às ${hours.lunchEnd})`
+    const dayHours = hours[dayOfWeek as keyof typeof hours]
+    if (!dayHours.start || !dayHours.end) return 'Fechado'
+
+    let schedule = `${dayHours.start} às ${dayHours.end}`
+    if (dayHours.lunchStart && dayHours.lunchEnd) {
+      schedule += ` (Almoço: ${dayHours.lunchStart} às ${dayHours.lunchEnd})`
     }
     return schedule
   }

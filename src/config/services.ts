@@ -1,120 +1,98 @@
 export interface Service {
   id: string;
   name: string;
-  category: 'nails' | 'face' | 'eyebrows' | 'lips';
-  duration: number;
+  category: 'nails' | 'face' | 'eyebrows';
+  description: string;
 }
 
 export const services: Service[] = [
   // Serviços de Unhas
   {
-    id: 'manicure-shellac',
+    id: 'f47ac10b-58cc-4372-a567-0e02b2c3d479',
     name: 'Manicure com Shellac',
     category: 'nails',
-    duration: 60
+    description: 'Manicure profissional com esmalte em gel Shellac para maior durabilidade'
   },
   {
-    id: 'pedicure-shellac',
+    id: '550e8400-e29b-41d4-a716-446655440000',
     name: 'Pedicure com Shellac',
     category: 'nails',
-    duration: 60
+    description: 'Pedicure completa com esmalte em gel Shellac para um acabamento duradouro'
   },
   {
-    id: 'spa-pedicure',
+    id: '6ba7b810-9dad-11d1-80b4-00c04fd430c8',
     name: 'Spa Pedicure',
     category: 'nails',
-    duration: 90
+    description: 'Tratamento relaxante para os pés com esfoliação e massagem'
   },
   {
-    id: 'gel-nails',
+    id: '6ba7b811-9dad-11d1-80b4-00c04fd430c8',
     name: 'Unhas em Gel',
     category: 'nails',
-    duration: 120
+    description: 'Alongamento ou cobertura em gel para unhas mais resistentes e bonitas'
   },
   {
-    id: 'nail-repair',
+    id: '6ba7b812-9dad-11d1-80b4-00c04fd430c8',
     name: 'Reparos de Unhas',
     category: 'nails',
-    duration: 30
+    description: 'Consertos e reparos em unhas danificadas ou quebradas'
   },
 
-  // Serviços Faciais
+  // Sobrancelhas & Cílios
   {
-    id: 'facial-cleaning',
-    name: 'Limpeza Facial',
-    category: 'face',
-    duration: 90
-  },
-  {
-    id: 'anti-aging',
-    name: 'Tratamento Anti-idade',
-    category: 'face',
-    duration: 60
-  },
-  {
-    id: 'facial-hydration',
-    name: 'Hidratação Facial',
-    category: 'face',
-    duration: 45
-  },
-  {
-    id: 'microneedling',
-    name: 'Microagulhamento',
-    category: 'face',
-    duration: 60
-  },
-  {
-    id: 'facial-masks',
-    name: 'Máscaras Faciais',
-    category: 'face',
-    duration: 30
-  },
-
-  // Serviços de Sobrancelhas e Cílios
-  {
-    id: 'eyebrow-design',
+    id: '6ba7b813-9dad-11d1-80b4-00c04fd430c8',
     name: 'Design de Sobrancelhas',
     category: 'eyebrows',
-    duration: 30
+    description: 'Design personalizado para realçar o formato natural das sobrancelhas'
   },
   {
-    id: 'eyebrow-coloring',
+    id: '6ba7b814-9dad-11d1-80b4-00c04fd430c8',
     name: 'Coloração de Sobrancelhas',
     category: 'eyebrows',
-    duration: 45
+    description: 'Coloração profissional para realçar e definir as sobrancelhas'
   },
   {
-    id: 'brow-lamination',
+    id: '6ba7b815-9dad-11d1-80b4-00c04fd430c8',
     name: 'Brow Lamination',
     category: 'eyebrows',
-    duration: 60
+    description: 'Alisamento e modelagem das sobrancelhas para um visual mais definido'
   },
   {
-    id: 'lash-lifting',
+    id: '6ba7b816-9dad-11d1-80b4-00c04fd430c8',
     name: 'Lifting de Pestanas',
     category: 'eyebrows',
-    duration: 60
+    description: 'Curvatura permanente dos cílios naturais para um olhar mais aberto'
   },
-
-  // Serviços de Cílios
   {
-    id: 'lash-tinting',
+    id: '6ba7b817-9dad-11d1-80b4-00c04fd430c8',
     name: 'Tintura de Cílios',
     category: 'eyebrows',
-    duration: 30
+    description: 'Coloração dos cílios para um olhar mais marcante sem necessidade de máscara'
   },
 
-  // Serviços Labiais
+  // Tratamentos Faciais
   {
-    id: 'lip-hydration',
-    name: 'Hidratação Labial',
-    category: 'lips',
-    duration: 30
+    id: '6ba7b818-9dad-11d1-80b4-00c04fd430c8',
+    name: 'Limpeza Facial',
+    category: 'face',
+    description: 'Limpeza profunda da pele com extração de impurezas e hidratação'
   },
   {
-    id: 'lip-treatment',
-    name: 'Revitalização Labial',
-    category: 'lips',
-    duration: 45
+    id: '6ba7b819-9dad-11d1-80b4-00c04fd430c8',
+    name: 'Hidratação Labial',
+    category: 'face',
+    description: 'Tratamento de hidratação específico para os lábios'
+  },
+  {
+    id: '6ba7b81a-9dad-11d1-80b4-00c04fd430c8',
+    name: 'Técnica com Fios',
+    category: 'face',
+    description: 'Técnica de depilação facial com fios para resultados precisos'
+  },
+  {
+    id: '6ba7b81b-9dad-11d1-80b4-00c04fd430c8',
+    name: 'Depilação com Cera',
+    category: 'face',
+    description: 'Depilação facial com cera quente para resultados duradouros'
   }
 ]; 
