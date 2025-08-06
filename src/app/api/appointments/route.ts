@@ -22,18 +22,35 @@ const supabase = createClient<Database>(supabaseUrl, supabaseKey, {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
     },
-    fetch: (url, options) => {
+    fetch: async (url, options: RequestInit = {}) => {
       const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 5000) // 5 segundos timeout
+      const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 segundos timeout
 
-      return fetch(url, {
-        ...options,
-        signal: controller.signal,
-        keepalive: true,
-        cache: 'no-store'
-      }).finally(() => {
+      try {
+        const response = await fetch(url, {
+          ...options,
+          signal: controller.signal,
+          keepalive: true,
+          cache: 'no-store',
+          headers: {
+            ...options.headers,
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache'
+          }
+        })
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+
+        return response
+      } catch (error) {
+        console.error('[Supabase] Erro na requisição:', error)
+        throw error
+      } finally {
         clearTimeout(timeoutId)
-      })
+      }
     }
   },
   db: {
@@ -89,13 +106,23 @@ export async function GET(req: Request) {
       .or('status.eq.confirmed,status.eq.rescheduled')
 
     if (error) {
-      console.error('[API] ❌ Erro Supabase:', error)
+      console.error('[API] ❌ Erro Supabase:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code
+      })
       
       // Tratamento específico para erros comuns
       if (error.message?.includes('fetch failed') || 
           error.message?.includes('network') ||
           error.message?.includes('AbortError') ||
-          error.message?.includes('timeout')) {
+          error.message?.includes('timeout') ||
+          error.message?.includes('Failed to fetch') ||
+          error.message?.includes('NetworkError')) {
+        
+        console.log('[API] ⚠️ Erro de conexão detectado, retornando 503')
+        
         return NextResponse.json({
           error: 'Erro de conexão',
           details: 'Não foi possível conectar ao banco de dados',
@@ -106,7 +133,8 @@ export async function GET(req: Request) {
           status: 503,
           headers: {
             'Retry-After': '3',
-            'Cache-Control': 'no-store, no-cache, must-revalidate'
+            'Cache-Control': 'no-store, no-cache, must-revalidate',
+            'Connection': 'keep-alive'
           }
         })
       }

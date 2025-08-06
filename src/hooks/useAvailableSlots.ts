@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { generateTimeSlots, isWithinBusinessHours, holidays } from '@/config/businessHours';
 import type { DayConfig } from '@/config/businessHours';
-import { toast } from 'sonner';
+import { toast } from 'react-hot-toast';
 
 interface UseAvailableSlotsProps {
   selectedDate: Date;
@@ -120,12 +120,18 @@ export function useAvailableSlots({ selectedDate, dayConfig }: UseAvailableSlots
           { startDate, endDate });
 
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 segundos timeout
 
         try {
           const response = await fetch(
             `/api/appointments?startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`,
-            { signal: controller.signal }
+            { 
+              signal: controller.signal,
+              headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache'
+              }
+            }
           );
 
           clearTimeout(timeoutId);
@@ -135,8 +141,12 @@ export function useAvailableSlots({ selectedDate, dayConfig }: UseAvailableSlots
           if (!response.ok) {
             console.warn('⚠️ Resposta não-ok da API:', {
               status: response.status,
+              statusText: response.statusText,
               retry: responseData.retry,
-              attempt: retryAttempt + 1
+              attempt: retryAttempt + 1,
+              error: responseData.error,
+              details: responseData.details,
+              message: responseData.message
             });
 
             // Se for erro 503 ou retry e ainda temos tentativas
@@ -144,6 +154,13 @@ export function useAvailableSlots({ selectedDate, dayConfig }: UseAvailableSlots
               retryAttempt++;
               const delay = RETRY_DELAY * retryAttempt;
               console.log(`🔄 Aguardando ${delay}ms para tentar novamente...`);
+              
+              // Notificar o usuário sobre a tentativa
+              toast.loading(
+                `Tentando conectar ao servidor... (${retryAttempt}/${MAX_RETRIES})`,
+                { duration: delay }
+              );
+              
               await new Promise(resolve => setTimeout(resolve, delay));
               await fetchBookedSlots();
               return;
@@ -151,6 +168,7 @@ export function useAvailableSlots({ selectedDate, dayConfig }: UseAvailableSlots
 
             // Se acabaram as tentativas, usar fallback
             console.log('⚠️ Máximo de tentativas atingido - usando fallback com horários vazios');
+            toast.error('Não foi possível carregar os horários. Mostrando todos os horários disponíveis.');
             await generateAvailableSlots([]);
             return;
           }
@@ -176,6 +194,13 @@ export function useAvailableSlots({ selectedDate, dayConfig }: UseAvailableSlots
               if (retryAttempt < MAX_RETRIES) {
                 retryAttempt++;
                 console.log(`🔄 Tentando novamente após timeout (${retryAttempt}/${MAX_RETRIES})`);
+                
+                // Notificar o usuário sobre a tentativa após timeout
+                toast.loading(
+                  `Conexão lenta, tentando novamente... (${retryAttempt}/${MAX_RETRIES})`,
+                  { duration: RETRY_DELAY * retryAttempt }
+                );
+                
                 await fetchBookedSlots();
                 return;
               }
@@ -184,11 +209,13 @@ export function useAvailableSlots({ selectedDate, dayConfig }: UseAvailableSlots
 
           // Fallback em caso de erro
           console.log('⚠️ Usando fallback após erro na requisição');
+          toast.error('Erro de conexão. Mostrando todos os horários disponíveis.');
           await generateAvailableSlots([]);
         }
       } catch (err) {
         console.error('❌ Erro não tratado:', err);
         // Garantir que a UI continue funcional
+        toast.error('Ocorreu um erro. Mostrando todos os horários disponíveis.');
         await generateAvailableSlots([]);
       } finally {
         if (isMounted) {
