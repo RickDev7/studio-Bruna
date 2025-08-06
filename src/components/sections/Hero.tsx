@@ -16,7 +16,7 @@ export function Hero() {
           fill
           priority
           quality={100}
-          style={{ objectFit: 'cover', objectPosition: 'center' }}
+          style={{ objectFit: 'cover', objectPosition: 'center 37%' }}
         />
         {/* Gradiente */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/30" />
