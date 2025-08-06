@@ -26,7 +26,7 @@ const getEmailJSConfig = (): EmailJSConfig => {
     serviceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
     userTemplateId: process.env.NEXT_PUBLIC_EMAILJS_USER_TEMPLATE_ID || '',
     adminTemplateId: process.env.NEXT_PUBLIC_EMAILJS_ADMIN_TEMPLATE_ID || '',
-    adminEmail: process.env.NEXT_PUBLIC_ADMIN_EMAIL || '',
+    adminEmail: process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'bs.aestheticnails@gmail.com',
   };
 
   // Debug das variáveis de ambiente
