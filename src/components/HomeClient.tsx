@@ -25,7 +25,49 @@ const HomeClient = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Card de Depilação */}
+              <div className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border border-pink-100">
+                <div className="absolute inset-0 bg-gradient-to-br from-pink-50 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#FFB6C1] to-[#FF69B4] p-0.5 transform -rotate-6 group-hover:rotate-0 transition-transform duration-300">
+                    <div className="w-full h-full bg-white rounded-xl flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-[#FF69B4] transform group-hover:scale-110 transition-transform duration-300">
+                        <path d="M8 6h8" />
+                        <path d="m12 6 4 14" />
+                        <path d="M8 6c0-1.5.5-3 2.5-3s2.5 1.5 2.5 3" />
+                      </svg>
+                    </div>
+                  </div>
+                  <h3 className="mt-6 text-2xl font-bold text-gray-900 group-hover:text-[#FF69B4] transition-colors duration-300">Depilação</h3>
+                  <p className="mt-3 text-gray-600 leading-relaxed">
+                    Serviços profissionais de depilação para uma pele macia e livre de pelos.
+                  </p>
+                  <ul className="mt-8 space-y-4">
+                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
+                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
+                      Depilação com Cera Quente
+                    </li>
+                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
+                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
+                      Depilação com Cera Fria
+                    </li>
+                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
+                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
+                      Depilação Íntima
+                    </li>
+                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
+                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
+                      Depilação Facial
+                    </li>
+                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
+                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
+                      Depilação Corporal
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
               {/* Card de Unhas */}
               <div className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border border-pink-100">
                 <div className="absolute inset-0 bg-gradient-to-br from-pink-50 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -85,7 +127,7 @@ const HomeClient = () => {
                       </svg>
                     </div>
                   </div>
-                  <h3 className="mt-6 text-2xl font-bold text-gray-900 group-hover:text-[#FF69B4] transition-colors duration-300">Sobrancelhas & Cílios</h3>
+                  <h3 className="mt-6 text-2xl font-bold text-gray-900 group-hover:text-[#FF69B4] transition-colors duration-300">Sobrancelhas & Pestanas</h3>
                   <p className="mt-3 text-gray-600 leading-relaxed">
                     Tratamentos especializados para realçar seu olhar.
                   </p>
@@ -108,7 +150,7 @@ const HomeClient = () => {
                     </li>
                     <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
                       <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Tintura de Cílios
+                      Tintura de Pestanas
                     </li>
                   </ul>
                 </div>
@@ -142,10 +184,7 @@ const HomeClient = () => {
                       <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
                       Técnica com Fios
                     </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Depilação com Cera
-                    </li>
+
                   </ul>
                 </div>
               </div>

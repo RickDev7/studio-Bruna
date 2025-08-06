@@ -1,4 +1,4 @@
-import { Flower, Sparkles, Heart, Gem } from 'lucide-react'
+import { Flower, Sparkles, Heart, Scissors } from 'lucide-react'
 import { services } from '@/config/services'
 
 export function Problems() {
@@ -17,9 +17,15 @@ export function Problems() {
     },
     {
       icon: <Heart className="w-6 h-6 text-[#FFC0CB]" />,
-      title: "Design e Embelezamento",
+      title: "Sobrancelhas & Pestanas",
       description: services.filter(s => s.category === 'eyebrows').map(s => s.name).join(', '),
       category: 'eyebrows'
+    },
+    {
+      icon: <Scissors className="w-6 h-6 text-[#FFC0CB]" />,
+      title: "Depilação",
+      description: services.filter(s => s.category === 'waxing').map(s => s.name).join(', '),
+      category: 'waxing'
     }
   ]
 

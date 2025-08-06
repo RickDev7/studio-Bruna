@@ -13,8 +13,12 @@ const servicos = [
     items: services.filter(s => s.category === 'face').map(s => s.name)
   },
   {
-    categoria: 'Design e Embelezamento',
+    categoria: 'Sobrancelhas & Pestanas',
     items: services.filter(s => s.category === 'eyebrows').map(s => s.name)
+  },
+  {
+    categoria: 'Depilação',
+    items: services.filter(s => s.category === 'waxing').map(s => s.name)
   }
 ];
 

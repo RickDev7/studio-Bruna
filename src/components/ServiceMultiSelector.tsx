@@ -32,7 +32,8 @@ export function ServiceMultiSelector({ onSelect, initialSelected = [] }: Service
   const categories = [
     { id: 'nails', name: 'Unhas', description: 'Serviços para suas unhas' },
     { id: 'face', name: 'Rosto', description: 'Tratamentos faciais' },
-    { id: 'eyebrows', name: 'Sobrancelhas & Cílios', description: 'Design e embelezamento' },
+    { id: 'eyebrows', name: 'Sobrancelhas & Pestanas', description: 'Design e embelezamento' },
+    { id: 'waxing', name: 'Depilação', description: 'Serviços de depilação' },
   ];
 
   const filteredServices = services.filter(service => service.category === selectedCategory);

@@ -1,7 +1,7 @@
 export interface Service {
   id: string;
   name: string;
-  category: 'nails' | 'face' | 'eyebrows';
+  category: 'nails' | 'face' | 'eyebrows' | 'waxing';
   description: string;
 }
 
@@ -61,13 +61,13 @@ export const services: Service[] = [
     id: '6ba7b816-9dad-11d1-80b4-00c04fd430c8',
     name: 'Lifting de Pestanas',
     category: 'eyebrows',
-    description: 'Curvatura permanente dos cílios naturais para um olhar mais aberto'
+    description: 'Curvatura permanente das pestanas naturais para um olhar mais aberto'
   },
   {
     id: '6ba7b817-9dad-11d1-80b4-00c04fd430c8',
-    name: 'Tintura de Cílios',
+    name: 'Tintura de Pestanas',
     category: 'eyebrows',
-    description: 'Coloração dos cílios para um olhar mais marcante sem necessidade de máscara'
+    description: 'Coloração das pestanas para um olhar mais marcante sem necessidade de máscara'
   },
 
   // Tratamentos Faciais
@@ -89,10 +89,37 @@ export const services: Service[] = [
     category: 'face',
     description: 'Técnica de depilação facial com fios para resultados precisos'
   },
+
+
+  // Serviços de Depilação
   {
-    id: '6ba7b81b-9dad-11d1-80b4-00c04fd430c8',
-    name: 'Depilação com Cera',
-    category: 'face',
-    description: 'Depilação facial com cera quente para resultados duradouros'
+    id: '6ba7b81c-9dad-11d1-80b4-00c04fd430c8',
+    name: 'Depilação com Cera Quente',
+    category: 'waxing',
+    description: 'Depilação profissional com cera quente para resultados duradouros'
+  },
+  {
+    id: '6ba7b81d-9dad-11d1-80b4-00c04fd430c8',
+    name: 'Depilação com Cera Fria',
+    category: 'waxing',
+    description: 'Depilação suave com cera fria, ideal para peles sensíveis'
+  },
+  {
+    id: '6ba7b81e-9dad-11d1-80b4-00c04fd430c8',
+    name: 'Depilação Íntima',
+    category: 'waxing',
+    description: 'Depilação íntima com técnicas especializadas e produtos adequados'
+  },
+  {
+    id: '6ba7b81f-9dad-11d1-80b4-00c04fd430c8',
+    name: 'Depilação Facial',
+    category: 'waxing',
+    description: 'Depilação facial com técnicas delicadas para pele do rosto'
+  },
+  {
+    id: '6ba7b820-9dad-11d1-80b4-00c04fd430c8',
+    name: 'Depilação Corporal',
+    category: 'waxing',
+    description: 'Depilação corporal completa para uma pele macia e livre de pelos'
   }
 ]; 
