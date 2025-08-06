@@ -22,7 +22,7 @@ const supabase = createClient<Database>(supabaseUrl, supabaseKey, {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
     },
-    fetch: async (url, options: RequestInit = {}) => {
+    fetch: async (url: RequestInfo | URL, options: RequestInit = {}) => {
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 segundos timeout
 
