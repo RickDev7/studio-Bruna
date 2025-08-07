@@ -65,7 +65,7 @@ export function PlanDetails({ plan, onClose, isOpen }: PlanDetailsProps) {
               <div className="relative rounded-2xl overflow-hidden shadow-lg">
                 <Image
                   src={plan.imagem}
-                  alt={plan.name}
+                  alt={plan.name || 'Imagem do plano'}
                   width={500}
                   height={300}
                   className="w-full h-full object-cover"

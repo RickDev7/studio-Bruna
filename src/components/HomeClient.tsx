@@ -6,8 +6,12 @@ import { Footer } from '@/components/Footer'
 import { Hero } from '@/components/sections/Hero'
 import About from '@/components/sections/About'
 import { Pricing } from '@/components/sections/Pricing'
+import { Gallery } from '@/components/sections/Gallery'
+import { useLanguage } from '@/contexts/LanguageContext'
+import { translations } from '@/data/translations'
 
 const HomeClient = () => {
+  const { t, language } = useLanguage()
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -16,12 +20,12 @@ const HomeClient = () => {
         <section id="servicos" className="py-24 bg-gradient-to-b from-white to-pink-50/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <span className="text-[#FF69B4] font-medium text-sm uppercase tracking-wider">Nossos Serviços</span>
+              <span className="text-[#FF69B4] font-medium text-sm uppercase tracking-wider">{t('services.title')}</span>
               <h2 className="mt-2 text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent">
-                Tratamentos Profissionais
+                {t('services.subtitle')}
               </h2>
               <p className="mt-4 text-xl text-gray-600 max-w-2xl mx-auto">
-                Cuide da sua beleza com nossos serviços especializados
+                {t('services.description')}
               </p>
             </div>
 
@@ -39,31 +43,17 @@ const HomeClient = () => {
                       </svg>
                     </div>
                   </div>
-                  <h3 className="mt-6 text-2xl font-bold text-gray-900 group-hover:text-[#FF69B4] transition-colors duration-300">Depilação</h3>
+                  <h3 className="mt-6 text-2xl font-bold text-gray-900 group-hover:text-[#FF69B4] transition-colors duration-300">{t('services.depilation.title')}</h3>
                   <p className="mt-3 text-gray-600 leading-relaxed">
-                    Serviços profissionais de depilação para uma pele macia e livre de pelos.
+                    {t('services.depilation.description')}
                   </p>
                   <ul className="mt-8 space-y-4">
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Depilação com Cera Quente
-                    </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Depilação com Cera Fria
-                    </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Depilação Íntima
-                    </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Depilação Facial
-                    </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Depilação Corporal
-                    </li>
+                    {translations[language].services.depilation.services.map((service, index) => (
+                      <li key={index} className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
+                        <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
+                        {service}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -83,31 +73,17 @@ const HomeClient = () => {
                       </svg>
                     </div>
                   </div>
-                  <h3 className="mt-6 text-2xl font-bold text-gray-900 group-hover:text-[#FF69B4] transition-colors duration-300">Unhas</h3>
+                  <h3 className="mt-6 text-2xl font-bold text-gray-900 group-hover:text-[#FF69B4] transition-colors duration-300">{t('services.nails.title')}</h3>
                   <p className="mt-3 text-gray-600 leading-relaxed">
-                    Serviços profissionais especializados em embelezamento e cuidados com suas unhas.
+                    {t('services.nails.description')}
                   </p>
                   <ul className="mt-8 space-y-4">
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Manicure com Shellac
-                    </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Pedicure com Shellac
-                    </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Spa Pedicure
-                    </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Unhas em Gel
-                    </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Reparos de Unhas
-                    </li>
+                    {translations[language].services.nails.services.map((service, index) => (
+                      <li key={index} className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
+                        <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
+                        {service}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -127,31 +103,17 @@ const HomeClient = () => {
                       </svg>
                     </div>
                   </div>
-                  <h3 className="mt-6 text-2xl font-bold text-gray-900 group-hover:text-[#FF69B4] transition-colors duration-300">Sobrancelhas & Pestanas</h3>
+                  <h3 className="mt-6 text-2xl font-bold text-gray-900 group-hover:text-[#FF69B4] transition-colors duration-300">{t('services.eyebrows.title')}</h3>
                   <p className="mt-3 text-gray-600 leading-relaxed">
-                    Tratamentos especializados para realçar seu olhar.
+                    {t('services.eyebrows.description')}
                   </p>
                   <ul className="mt-8 space-y-4">
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Design de Sobrancelhas
-                    </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Coloração de Sobrancelhas
-                    </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Brow Lamination
-                    </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Lifting de Pestanas
-                    </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Tintura de Pestanas
-                    </li>
+                    {translations[language].services.eyebrows.services.map((service, index) => (
+                      <li key={index} className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
+                        <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
+                        {service}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -167,24 +129,17 @@ const HomeClient = () => {
                       </svg>
                     </div>
                   </div>
-                  <h3 className="mt-6 text-2xl font-bold text-gray-900 group-hover:text-[#FF69B4] transition-colors duration-300">Tratamentos Faciais</h3>
+                  <h3 className="mt-6 text-2xl font-bold text-gray-900 group-hover:text-[#FF69B4] transition-colors duration-300">{t('services.facial.title')}</h3>
                   <p className="mt-3 text-gray-600 leading-relaxed">
-                    Cuidados especiais para sua pele.
+                    {t('services.facial.description')}
                   </p>
                   <ul className="mt-8 space-y-4">
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Limpeza Facial
-                    </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Hidratação Labial
-                    </li>
-                    <li className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
-                      <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
-                      Técnica com Fios
-                    </li>
-
+                    {translations[language].services.facial.services.map((service, index) => (
+                      <li key={index} className="flex items-center text-gray-600 group-hover:text-gray-900 transition-colors duration-300">
+                        <span className="w-2 h-2 rounded-full bg-[#FF69B4] mr-3 group-hover:scale-125 transition-transform duration-300"></span>
+                        {service}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               </div>
@@ -196,28 +151,29 @@ const HomeClient = () => {
               <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-xl">
                 <div className="text-center space-y-4">
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
-                    Promoção Especial para Novos Clientes
+                    {t('promotion.title')}
                   </h3>
                   <p className="text-xl text-[#FF69B4] font-semibold">
-                    25% de desconto no seu primeiro agendamento!
+                    {t('promotion.discount')}
                   </p>
                   <p className="text-gray-600">
-                    Aproveite esta oferta exclusiva e comece sua jornada de cuidados com a beleza
+                    {t('promotion.description')}
                   </p>
                   <p className="text-sm text-gray-500">
-                    *Não acumulável com outras promoções
+                    {t('promotion.terms')}
                   </p>
                   <a
                     href="/agendar"
                     className="mt-6 inline-flex items-center px-8 py-4 text-lg font-medium rounded-full text-white bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] hover:opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
                   >
-                    Agendar Agora
+                    {t('promotion.scheduleNow')}
                   </a>
                 </div>
               </div>
             </div>
           </div>
         </section>
+        <Gallery />
         <Pricing />
         <About />
       </main>

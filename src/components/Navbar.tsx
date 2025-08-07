@@ -3,10 +3,13 @@
 import { Menu } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { useLanguage } from '@/contexts/LanguageContext'
+import { LanguageSelector } from './LanguageSelector'
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { t } = useLanguage()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,11 +22,12 @@ export function Navbar() {
   }, [])
 
   const navItems = [
-    { name: 'Início', href: '/' },
-    { name: 'Serviços', href: '/#servicos' },
-    { name: 'Planos', href: '/#planos' },
-    { name: 'Sobre', href: '/#sobre' },
-    { name: 'Contatos', href: '/#contatos' }
+    { name: t('nav.home'), href: '/' },
+    { name: t('nav.services'), href: '/#servicos' },
+    { name: t('nav.plans'), href: '/#planos' },
+    { name: t('nav.ourSpace'), href: '/#galeria' },
+    { name: t('nav.about'), href: '/#sobre' },
+    { name: t('nav.contact'), href: '/#contatos' }
   ]
 
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -94,11 +98,12 @@ export function Navbar() {
 
             {/* Botões de ação - Desktop */}
             <div className="hidden md:flex items-center space-x-4">
+              <LanguageSelector />
               <Link 
                 href="/agendar"
                 className="text-sm font-medium transition-all duration-300 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] text-white hover:shadow-lg hover:opacity-90 transform hover:scale-105"
               >
-                Agendar
+                {t('nav.schedule')}
               </Link>
             </div>
 
@@ -141,6 +146,9 @@ export function Navbar() {
               ))}
               
               <div className="pt-2 mt-2 border-t border-gray-100">
+                <div className="flex items-center justify-center mb-3">
+                  <LanguageSelector />
+                </div>
                 <Link 
                   href="/agendar"
                   onClick={() => setIsMenuOpen(false)}
@@ -148,7 +156,7 @@ export function Navbar() {
                     transform transition-transform delay-[${navItems.length * 50}ms]
                     ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
                 >
-                  Agendar
+                  {t('nav.schedule')}
                 </Link>
               </div>
             </div>

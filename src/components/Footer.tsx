@@ -1,14 +1,16 @@
 import Image from 'next/image'
 import { Phone, Mail, MapPin, Clock, Instagram, Facebook } from 'lucide-react'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 export function Footer() {
+  const { t } = useLanguage()
   return (
     <footer className="bg-white py-16" id="contatos">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Contato */}
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-6">Contato</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-6">{t('footer.contact')}</h3>
             <div className="space-y-4">
               <div className="flex items-start">
                 <Phone className="h-5 w-5 text-[#FF69B4] shrink-0 mt-1" />
@@ -20,7 +22,7 @@ export function Footer() {
                     rel="noopener noreferrer"
                     className="text-[#FF69B4] hover:text-[#FF1493] text-sm"
                   >
-                    Enviar mensagem no WhatsApp
+                    {t('footer.sendWhatsApp')}
                   </a>
                 </div>
               </div>
@@ -43,7 +45,7 @@ export function Footer() {
                     className="text-gray-700 hover:text-[#FF69B4] transition-colors"
                   >
                     Bei der Grodener Kirche 7<br />
-                    27472 Cuxhaven, Alemanha
+                    27472 Cuxhaven, {t('footer.germany')}
                   </a>
                 </div>
             </div>
@@ -52,19 +54,19 @@ export function Footer() {
 
           {/* Horário de Funcionamento */}
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-6">Horário de Funcionamento</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-6">{t('footer.businessHours')}</h3>
             <div className="space-y-4">
               <div className="flex items-start">
                 <Clock className="h-5 w-5 text-[#FF69B4] shrink-0 mt-1" />
                 <div className="ml-3">
-                  <p className="text-gray-700">Segunda, Quarta e Sexta</p>
+                  <p className="text-gray-700">{t('footer.monday')}, {t('footer.wednesday')} e {t('footer.friday')}</p>
                   <p className="text-gray-600">09:00 - 13:00</p>
                 </div>
               </div>
               <div className="flex items-start">
                 <Clock className="h-5 w-5 text-[#FF69B4] shrink-0 mt-1" />
                 <div className="ml-3">
-                  <p className="text-gray-700">Terça e Quinta</p>
+                  <p className="text-gray-700">{t('footer.tuesday')} e {t('footer.thursday')}</p>
                   <p className="text-gray-600">09:00 - 13:00</p>
                   <p className="text-gray-600">15:00 - 18:00</p>
                 </div>
@@ -72,15 +74,15 @@ export function Footer() {
               <div className="flex items-start">
                 <Clock className="h-5 w-5 text-[#FF69B4] shrink-0 mt-1" />
                 <div className="ml-3">
-                  <p className="text-gray-700">Sábado</p>
+                  <p className="text-gray-700">{t('footer.saturday')}</p>
                   <p className="text-gray-600">09:30 - 17:00</p>
                 </div>
               </div>
               <div className="flex items-start">
                 <Clock className="h-5 w-5 text-[#FF69B4] shrink-0 mt-1" />
                 <div className="ml-3">
-                  <p className="text-gray-700">Domingo</p>
-                  <p className="text-gray-600">Fechado</p>
+                  <p className="text-gray-700">{t('footer.sunday')}</p>
+                  <p className="text-gray-600">{t('footer.closed')}</p>
                 </div>
               </div>
             </div>
@@ -88,7 +90,7 @@ export function Footer() {
 
           {/* Redes Sociais */}
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-6">Redes Sociais</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-6">{t('footer.socialMedia')}</h3>
             <div className="flex space-x-4">
               <a 
                 href="https://www.instagram.com/bs.aesthetic.nails"
@@ -119,13 +121,14 @@ export function Footer() {
               width={120}
               height={120}
               className="mx-auto"
+              priority
             />
           </div>
           <p className="text-gray-600 mb-4">
-            Seu estúdio de beleza para tratamentos profissionais e bem-estar.
+            {t('footer.slogan')}
           </p>
           <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} Bruna Silva - Aesthetic & Nails. Todos os direitos reservados.
+            © {new Date().getFullYear()} Bruna Silva - Aesthetic & Nails. {t('footer.copyright')}
           </p>
         </div>
       </div>

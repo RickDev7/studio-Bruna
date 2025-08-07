@@ -2,6 +2,7 @@
 
 import { X, Check } from 'lucide-react'
 import Image from 'next/image'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface DetalhesPlanoModalProps {
   isOpen: boolean
@@ -17,11 +18,14 @@ interface DetalhesPlanoModalProps {
 }
 
 export function DetalhesPlanoModal({ isOpen, onClose, plano }: DetalhesPlanoModalProps) {
+  const { language, t } = useLanguage()
+  
   if (!isOpen) return null
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+      id="detalhes-plano-modal"
+      className="fixed inset-0 bg-black bg-opacity-50 z-[9998] flex items-center justify-center p-4"
       onClick={onClose}
     >
       <div
@@ -46,7 +50,7 @@ export function DetalhesPlanoModal({ isOpen, onClose, plano }: DetalhesPlanoModa
               <div className="relative h-[300px] w-full rounded-2xl overflow-hidden mb-6">
                 <Image
                   src={plano.imagem}
-                  alt={plano.nome}
+                  alt={plano.nome || 'Imagem do plano'}
                   fill
                   className="object-cover"
                 />
@@ -54,14 +58,14 @@ export function DetalhesPlanoModal({ isOpen, onClose, plano }: DetalhesPlanoModa
               </div>
 
               <div className="bg-pink-50/50 p-6 rounded-2xl border border-pink-100">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Descrição</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">{t('planDetails.description')}</h3>
                 <p className="text-gray-600 leading-relaxed">{plano.descricao}</p>
               </div>
             </div>
 
             <div className="space-y-6">
               <div className="bg-gradient-to-br from-white to-pink-50/30 p-6 rounded-2xl border border-pink-100">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Benefícios Inclusos</h3>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('planDetails.includedBenefits')}</h3>
                 <ul className="space-y-3">
                   {plano.beneficios.map((beneficio, index) => (
                     <li key={index} className="flex items-center text-gray-600">
@@ -74,20 +78,20 @@ export function DetalhesPlanoModal({ isOpen, onClose, plano }: DetalhesPlanoModa
 
               <div className="space-y-4">
                 <div className="bg-gradient-to-r from-[#FFB6C1] to-[#FFC0CB] p-6 rounded-2xl text-white">
-                  <p className="text-sm font-medium mb-1">Com Fidelização</p>
-                  <p className="text-xs mb-2">(3 ou 6 meses)</p>
+                  <p className="text-sm font-medium mb-1">{t('planDetails.withLoyalty')}</p>
+                  <p className="text-xs mb-2">{t('planDetails.loyaltyDuration')}</p>
                   <div className="flex items-baseline">
                     <span className="text-3xl font-bold">{plano.precoFidelidade}</span>
-                    <span className="ml-2 text-sm">/mês</span>
+                    <span className="ml-2 text-sm">{t('planDetails.perMonth')}</span>
                   </div>
                 </div>
 
                 <div className="bg-white p-6 rounded-2xl border-2 border-[#FFB6C1]">
-                  <p className="text-sm font-medium text-gray-800 mb-1">Sem Fidelização</p>
-                  <p className="text-xs text-gray-500 mb-2">Maior flexibilidade</p>
+                  <p className="text-sm font-medium text-gray-800 mb-1">{t('planDetails.withoutLoyalty')}</p>
+                  <p className="text-xs text-gray-500 mb-2">{t('planDetails.greaterFlexibility')}</p>
                   <div className="flex items-baseline">
                     <span className="text-3xl font-bold text-gray-800">{plano.precoSemFidelidade}</span>
-                    <span className="ml-2 text-sm text-gray-600">/mês</span>
+                    <span className="ml-2 text-sm text-gray-600">{t('planDetails.perMonth')}</span>
                   </div>
                 </div>
               </div>
@@ -97,7 +101,7 @@ export function DetalhesPlanoModal({ isOpen, onClose, plano }: DetalhesPlanoModa
 
         <div className="border-t border-pink-100 p-6 bg-gray-50">
           <p className="text-sm text-gray-500 text-center">
-            Para mais informações ou para agendar uma consulta, entre em contato conosco.
+            {t('planDetails.contactInfo')}
           </p>
         </div>
       </div>

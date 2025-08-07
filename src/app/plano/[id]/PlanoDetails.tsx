@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { TermsAndConditions } from '@/components/TermsAndConditions'
 
 interface PlanoDetalhes {
   id: string
@@ -143,7 +142,6 @@ export function PlanoDetails({ plano }: PlanoDetailsProps) {
                   Voltar
                 </button>
 
-                <TermsAndConditions />
               </div>
             </div>
           </div>

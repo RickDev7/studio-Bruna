@@ -5,6 +5,7 @@ import { X, Loader2 } from 'lucide-react'
 import { services } from '@/config/services'
 import { sendBookingEmails } from '@/services/bookingEmailService'
 import { toast } from 'react-hot-toast'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface ContactFormProps {
   isOpen: boolean
@@ -25,6 +26,7 @@ export interface ContactFormData {
 }
 
 export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time }: ContactFormProps) {
+  const { t, language } = useLanguage()
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -36,8 +38,22 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
   const selectedServiceNames = useMemo(() => {
     return allServices
       .filter(service => serviceIds.includes(service.id))
-      .map(service => service.name)
-  }, [serviceIds])
+      .map(service => t(service.translationKey))
+  }, [serviceIds, t])
+
+  const localeMap = {
+    'de': 'de-DE',
+    'pt': 'pt-BR',
+    'en': 'en-US',
+    'es': 'es-ES'
+  }
+  
+  const formattedDate = new Intl.DateTimeFormat(localeMap[language] || 'de-DE', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(date)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -54,25 +70,18 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
         time
       })
 
-      toast.success('Agendamento solicitado com sucesso! Verifique seu email.')
+      toast.success(t('scheduling.contactForm.success'))
       onClose()
       
     } catch (error) {
       console.error('Erro ao enviar emails:', error)
-      toast.error('Não foi possível enviar a confirmação. Por favor, tente novamente.')
+      toast.error(t('scheduling.contactForm.error'))
     } finally {
       setIsSubmitting(false)
     }
   }
 
   if (!isOpen) return null
-
-  const formattedDate = new Intl.DateTimeFormat('pt-BR', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  }).format(date)
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -87,9 +96,9 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
 
         {/* Cabeçalho */}
         <div className="p-6 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900">Confirmar Agendamento</h2>
+          <h2 className="text-2xl font-bold text-gray-900">{t('scheduling.contactForm.title')}</h2>
           <p className="mt-2 text-sm text-gray-600">
-            Por favor, preencha seus dados para confirmar o agendamento dos seguintes serviços:
+            {t('scheduling.contactForm.subtitle')}
           </p>
           <div className="mt-4 p-4 bg-pink-50 rounded-lg">
             <div className="space-y-2">
@@ -101,7 +110,7 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
               ))}
             </div>
             <p className="mt-4 text-sm text-pink-700 border-t border-pink-200 pt-4">
-              {formattedDate} às {time}
+              {formattedDate} {t('scheduling.contactForm.at')} {time}
             </p>
           </div>
         </div>
@@ -111,7 +120,7 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
           <div className="space-y-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Nome completo *
+                {t('scheduling.contactForm.name')} *
               </label>
               <input
                 type="text"
@@ -125,7 +134,7 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                E-mail *
+                {t('scheduling.contactForm.email')} *
               </label>
               <input
                 type="email"
@@ -139,13 +148,13 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
 
             <div>
               <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                Telefone *
+                {t('scheduling.contactForm.phone')} *
               </label>
               <input
                 type="tel"
                 id="phone"
                 required
-                placeholder="(00) 00000-0000"
+                placeholder={t('scheduling.contactForm.phonePlaceholder')}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
@@ -154,7 +163,7 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
 
             <div>
               <label htmlFor="notes" className="block text-sm font-medium text-gray-700">
-                Observações (opcional)
+                {t('scheduling.contactForm.notes')}
               </label>
               <textarea
                 id="notes"
@@ -162,7 +171,7 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
                 value={formData.notes}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                placeholder="Alguma informação adicional que devemos saber?"
+                placeholder={t('scheduling.contactForm.notesPlaceholder')}
               />
             </div>
           </div>
@@ -173,7 +182,7 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
             >
-              Cancelar
+              {t('scheduling.contactForm.cancel')}
             </button>
             <button
               type="submit"
@@ -183,10 +192,10 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Enviando...</span>
+                  <span>{t('scheduling.contactForm.sending')}</span>
                 </>
               ) : (
-                <span>Confirmar e Prosseguir</span>
+                <span>{t('scheduling.contactForm.confirm')}</span>
               )}
             </button>
           </div>

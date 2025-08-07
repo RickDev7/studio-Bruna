@@ -3,6 +3,8 @@
 import { Service, services } from '@/config/services';
 import { Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { translations } from '@/data/translations';
 
 interface ServiceMultiSelectorProps {
   onSelect: (selectedServices: string[]) => void;
@@ -10,6 +12,7 @@ interface ServiceMultiSelectorProps {
 }
 
 export function ServiceMultiSelector({ onSelect, initialSelected = [] }: ServiceMultiSelectorProps) {
+  const { t, language } = useLanguage();
   const [selectedServices, setSelectedServices] = useState<string[]>(initialSelected);
   const [selectedCategory, setSelectedCategory] = useState<Service['category']>('nails');
   const [isInteractive, setIsInteractive] = useState(false);
@@ -30,10 +33,10 @@ export function ServiceMultiSelector({ onSelect, initialSelected = [] }: Service
   };
 
   const categories = [
-    { id: 'nails', name: 'Unhas', description: 'Serviços para suas unhas' },
-    { id: 'face', name: 'Rosto', description: 'Tratamentos faciais' },
-    { id: 'eyebrows', name: 'Sobrancelhas & Pestanas', description: 'Design e embelezamento' },
-    { id: 'waxing', name: 'Depilação', description: 'Serviços de depilação' },
+    { id: 'nails', name: t('scheduling.serviceSelector.categories.nails.name'), description: t('scheduling.serviceSelector.categories.nails.description') },
+    { id: 'face', name: t('scheduling.serviceSelector.categories.face.name'), description: t('scheduling.serviceSelector.categories.face.description') },
+    { id: 'eyebrows', name: t('scheduling.serviceSelector.categories.eyebrows.name'), description: t('scheduling.serviceSelector.categories.eyebrows.description') },
+    { id: 'waxing', name: t('scheduling.serviceSelector.categories.waxing.name'), description: t('scheduling.serviceSelector.categories.waxing.description') },
   ];
 
   const filteredServices = services.filter(service => service.category === selectedCategory);
@@ -77,9 +80,9 @@ export function ServiceMultiSelector({ onSelect, initialSelected = [] }: Service
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <h3 className={`font-medium text-lg ${isSelected ? 'text-[#FF69B4]' : 'text-gray-900'}`}>
-                    {service.name}
+                    {t(service.translationKey)}
                   </h3>
-                  <p className="text-sm text-gray-500 mt-1">{service.description}</p>
+                  <p className="text-sm text-gray-500 mt-1">{translations[language].serviceDescriptions[service.translationKey] || service.description}</p>
                 </div>
                 <div 
                   className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
@@ -100,7 +103,7 @@ export function ServiceMultiSelector({ onSelect, initialSelected = [] }: Service
       {selectedServices.length > 0 && (
         <div className="mt-8 p-6 bg-gradient-to-br from-pink-50 to-white rounded-xl border border-pink-100">
           <h3 className="text-lg font-medium text-gray-900 mb-4">
-            Serviços Selecionados ({selectedServices.length})
+            {t('scheduling.serviceSelector.selectedServices')} ({selectedServices.length})
           </h3>
           <ul className="space-y-3">
             {selectedServices.map((serviceId) => {
@@ -108,7 +111,7 @@ export function ServiceMultiSelector({ onSelect, initialSelected = [] }: Service
               if (!service) return null;
               return (
                 <li key={serviceId} className="flex items-center justify-between">
-                  <span className="text-gray-600">{service.name}</span>
+                  <span className="text-gray-600">{t(service.translationKey)}</span>
                 </li>
               );
             })}

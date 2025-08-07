@@ -19,6 +19,7 @@ export function GoogleButton({ onClick, disabled }: GoogleButtonProps) {
         alt="Google logo"
         width={20}
         height={20}
+        priority
       />
       Sign in with Google
     </button>

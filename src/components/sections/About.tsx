@@ -3,17 +3,19 @@
 import React from 'react';
 import { Instagram } from 'lucide-react'
 import Image from 'next/image'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function About() {
+  const { t } = useLanguage()
   return (
     <section className="py-24 bg-white" id="sobre">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-4xl font-bold text-gray-900">
-            Sobre Mim
+            {t('about.title')}
           </h2>
           <p className="mt-2 text-lg text-gray-600">
-            Especialista em Unhas e Tratamentos Estéticos
+            {t('about.subtitle')}
           </p>
         </div>
 
@@ -24,7 +26,7 @@ export default function About() {
               <div className="w-64 h-64 rounded-full overflow-hidden relative">
                 <Image
                   src="/images/bruna-profile.jpg"
-                  alt="Bruna Silva"
+                  alt="Bruna Silva - Aesthetic & Nails"
                   fill
                   className="object-cover"
                   priority
@@ -33,20 +35,15 @@ export default function About() {
               </div>
 
               <h3 className="mt-8 text-2xl font-semibold text-gray-900">
-                Bruna Silva - Aesthetic & Nails
+                {t('about.name')}
               </h3>
 
               <p className="mt-4 text-gray-600 leading-relaxed">
-                Bem-vinda ao meu Studio de Beleza! Como especialista em unhas e estética, 
-                dedico-me a oferecer serviços de alta qualidade e atendimento 
-                personalizado para cada cliente.
+                {t('about.welcome')}
               </p>
 
               <p className="mt-4 text-gray-600 leading-relaxed">
-                Com anos de experiência, ofereço serviços abrangentes nas áreas de 
-                design de unhas e tratamentos estéticos. Meu objetivo é realçar sua 
-                beleza natural, sempre utilizando produtos de primeira linha e técnicas 
-                atualizadas.
+                {t('about.experience')}
               </p>
 
               <a
@@ -56,7 +53,7 @@ export default function About() {
                 className="mt-6 inline-flex items-center text-[#FF69B4] hover:text-[#FFB6C1] transition-colors"
               >
                 <Instagram className="h-5 w-5 mr-2" />
-                Siga-me no Instagram
+                {t('about.followInstagram')}
               </a>
             </div>
           </div>
@@ -66,25 +63,19 @@ export default function About() {
             <div className="space-y-8">
               <div>
                 <h4 className="text-xl font-semibold text-[#FF69B4] mb-4">
-                  Nossa História
+                  {t('about.history.title')}
                 </h4>
                 <p className="text-gray-600 leading-relaxed">
-                  A Bruna Silva - Aesthetic & Nails nasceu do sonho de proporcionar 
-                  serviços de beleza de alta qualidade em Cuxhaven. Com anos de 
-                  experiência e formação especializada em Portugal, trazemos para a 
-                  Alemanha o melhor da técnica portuguesa em serviços de beleza.
+                  {t('about.history.description')}
                 </p>
               </div>
 
               <div>
                 <h4 className="text-xl font-semibold text-[#FF69B4] mb-4">
-                  Nossa Missão
+                  {t('about.mission.title')}
                 </h4>
                 <p className="text-gray-600 leading-relaxed">
-                  Nosso compromisso é realçar a beleza natural de cada cliente, 
-                  oferecendo serviços personalizados e de alta qualidade. Buscamos 
-                  não apenas resultados estéticos excepcionais, mas também 
-                  proporcionar uma experiência relaxante e acolhedora.
+                  {t('about.mission.description')}
                 </p>
               </div>
             </div>

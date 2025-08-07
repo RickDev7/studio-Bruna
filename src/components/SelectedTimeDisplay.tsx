@@ -1,6 +1,7 @@
 import React from 'react';
 import { Clock, Calendar, Check, AlertCircle } from 'lucide-react';
 import { businessHours } from '@/config/businessHours';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface SelectedTimeDisplayProps {
   selectedTime: string;
@@ -8,10 +9,18 @@ interface SelectedTimeDisplayProps {
 }
 
 export function SelectedTimeDisplay({ selectedTime, selectedDate }: SelectedTimeDisplayProps) {
+  const { t, language } = useLanguage();
   if (!selectedTime) return null;
 
   const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('pt-BR', {
+    const localeMap = {
+      'de': 'de-DE',
+      'pt': 'pt-BR',
+      'en': 'en-US',
+      'es': 'es-ES'
+    };
+    
+    return new Intl.DateTimeFormat(localeMap[language] || 'de-DE', {
       weekday: 'long',
       day: 'numeric',
       month: 'long',
@@ -25,9 +34,9 @@ export function SelectedTimeDisplay({ selectedTime, selectedDate }: SelectedTime
 
   const getDayPeriod = (time: string) => {
     const hour = parseInt(time.split(':')[0]);
-    if (hour >= 6 && hour < 12) return 'manhã';
-    if (hour >= 12 && hour < 18) return 'tarde';
-    return 'noite';
+    if (hour >= 6 && hour < 12) return t('scheduling.selectedTime.morning');
+    if (hour >= 12 && hour < 18) return t('scheduling.selectedTime.afternoon');
+    return t('scheduling.selectedTime.evening');
   };
 
   const getNextTimeSlot = (time: string) => {
@@ -50,9 +59,9 @@ export function SelectedTimeDisplay({ selectedTime, selectedDate }: SelectedTime
             <Clock className="w-6 h-6 text-[#FF69B4]" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-medium text-gray-900">Horário Selecionado</h3>
+            <h3 className="text-lg font-medium text-gray-900">{t('scheduling.selectedTime.title')}</h3>
             <p className="text-gray-600 mt-1">
-              Período da {getDayPeriod(selectedTime)} - {formatTime(selectedTime)} às {formatTime(nextTime)}
+              {t('scheduling.selectedTime.period')} {getDayPeriod(selectedTime)} - {formatTime(selectedTime)} {t('scheduling.selectedTime.to')} {formatTime(nextTime)}
             </p>
           </div>
         </div>
@@ -62,7 +71,7 @@ export function SelectedTimeDisplay({ selectedTime, selectedDate }: SelectedTime
             <Calendar className="w-6 h-6 text-[#FF69B4]" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-medium text-gray-900">Data do Agendamento</h3>
+            <h3 className="text-lg font-medium text-gray-900">{t('scheduling.selectedTime.bookingDate')}</h3>
             <p className="text-gray-600 mt-1 capitalize">
               {formatDate(selectedDate)}
             </p>
@@ -74,9 +83,9 @@ export function SelectedTimeDisplay({ selectedTime, selectedDate }: SelectedTime
             <Check className="w-6 h-6 text-[#FF69B4]" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-medium text-gray-900">Confirmação</h3>
+            <h3 className="text-lg font-medium text-gray-900">{t('scheduling.selectedTime.confirmation')}</h3>
             <p className="text-gray-600 mt-1">
-              Horário disponível para agendamento
+              {t('scheduling.selectedTime.availableForBooking')}
             </p>
           </div>
         </div>
@@ -85,8 +94,8 @@ export function SelectedTimeDisplay({ selectedTime, selectedDate }: SelectedTime
           <AlertCircle className="w-5 h-5 text-[#FF69B4] flex-shrink-0 mt-0.5" />
           <div className="flex-1 text-sm text-gray-600">
             <p>
-              Chegue com 5-10 minutos de antecedência para garantir o melhor atendimento.
-              Em caso de imprevisto, entre em contato conosco com pelo menos 2 horas de antecedência.
+              {t('scheduling.selectedTime.notice.title')}
+              {t('scheduling.selectedTime.notice.subtitle')}
             </p>
           </div>
         </div>

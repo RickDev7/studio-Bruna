@@ -69,25 +69,25 @@ export function useAvailableSlots({ selectedDate, dayConfig }: UseAvailableSlots
 
         // 5. Atualizar estado
         if (availableTimes.length === 0) {
-          setError('Não há horários disponíveis para esta data');
+          setError('No time slots available for this date');
         } else {
           setAvailableSlots(availableTimes);
           setError(null);
         }
       } catch (err) {
         console.error('❌ Erro ao gerar horários:', err);
-        setError('Erro ao processar horários disponíveis');
+        setError('Error processing available time slots');
         setAvailableSlots([]);
       }
     }
 
     async function fetchBookedSlots() {
-      if (!selectedDate || !dayConfig) {
-        console.error('❌ Data ou configuração do dia não fornecida');
-        setError('Dados inválidos');
-        setIsLoading(false);
-        return;
-      }
+              if (!selectedDate || !dayConfig) {
+          console.error('❌ Data ou configuração do dia não fornecida');
+          setError('Invalid data');
+          setIsLoading(false);
+          return;
+        }
 
       try {
         setIsLoading(true);
@@ -157,7 +157,7 @@ export function useAvailableSlots({ selectedDate, dayConfig }: UseAvailableSlots
               
               // Notificar o usuário sobre a tentativa
               toast.loading(
-                `Tentando conectar ao servidor... (${retryAttempt}/${MAX_RETRIES})`,
+                `Trying to connect to server... (${retryAttempt}/${MAX_RETRIES})`,
                 { duration: delay }
               );
               
@@ -168,7 +168,7 @@ export function useAvailableSlots({ selectedDate, dayConfig }: UseAvailableSlots
 
             // Se acabaram as tentativas, usar fallback
             console.log('⚠️ Máximo de tentativas atingido - usando fallback com horários vazios');
-            toast.error('Não foi possível carregar os horários. Mostrando todos os horários disponíveis.');
+            toast.error('Could not load time slots. Showing all available time slots.');
             await generateAvailableSlots([]);
             return;
           }
@@ -197,7 +197,7 @@ export function useAvailableSlots({ selectedDate, dayConfig }: UseAvailableSlots
                 
                 // Notificar o usuário sobre a tentativa após timeout
                 toast.loading(
-                  `Conexão lenta, tentando novamente... (${retryAttempt}/${MAX_RETRIES})`,
+                  `Slow connection, trying again... (${retryAttempt}/${MAX_RETRIES})`,
                   { duration: RETRY_DELAY * retryAttempt }
                 );
                 
@@ -209,13 +209,13 @@ export function useAvailableSlots({ selectedDate, dayConfig }: UseAvailableSlots
 
           // Fallback em caso de erro
           console.log('⚠️ Usando fallback após erro na requisição');
-          toast.error('Erro de conexão. Mostrando todos os horários disponíveis.');
+          toast.error('Connection error. Showing all available time slots.');
           await generateAvailableSlots([]);
         }
       } catch (err) {
         console.error('❌ Erro não tratado:', err);
         // Garantir que a UI continue funcional
-        toast.error('Ocorreu um erro. Mostrando todos os horários disponíveis.');
+        toast.error('An error occurred. Showing all available time slots.');
         await generateAvailableSlots([]);
       } finally {
         if (isMounted) {

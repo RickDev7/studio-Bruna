@@ -2,7 +2,8 @@
 
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { PlanDetails } from '@/components/PlanDetails';
+import Image from 'next/image';
+import { Star, Check } from 'lucide-react';
 
 const planos = [
   {
@@ -79,7 +80,89 @@ export default function PlanPage() {
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-2xl shadow-sm p-8">
-          <PlanDetails plan={plano} isOpen={true} onClose={() => {}} />
+          {/* Conteúdo do plano sem modal */}
+          <div className="max-w-4xl mx-auto">
+            {/* Header com gradiente */}
+            <div className="mb-8">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h1 className="text-3xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent">
+                    {plano.name}
+                  </h1>
+                  {plano.destaque && (
+                    <div className="flex items-center mt-2 text-[#FF69B4]">
+                      <Star className="w-4 h-4 mr-1 fill-current" />
+                      <span className="text-sm font-medium">Plano Mais Popular</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Conteúdo com grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              <div className="relative rounded-2xl overflow-hidden shadow-lg">
+                <Image
+                  src={plano.imagem}
+                  alt={plano.name || 'Imagem do plano'}
+                  width={500}
+                  height={300}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <p className="text-gray-600 text-lg mb-6">{plano.description}</p>
+                <div className="space-y-4">
+                  {plano.beneficios.map((beneficio, index) => (
+                    <div key={index} className="flex items-center">
+                      <Check className="w-5 h-5 text-[#FF69B4] mr-3 flex-shrink-0" />
+                      <span className="text-gray-600">{beneficio}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Opções de preço */}
+            <div className="space-y-4 mb-8">
+              {/* Com Fidelização */}
+              <Link
+                href={`/pagamento?plano=${encodeURIComponent(plano.name)}&valor=${encodeURIComponent(plano.precoFidelidade)}&tipo=fidelidade`}
+                className="block bg-gradient-to-r from-[#FFB6C1] to-[#FFC0CB] p-6 rounded-2xl text-white transform hover:scale-[1.02] transition-transform shadow-lg hover:shadow-xl group"
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <p className="text-sm font-medium">Com Fidelização</p>
+                    <p className="text-xs opacity-90">(3 ou 6 meses)</p>
+                  </div>
+                  <div className="bg-white/20 rounded-full px-3 py-1">
+                    <p className="text-xs font-medium">Melhor Valor!</p>
+                  </div>
+                </div>
+                <div className="flex items-baseline">
+                  <span className="text-3xl font-bold">{plano.precoFidelidade}</span>
+                  <span className="ml-2 text-sm">/mês</span>
+                </div>
+              </Link>
+
+              {/* Sem Fidelização */}
+              <Link
+                href={`/pagamento?plano=${encodeURIComponent(plano.name)}&valor=${encodeURIComponent(plano.precoSemFidelidade)}&tipo=sem_fidelidade`}
+                className="block bg-white p-6 rounded-2xl border-2 border-[#FFB6C1] transform hover:scale-[1.02] transition-transform shadow-lg hover:shadow-xl group"
+              >
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <p className="text-sm font-medium text-gray-800">Sem Fidelização</p>
+                    <p className="text-xs text-gray-500">Maior flexibilidade</p>
+                  </div>
+                </div>
+                <div className="flex items-baseline">
+                  <span className="text-3xl font-bold text-gray-800">{plano.precoSemFidelidade}</span>
+                  <span className="ml-2 text-sm text-gray-600">/mês</span>
+                </div>
+              </Link>
+            </div>
+          </div>
           
           <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
             <Link

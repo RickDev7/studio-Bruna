@@ -5,6 +5,7 @@ import { businessHours } from '@/config/businessHours'
 import { SelectedTimeDisplay } from './SelectedTimeDisplay'
 import { useAvailableSlots } from '@/hooks/useAvailableSlots'
 import { Clock, Sun, Moon } from 'lucide-react'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface TimeSlotsProps {
   selectedDate: Date
@@ -27,6 +28,7 @@ const formatTimeDisplay = (time: string) => {
 }
 
 function TimeSlotGroup({ title, icon, slots, selectedTime, onTimeSelect }: TimeSlotGroupProps) {
+  const { t } = useLanguage()
   if (slots.length === 0) return null
 
   return (
@@ -34,7 +36,7 @@ function TimeSlotGroup({ title, icon, slots, selectedTime, onTimeSelect }: TimeS
       <div className="flex items-center mb-4">
         {icon}
         <h3 className="text-lg font-medium text-gray-900 ml-2">{title}</h3>
-        <span className="ml-auto text-sm text-gray-500">{slots.length} horários</span>
+        <span className="ml-auto text-sm text-gray-500">{slots.length} {t('scheduling.timeSlots.timeSlots')}</span>
       </div>
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
         {slots.map((time) => (
@@ -66,6 +68,7 @@ export function TimeSlots({
   selectedTime, 
   onTimeSelect
 }: TimeSlotsProps) {
+  const { t } = useLanguage()
   // Obtém a configuração do dia selecionado
   const dayOfWeek = selectedDate.getDay()
   const dayConfig = businessHours[dayOfWeek]
@@ -102,8 +105,8 @@ export function TimeSlots({
           <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-4">
             <Clock className="w-8 h-8 text-[#FF69B4]" />
           </div>
-          <p className="text-xl text-gray-800 font-medium mb-2">Estabelecimento fechado</p>
-          <p className="text-gray-500">Não há horários disponíveis neste dia. Por favor, selecione outra data.</p>
+          <p className="text-xl text-gray-800 font-medium mb-2">{t('scheduling.timeSlots.closed.title')}</p>
+          <p className="text-gray-500">{t('scheduling.timeSlots.closed.description')}</p>
         </div>
       </div>
     )
@@ -117,8 +120,8 @@ export function TimeSlots({
           <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-4 animate-spin">
             <Clock className="w-8 h-8 text-[#FF69B4]" />
           </div>
-          <p className="text-xl text-gray-800 font-medium mb-2">Carregando horários</p>
-          <p className="text-gray-500">Por favor, aguarde enquanto buscamos os horários disponíveis...</p>
+          <p className="text-xl text-gray-800 font-medium mb-2">{t('scheduling.timeSlots.loading.title')}</p>
+          <p className="text-gray-500">{t('scheduling.timeSlots.loading.description')}</p>
         </div>
       </div>
     )
@@ -134,9 +137,9 @@ export function TimeSlots({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <p className="text-xl text-gray-800 font-medium mb-2">Ops! Algo deu errado</p>
+          <p className="text-xl text-gray-800 font-medium mb-2">{t('scheduling.timeSlots.error.title')}</p>
           <p className="text-gray-500">{error}</p>
-          <p className="text-gray-500">Por favor, tente novamente mais tarde.</p>
+          <p className="text-gray-500">{t('scheduling.timeSlots.error.description')}</p>
         </div>
       </div>
     )
@@ -150,8 +153,8 @@ export function TimeSlots({
           <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-4">
             <Clock className="w-8 h-8 text-[#FF69B4]" />
           </div>
-          <p className="text-xl text-gray-800 font-medium mb-2">Agenda lotada</p>
-          <p className="text-gray-500">Não há horários disponíveis nesta data. Por favor, selecione outro dia.</p>
+          <p className="text-xl text-gray-800 font-medium mb-2">{t('scheduling.timeSlots.noSlots.title')}</p>
+          <p className="text-gray-500">{t('scheduling.timeSlots.noSlots.description')}</p>
         </div>
       </div>
     )
@@ -162,7 +165,7 @@ export function TimeSlots({
   return (
     <div className="space-y-6">
       <TimeSlotGroup
-        title="Manhã"
+        title={t('scheduling.timeSlots.morning')}
         icon={<Sun className="w-5 h-5 text-[#FF69B4]" />}
         slots={groupedSlots.morning}
         selectedTime={selectedTime}
@@ -170,7 +173,7 @@ export function TimeSlots({
       />
 
       <TimeSlotGroup
-        title="Tarde"
+        title={t('scheduling.timeSlots.afternoon')}
         icon={<Sun className="w-5 h-5 text-[#FF69B4]" />}
         slots={groupedSlots.afternoon}
         selectedTime={selectedTime}
@@ -178,7 +181,7 @@ export function TimeSlots({
       />
 
       <TimeSlotGroup
-        title="Noite"
+        title={t('scheduling.timeSlots.evening')}
         icon={<Moon className="w-5 h-5 text-[#FF69B4]" />}
         slots={groupedSlots.evening}
         selectedTime={selectedTime}

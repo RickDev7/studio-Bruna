@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react'
 import { businessHours, holidays } from '@/config/businessHours'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 interface CalendarProps {
   selectedDate: Date | null
@@ -17,14 +18,15 @@ export function Calendar({
   highlightedDates = [],
   disabledDates = []
 }: CalendarProps) {
+  const { t } = useLanguage()
   const [currentDate, setCurrentDate] = useState(new Date())
 
   const months = [
-    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    t('scheduling.calendar.months.january'), t('scheduling.calendar.months.february'), t('scheduling.calendar.months.march'), t('scheduling.calendar.months.april'), t('scheduling.calendar.months.may'), t('scheduling.calendar.months.june'),
+    t('scheduling.calendar.months.july'), t('scheduling.calendar.months.august'), t('scheduling.calendar.months.september'), t('scheduling.calendar.months.october'), t('scheduling.calendar.months.november'), t('scheduling.calendar.months.december')
   ]
 
-  const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+  const weekDays = [t('scheduling.calendar.weekDays.sun'), t('scheduling.calendar.weekDays.mon'), t('scheduling.calendar.weekDays.tue'), t('scheduling.calendar.weekDays.wed'), t('scheduling.calendar.weekDays.thu'), t('scheduling.calendar.weekDays.fri'), t('scheduling.calendar.weekDays.sat')]
 
   const getDaysInMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
@@ -147,7 +149,7 @@ export function Calendar({
 
             {status === 'closed' && (
               <span className="absolute bottom-1 left-1/2 transform -translate-x-1/2 text-[10px] text-gray-400">
-                Fechado
+                {t('scheduling.calendar.legend.closed')}
               </span>
             )}
           </div>
@@ -196,24 +198,24 @@ export function Calendar({
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm text-gray-500">
           <div className="flex items-center">
             <div className="w-3 h-3 rounded-full bg-[#FF69B4] mr-2" />
-            <span>Selecionado</span>
+            <span>{t('scheduling.calendar.legend.selected')}</span>
           </div>
           <div className="flex items-center">
             <div className="w-3 h-3 rounded-full bg-pink-50 border border-[#FF69B4] mr-2" />
-            <span>Hoje</span>
+            <span>{t('scheduling.calendar.legend.today')}</span>
           </div>
           <div className="flex items-center">
             <div className="w-3 h-3 rounded-full border-2 border-[#FF69B4] mr-2" />
-            <span>Com Agendamento</span>
+            <span>{t('scheduling.calendar.legend.withBooking')}</span>
           </div>
 
           <div className="flex items-center">
             <div className="w-3 h-3 rounded-full bg-gray-100 mr-2" />
-            <span>Fechado</span>
+            <span>{t('scheduling.calendar.legend.closed')}</span>
           </div>
           <div className="flex items-center">
             <div className="w-3 h-3 rounded-full bg-gray-50 mr-2" />
-            <span>Indisponível</span>
+            <span>{t('scheduling.calendar.legend.unavailable')}</span>
           </div>
         </div>
       </div>
