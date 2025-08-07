@@ -1,152 +1,163 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import Image from 'next/image'
+import { useParams } from 'next/navigation'
+import { Navbar } from '@/components/Navbar'
+import { Footer } from '@/components/Footer'
+import { useLanguage } from '@/contexts/LanguageContext'
 
-interface PlanoDetalhes {
-  id: string
-  nome: string
-  descricao: string
-  precoFidelidade: string
-  precoSemFidelidade: string
-  servicos: string[]
-  beneficios: string[]
-  imagem: string
-}
+const planos = [
+  {
+    id: 'basico',
+    nome: 'Básico',
+    descricao: 'Ideal para quem está começando sua jornada de cuidados com a beleza.',
+    precoFidelidade: '40€',
+    precoSemFidelidade: '45€',
+    beneficios: [
+      'Manicure com Shellac',
+      'Pediküre com Shellac',
+      'Design de Sobrancelhas',
+      'Depilação de Sobrancelhas',
+      'Limpeza de Pele Básica'
+    ],
+    imagem: '/images/plano-basico.png'
+  },
+  {
+    id: 'balance',
+    nome: 'Balance',
+    descricao: 'Equilibrio perfeito entre cuidados básicos e tratamentos especiais.',
+    precoFidelidade: '65€',
+    precoSemFidelidade: '70€',
+    beneficios: [
+      'Tudo do plano Básico',
+      'Gel Nails',
+      'Spa Pediküre',
+      'Brow Lamination',
+      'Tratamentos Faciais Avançados',
+      'Depilação Corporal'
+    ],
+    imagem: '/images/plano-balance.png'
+  },
+  {
+    id: 'premium',
+    nome: 'Premium',
+    descricao: 'Experiência completa com todos os tratamentos e cuidados especiais.',
+    precoFidelidade: '115€',
+    precoSemFidelidade: '130€',
+    beneficios: [
+      'Tudo dos planos anteriores',
+      'Nail Art Personalizada',
+      'Tratamentos Faciais Premium',
+      'Depilação Intima',
+      'Sessões de Spa',
+      'Consultoria Personalizada'
+    ],
+    imagem: '/images/plano-premium.png'
+  }
+]
 
-interface PlanoDetailsProps {
-  plano: PlanoDetalhes
-}
+export default function PlanoDetailsPage() {
+  const params = useParams()
+  const { t } = useLanguage()
+  const planoId = params.id as string
+  
+  const plano = planos.find(p => p.id === planoId)
 
-export function PlanoDetails({ plano }: PlanoDetailsProps) {
-  const router = useRouter()
+  if (!plano) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB]/20 via-white to-[#FFE4E1]/20">
+        <Navbar />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold text-gray-800 mb-4">Plano não encontrado</h1>
+            <p className="text-gray-600">O plano solicitado não existe.</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    )
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1] py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-[#FFC0CB]">
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Coluna da Imagem */}
-            <div className="lg:w-1/3">
-              <div className="sticky top-8">
-                <div className="relative w-full h-[400px] rounded-2xl overflow-hidden">
-                  <Image
-                    src={plano.imagem}
-                    alt={plano.nome}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    className="transition-transform duration-300 hover:scale-105"
-                  />
-                </div>
-              </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB]/20 via-white to-[#FFE4E1]/20">
+      <Navbar />
+      <main className="flex-1 py-24">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] p-8 text-white">
+              <h1 className="text-4xl font-bold mb-4">{plano.nome}</h1>
+              <p className="text-xl opacity-90">{plano.descricao}</p>
             </div>
 
-            {/* Coluna do Conteúdo */}
-            <div className="lg:w-2/3">
-              <div className="text-center lg:text-left mb-12">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent mb-4">
-                  {plano.nome}
-                </h1>
-                <p className="text-gray-600 text-lg">
-                  {plano.descricao}
-                </p>
-              </div>
-
-              {/* Preços */}
-              <div className="flex flex-col md:flex-row gap-6 mb-8">
-                <div className="flex-1">
-                  <div className="bg-gradient-to-r from-[#FFB6C1] to-[#FFC0CB] p-6 rounded-2xl text-white text-center transform hover:scale-105 transition-transform duration-300 shadow-lg">
-                    <h2 className="text-lg font-medium mb-2">Com Fidelização</h2>
-                    <p className="text-sm mb-2">(3 ou 6 meses)</p>
-                    <p className="text-3xl font-bold">{plano.precoFidelidade}/mês</p>
-                  </div>
+            {/* Conteúdo */}
+            <div className="p-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Imagem */}
+                <div className="relative h-80 rounded-2xl overflow-hidden">
+                  <img
+                    src={plano.imagem}
+                    alt={plano.nome}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-                <div className="flex-1">
-                  <div className="bg-white p-6 rounded-2xl text-gray-800 text-center border-2 border-[#FFB6C1] transform hover:scale-105 transition-transform duration-300 shadow-lg">
-                    <h2 className="text-lg font-medium mb-2">Sem Fidelização</h2>
-                    <p className="text-sm mb-2">&nbsp;</p>
-                    <p className="text-3xl font-bold">{plano.precoSemFidelidade}/mês</p>
-                  </div>
-                </div>
-              </div>
 
-              {/* Serviços Incluídos */}
-              <div className="space-y-6 mb-8">
-                <h3 className="text-2xl font-medium text-gray-800">Serviços Incluídos</h3>
-                <div className="grid gap-4">
-                  {plano.servicos.map((servico, index) => (
-                    <div
-                      key={index}
-                      className="group relative bg-white rounded-xl border border-[#FFB6C1] p-4 transition-all duration-300 hover:shadow-md hover:border-[#FF69B4]"
-                    >
-                      <div className="flex items-center">
-                        <svg className="h-5 w-5 text-[#FF69B4] mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <p className="text-gray-800 font-medium">{servico}</p>
-                      </div>
+                {/* Preços */}
+                <div className="space-y-6">
+                  {/* Com Fidelização */}
+                  <div className="bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] p-6 rounded-2xl text-white">
+                    <h3 className="text-lg font-semibold mb-2">{t('common.withLoyalty')}</h3>
+                    <div className="flex items-baseline">
+                      <span className="text-4xl font-bold">{plano.precoFidelidade}</span>
+                      <span className="ml-2 text-sm">{t('common.perMonth')}</span>
                     </div>
-                  ))}
+                    <p className="text-sm opacity-90 mt-2">(3 ou 6 meses)</p>
+                  </div>
+
+                  {/* Sem Fidelização */}
+                  <div className="bg-gray-50 p-6 rounded-2xl">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-2">{t('common.withoutLoyalty')}</h3>
+                    <div className="flex items-baseline">
+                      <span className="text-4xl font-bold text-gray-800">{plano.precoSemFidelidade}</span>
+                      <span className="ml-2 text-sm text-gray-600">{t('common.perMonth')}</span>
+                    </div>
+                    <p className="text-sm text-gray-600 mt-2">Maior flexibilidade</p>
+                  </div>
                 </div>
               </div>
 
               {/* Benefícios */}
-              <div className="space-y-6 mb-12">
-                <h3 className="text-2xl font-medium text-gray-800">Benefícios</h3>
-                <div className="grid gap-4">
+              <div className="mt-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">{t('planDetails.includedBenefits')}</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {plano.beneficios.map((beneficio, index) => (
-                    <div
-                      key={index}
-                      className="group relative bg-white rounded-xl border border-[#FFB6C1] p-4 transition-all duration-300 hover:shadow-md hover:border-[#FF69B4]"
-                    >
-                      <div className="flex items-center">
-                        <svg className="h-5 w-5 text-[#FF69B4] mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p className="text-gray-800 font-medium">{beneficio}</p>
-                      </div>
+                    <div key={index} className="flex items-center p-4 bg-pink-50 rounded-xl">
+                      <div className="w-3 h-3 bg-[#FF69B4] rounded-full mr-3"></div>
+                      <span className="text-gray-700">{beneficio}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Botões de Ação */}
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <div className="mt-8 space-y-4">
                 <a
-                  href={`/pagamento?valor=${encodeURIComponent(plano.precoFidelidade)}&plano=${encodeURIComponent(plano.nome)}`}
-                  className="inline-flex items-center px-8 py-4 text-lg font-medium rounded-full text-white bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] hover:from-[#FF69B4] hover:to-[#FFB6C1] transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
+                  href={`/pagamento?plano=${encodeURIComponent(plano.nome)}&valor=${encodeURIComponent(plano.precoFidelidade)}&tipo=fidelidade`}
+                  className="block w-full py-4 px-6 bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] text-white rounded-full text-center font-semibold hover:opacity-90 transition-opacity"
                 >
-                  Assinar Plano
-                  <svg
-                    className="ml-2 -mr-1 w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
+                  Contratar com Fidelização
                 </a>
-
-                <button
-                  onClick={() => router.back()}
-                  className="inline-flex items-center px-8 py-4 text-lg font-medium rounded-full text-[#FF69B4] hover:text-white bg-white hover:bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] border-2 border-[#FFB6C1] transition-all duration-300 transform hover:scale-105"
+                <a
+                  href={`/pagamento?plano=${encodeURIComponent(plano.nome)}&valor=${encodeURIComponent(plano.precoSemFidelidade)}&tipo=sem_fidelidade`}
+                  className="block w-full py-4 px-6 border-2 border-[#FF69B4] text-[#FF69B4] rounded-full text-center font-semibold hover:bg-[#FF69B4] hover:text-white transition-colors"
                 >
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                  </svg>
-                  Voltar
-                </button>
-
+                  Contratar sem Fidelização
+                </a>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </main>
+      <Footer />
     </div>
   )
 } 

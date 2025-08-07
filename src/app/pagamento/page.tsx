@@ -5,13 +5,15 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Copy, Check, AlertCircle, Phone } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 function PagamentoContent() {
   const searchParams = useSearchParams();
-  const valor = searchParams.get('valor');
-  const plano = searchParams.get('plano');
-  const tipo = searchParams.get('tipo');
-
+  const { t } = useLanguage();
+  
+  const plano = searchParams.get('plano') || 'Plano não especificado';
+  const valor = searchParams.get('valor') || '0';
+  const tipo = searchParams.get('tipo') || 'sem_fidelidade';
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
   const handleCopy = async (text: string, field: string) => {
@@ -26,30 +28,30 @@ function PagamentoContent() {
 
   const dadosBancarios = [
     {
+      id: 'banco',
       label: 'Banco',
-      value: 'N26 Bank',
-      id: 'banco'
+      value: 'Sparkasse'
     },
     {
-      label: 'Nome',
-      value: 'BRUNA RAFAELA PEREIRA DA SILVA',
-      id: 'nome'
+      id: 'titular',
+      label: 'Titular',
+      value: 'Bruna Silva'
     },
     {
+      id: 'iban',
       label: 'IBAN',
-      value: 'DE13 1001 1001 2518 5510 36',
-      id: 'iban'
+      value: 'DE89 3705 0198 1932 1698 85'
     },
     {
-      label: 'BIC/SWIFT',
-      value: 'NTSBDEB1XXX',
-      id: 'bic'
+      id: 'bic',
+      label: 'BIC',
+      value: 'COLSDE33'
     }
   ];
 
   return (
-    <div className="container mx-auto px-4 py-24">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB]/20 via-white to-[#FFE4E1]/20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-[#FFC0CB]">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent mb-4">
@@ -63,8 +65,8 @@ function PagamentoContent() {
             <div className="bg-gradient-to-r from-[#FFB6C1] to-[#FFC0CB] p-6 rounded-2xl text-white mb-8">
               <h2 className="text-lg font-medium mb-2">Plano Selecionado</h2>
               <p className="text-2xl font-bold mb-2">{plano}</p>
-              <p className="text-lg">{tipo === 'fidelidade' ? 'Com Fidelização' : 'Sem Fidelização'}</p>
-              <p className="text-3xl font-bold mt-4">{valor}/mês</p>
+              <p className="text-lg">{tipo === 'fidelidade' ? t('common.withLoyalty') : t('common.withoutLoyalty')}</p>
+              <p className="text-3xl font-bold mt-4">{valor}{t('common.perMonth')}</p>
             </div>
 
             {/* Dados Bancários */}

@@ -24,8 +24,8 @@ export function Navbar() {
   const navItems = [
     { name: t('nav.home'), href: '/' },
     { name: t('nav.services'), href: '/#servicos' },
-    { name: t('nav.plans'), href: '/#planos' },
     { name: t('nav.ourSpace'), href: '/#galeria' },
+    { name: t('nav.plans'), href: '/#planos' },
     { name: t('nav.about'), href: '/#sobre' },
     { name: t('nav.contact'), href: '/#contatos' }
   ]

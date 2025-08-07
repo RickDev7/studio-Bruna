@@ -1,4 +1,4 @@
-import { PlanoPageClient } from './page.client'
+import PlanoDetails from './PlanoDetails'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -13,6 +13,5 @@ export default async function PlanoPage({
   params: Promise<{ id: string }>
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const [resolvedParams, resolvedSearchParams] = await Promise.all([params, searchParams])
-  return <PlanoPageClient id={resolvedParams.id} />
+  return <PlanoDetails />
 } 

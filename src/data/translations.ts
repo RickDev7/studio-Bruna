@@ -1,5 +1,15 @@
 export const translations = {
   de: {
+    // Common
+    common: {
+      month: 'Monat',
+      perMonth: '/Monat',
+      withLoyalty: 'Mit Treueprogramm',
+      withoutLoyalty: 'Ohne Treueprogramm',
+      loyaltyProgram: 'Treueprogramm',
+      noLoyaltyProgram: 'Ohne Treueprogramm'
+    },
+
     // Navbar
     nav: {
       home: 'Startseite',
@@ -452,6 +462,16 @@ export const translations = {
   },
 
   pt: {
+    // Common
+    common: {
+      month: 'Mês',
+      perMonth: '/mês',
+      withLoyalty: 'Com Fidelização',
+      withoutLoyalty: 'Sem Fidelização',
+      loyaltyProgram: 'Programa de Fidelidade',
+      noLoyaltyProgram: 'Sem Fidelidade'
+    },
+
     // Navbar
     nav: {
       home: 'Início',
@@ -904,6 +924,16 @@ export const translations = {
   },
 
   en: {
+    // Common
+    common: {
+      month: 'Month',
+      perMonth: '/month',
+      withLoyalty: 'With Loyalty Program',
+      withoutLoyalty: 'No Loyalty Program',
+      loyaltyProgram: 'Loyalty Program',
+      noLoyaltyProgram: 'No Loyalty Program'
+    },
+
     // Navbar
     nav: {
       home: 'Home',
@@ -1356,6 +1386,16 @@ export const translations = {
   },
 
   es: {
+    // Common
+    common: {
+      month: 'Mes',
+      perMonth: '/mes',
+      withLoyalty: 'Con Programa de Fidelidad',
+      withoutLoyalty: 'Sin Programa de Fidelidad',
+      loyaltyProgram: 'Programa de Fidelidad',
+      noLoyaltyProgram: 'Sin Programa de Fidelidad'
+    },
+
     // Navbar
     nav: {
       home: 'Inicio',

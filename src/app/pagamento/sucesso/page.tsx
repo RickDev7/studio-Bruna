@@ -6,11 +6,14 @@ import { CheckCircle2 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { CheckCircle } from 'lucide-react';
 import { Navbar } from '@/components/Navbar';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 function SucessoContent() {
   const searchParams = useSearchParams();
+  const { t } = useLanguage();
   const plano = searchParams.get('plano');
   const valor = searchParams.get('valor');
+  const tipo = searchParams.get('tipo') || 'sem_fidelidade';
 
   return (
     <div className="container mx-auto px-4 py-24">
@@ -32,7 +35,7 @@ function SucessoContent() {
             <div className="bg-gradient-to-r from-[#FFB6C1] to-[#FFC0CB] p-6 rounded-2xl text-white mb-8">
               <h2 className="text-lg font-medium mb-2">Detalhes da Assinatura</h2>
               <p className="text-2xl font-bold mb-2">{plano}</p>
-              <p className="text-3xl font-bold">{valor}/mês</p>
+              <p className="text-3xl font-bold">{valor}{t('common.perMonth')}</p>
             </div>
           )}
 

@@ -296,11 +296,11 @@ export function Pricing() {
 
                 {/* Preços */}
                 <div className="mt-8 space-y-4">
-                  <div className="bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] p-6 rounded-2xl text-white">
+                  <div className="bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] p-6 rounded-2xl text-white">
                     <p className="text-sm font-medium mb-2">{t('pricing.loyalty')}</p>
                     <div className="flex items-baseline">
                       <span className="text-3xl font-bold">{plano.precoFidelidade}</span>
-                      <span className="ml-1 text-sm">/mês</span>
+                      <span className="ml-1 text-sm">{t('common.perMonth')}</span>
                     </div>
                   </div>
 
@@ -308,7 +308,7 @@ export function Pricing() {
                     <p className="text-sm font-medium text-gray-800 mb-2">{t('pricing.noLoyalty')}</p>
                     <div className="flex items-baseline">
                       <span className="text-3xl font-bold text-gray-800">{plano.precoSemFidelidade}</span>
-                      <span className="ml-1 text-sm text-gray-600">/mês</span>
+                      <span className="ml-1 text-sm text-gray-600">{t('common.perMonth')}</span>
                     </div>
                   </div>
                 </div>
@@ -470,7 +470,7 @@ export function Pricing() {
                 <p className="text-lg">
                   {planoFinalizacao.tipo === 'fidelidade' ? t('payment.withLoyalty') : t('payment.withoutLoyalty')}
                 </p>
-                <p className="text-3xl font-bold mt-4">{planoFinalizacao.valor}/mês</p>
+                <p className="text-3xl font-bold mt-4">{planoFinalizacao.valor}{t('common.perMonth')}</p>
               </div>
 
               {/* Dados Bancários */}
