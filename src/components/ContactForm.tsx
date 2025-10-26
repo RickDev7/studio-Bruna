@@ -6,6 +6,7 @@ import { services } from '@/config/services'
 import { sendBookingEmails } from '@/services/bookingEmailService'
 import { toast } from 'react-hot-toast'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { translations } from '@/data/translations'
 
 interface ContactFormProps {
   isOpen: boolean
@@ -85,7 +86,7 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg relative">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] relative flex flex-col">
         {/* Botão Fechar */}
         <button
           onClick={onClose}
@@ -95,7 +96,7 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
         </button>
 
         {/* Cabeçalho */}
-        <div className="p-6 border-b border-gray-200">
+        <div className="p-6 border-b border-gray-200 flex-shrink-0">
           <h2 className="text-2xl font-bold text-gray-900">{t('scheduling.contactForm.title')}</h2>
           <p className="mt-2 text-sm text-gray-600">
             {t('scheduling.contactForm.subtitle')}
@@ -116,7 +117,8 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
         </div>
 
         {/* Formulário */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto">
+          <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div className="space-y-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">
@@ -176,6 +178,48 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
             </div>
           </div>
 
+          {/* Booking Rules Section */}
+          <div className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg p-4 border border-pink-200">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              ⚠️ Wichtige Hinweise
+            </h3>
+            <div className="space-y-3">
+              <p className="text-sm text-gray-700">
+                Liebe Kundinnen,
+              </p>
+              <p className="text-sm text-gray-700">
+                Ab dem 1. November gelten neue Buchungsregeln im Studio:
+              </p>
+              <ul className="space-y-2">
+                <li className="flex items-start space-x-2">
+                  <span className="text-pink-500 font-bold text-sm">✨</span>
+                  <span className="text-sm text-gray-700">Zur Bestätigung des Termins ist eine Anzahlung von 20% des Gesamtwerts der Dienstleistung erforderlich.</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <span className="text-pink-500 font-bold text-sm">✨</span>
+                  <span className="text-sm text-gray-700">Die Anzahlung muss innerhalb von 48 Stunden nach der Buchung erfolgen. Bei Buchungen mit weniger als 2 Tagen Vorlaufzeit muss die Zahlung am selben Tag erfolgen.</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <span className="text-pink-500 font-bold text-sm">✨</span>
+                  <span className="text-sm text-gray-700">Bei Verspätung von mehr als 15 Minuten kann die Behandlung verkürzt oder abgesagt werden, und die Anzahlung geht verloren.</span>
+                </li>
+                <li className="flex items-start space-x-2">
+                  <span className="text-pink-500 font-bold text-sm">✨</span>
+                  <span className="text-sm text-gray-700">Die Anzahlung ist nicht erstattungsfähig, wenn die Stornierung weniger als 24 Stunden im Voraus erfolgt oder bei Nichterscheinen.</span>
+                </li>
+              </ul>
+              <p className="text-sm text-gray-700">
+                Diese Maßnahmen gewährleisten Pünktlichkeit und Organisation des Terminkalenders und erhalten die Qualität der Betreuung für alle 💖
+              </p>
+              <p className="text-sm text-gray-700">
+                Vielen Dank für Ihr Verständnis und Vertrauen 💕
+              </p>
+              <p className="text-sm text-pink-600 font-medium">
+                — Bruna Silva Aesthetic & Nails 💅
+              </p>
+            </div>
+          </div>
+
           <div className="flex justify-end space-x-3">
             <button
               type="button"
@@ -199,7 +243,8 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
               )}
             </button>
           </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   )

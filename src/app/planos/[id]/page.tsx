@@ -70,7 +70,7 @@ export default function PlanoPage() {
       <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB]/20 via-white to-[#FFE4E1]/20">
         <Navbar />
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-center">
+        <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-800 mb-4">Plano não encontrado</h1>
             <p className="text-gray-600">O plano solicitado não existe.</p>
           </div>

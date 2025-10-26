@@ -10,9 +10,10 @@ import { Check, Clock, Calendar as CalendarIcon, ListChecks, ArrowLeft } from 'l
 import Link from 'next/link'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { LanguageSelector } from '@/components/LanguageSelector'
+import { translations } from '@/data/translations'
 
 export default function AgendarPage() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [selectedServices, setSelectedServices] = useState<string[]>([])
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [selectedTime, setSelectedTime] = useState<string | null>(null)

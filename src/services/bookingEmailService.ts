@@ -38,10 +38,13 @@ export async function sendBookingEmails(data: BookingEmailData) {
     throw new Error('Não foi possível inicializar o serviço de email');
   }
 
-  // Busca os nomes dos serviços
+  // Busca os nomes dos serviços e calcula o valor total
   const selectedServices = services
     .filter(service => data.serviceIds.includes(service.id))
     .map(service => service.name);
+
+  // Valores não são calculados aqui pois não temos preços definidos
+  // As informações de pagamento são fornecidas no template
 
   // Formata a data
   const formattedDate = new Intl.DateTimeFormat('pt-BR', {
@@ -53,12 +56,47 @@ export async function sendBookingEmails(data: BookingEmailData) {
 
   // Template de dados para o cliente (usando as variáveis exatas do template HTML)
   const userTemplateData = {
+    to_name: data.name,
     from_name: data.name,
     service: selectedServices.join(', '),
+    service_name: selectedServices.join(', '),
     date: formattedDate,
+    appointment_date: formattedDate,
     time: data.time,
+    appointment_time: data.time,
     address: "Bei der Grodener Kirche 7, 27472 Cuxhaven, Alemanha",
-    address_link: "https://maps.app.goo.gl/Ld8tZSGZGbVFGwqr7"
+    address_link: "https://maps.app.goo.gl/Ld8tZSGZGbVFGwqr7",
+    payment_info: `Um Ihren Termin zu bestätigen, ist eine Anzahlung von 20% des Gesamtwerts der Dienstleistung erforderlich. Die Zahlung muss innerhalb von 48 Stunden nach dieser Buchung erfolgen. Für Termine mit weniger als 2 Tagen Vorlaufzeit muss die Zahlung am selben Tag erfolgen.`,
+    payment_methods: "Sie können die Zahlung per Banküberweisung, PayPal oder bar im Studio vornehmen.",
+    contact_whatsapp: "+49 152 800 7814",
+    appointment_status: "confirmado",
+    message: `Olá ${data.name}!
+
+Seu agendamento foi recebido com sucesso!
+
+📅 DETALHES DO AGENDAMENTO:
+• Serviço: ${selectedServices.join(', ')}
+• Data: ${formattedDate}
+• Horário: ${data.time}
+• Endereço: Bei der Grodener Kirche 7, 27472 Cuxhaven, Alemanha
+
+💳 INFORMAÇÕES DE PAGAMENTO:
+• Sinal de 20% do valor total dos serviços
+
+Para confirmar seu agendamento, é necessário o pagamento de um sinal de 20% do valor total dos serviços. O pagamento deve ser feito até 48 horas após este agendamento. Para agendamentos com menos de 2 dias de antecedência, o pagamento deve ser feito no mesmo dia.
+
+Você pode fazer o pagamento via transferência bancária, PayPal ou em dinheiro no estúdio.
+
+⚠️ REGRAS IMPORTANTES:
+• Em caso de atraso superior a 15 minutos, o atendimento poderá ser encurtado ou cancelado
+• O sinal não é reembolsável se o cancelamento ocorrer com menos de 24h de antecedência
+• Somente após o pagamento do sinal o horário será confirmado
+
+📱 Para mais informações sobre o pagamento, entre em contato:
+WhatsApp: +49 152 800 7814
+
+Agradecemos pela confiança!
+Bruna Silva Aesthetic & Nails 💅`
   };
 
   // Template de dados para o admin (usando as variáveis exatas do template HTML)

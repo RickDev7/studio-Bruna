@@ -145,32 +145,6 @@ const HomeClient = () => {
               </div>
             </div>
 
-            {/* Seção de promoção */}
-            <div className="mt-20 relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] rounded-3xl transform -rotate-1"></div>
-              <div className="relative bg-white rounded-3xl p-8 md:p-12 shadow-xl">
-                <div className="text-center space-y-4">
-                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900">
-                    {t('promotion.title')}
-                  </h3>
-                  <p className="text-xl text-[#FF69B4] font-semibold">
-                    {t('promotion.discount')}
-                  </p>
-                  <p className="text-gray-600">
-                    {t('promotion.description')}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    {t('promotion.terms')}
-                  </p>
-                  <a
-                    href="/agendar"
-                    className="mt-6 inline-flex items-center px-8 py-4 text-lg font-medium rounded-full text-white bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] hover:opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                  >
-                    {t('promotion.scheduleNow')}
-                  </a>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
         <Gallery />

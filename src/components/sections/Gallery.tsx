@@ -35,14 +35,14 @@ export function Gallery() {
               key={index}
               className="group relative aspect-[3/2] overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <Image
+            <Image
                 src={imageSrc}
                 alt="Studio Bruna Silva - Aesthetic & Nails"
-                fill
+              fill
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
                 priority={index < 2}
-              />
+            />
             </div>
           ))}
         </div>
