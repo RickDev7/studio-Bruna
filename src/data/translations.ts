@@ -474,6 +474,21 @@ export const translations = {
       'services.depilation.services.2': 'Intimbereich-Haarentfernung mit spezialisierten Techniken und geeigneten Produkten',
       'services.depilation.services.3': 'Gesichtshaarentfernung mit sanften Techniken für Gesichtshaut',
       'services.depilation.services.4': 'Vollständige Körperhaarentfernung für weiche, haarfreie Haut'
+    },
+
+    // Booking Notice
+    bookingNotice: {
+      title: 'Wichtige Hinweise: Neue Buchungsregeln ab 1. November',
+      greeting: 'Liebe Kundinnen,',
+      intro: 'Ab dem 1. November gelten neue Buchungsregeln im Studio:',
+      rules: [
+        'Zur Bestätigung des Termins ist eine <strong>Anzahlung von 20% des Gesamtwerts der Dienstleistung</strong> erforderlich.',
+        'Die Anzahlung muss <strong>innerhalb von 48 Stunden nach der Buchung</strong> erfolgen. Bei Buchungen mit weniger als 2 Tagen Vorlaufzeit muss die Zahlung <strong>am selben Tag</strong> erfolgen. Der Termin wird erst nach Zahlung bestätigt.',
+        'Bei <strong>Verspätung von mehr als 15 Minuten</strong> kann die Behandlung verkürzt oder abgesagt werden, und die Anzahlung geht verloren.',
+        'Die Anzahlung ist <strong>nicht erstattungsfähig</strong>, wenn die Stornierung weniger als <strong>24 Stunden im Voraus</strong> erfolgt oder bei <strong>Nichterscheinen</strong>.'
+      ],
+      conclusion: 'Diese Maßnahmen gewährleisten Pünktlichkeit und Organisation des Terminkalenders und erhalten die Qualität der Betreuung für alle 💖',
+      thanks: 'Vielen Dank für Ihr Verständnis und Vertrauen 💕'
     }
   },
 
@@ -952,6 +967,21 @@ export const translations = {
       'services.depilation.services.2': 'Depilação íntima com técnicas especializadas e produtos adequados',
       'services.depilation.services.3': 'Depilação facial com técnicas delicadas para pele do rosto',
       'services.depilation.services.4': 'Depilação corporal completa para uma pele macia e livre de pelos'
+    },
+
+    // Booking Notice
+    bookingNotice: {
+      title: 'Importante: Novas Regras de Agendamento a partir de 1º de Novembro',
+      greeting: 'Queridas clientes,',
+      intro: 'A partir do dia 1 de novembro, teremos novas regras de agendamento no estúdio:',
+      rules: [
+        'Para confirmar o horário, será necessário um <strong>sinal de 20% do valor total do serviço</strong>.',
+        'O pagamento do sinal deve ser feito até <strong>48h após o agendamento</strong>. Para agendamentos com menos de 2 dias de antecedência, o pagamento deve ser feito <strong>no mesmo dia</strong>. Somente após o pagamento o horário será confirmado.',
+        'Em caso de <strong>atraso superior a 15 minutos</strong>, o atendimento poderá ser encurtado ou cancelado, e o sinal será perdido.',
+        'O sinal <strong>não é reembolsável</strong> se o cancelamento ocorrer com menos de <strong>24h de antecedência</strong> ou em caso de <strong>não comparecimento</strong>.'
+      ],
+      conclusion: 'Essas medidas garantem a pontualidade e a organização da agenda, mantendo a qualidade do atendimento para todas 💖',
+      thanks: 'Agradeço muito pela compreensão e confiança 💕'
     }
   },
 
@@ -1430,6 +1460,21 @@ export const translations = {
       'services.depilation.services.2': 'Intimate hair removal with specialized techniques and appropriate products',
       'services.depilation.services.3': 'Facial hair removal with gentle techniques for facial skin',
       'services.depilation.services.4': 'Complete body hair removal for soft, hair-free skin'
+    },
+
+    // Booking Notice
+    bookingNotice: {
+      title: 'Important: New Booking Rules from November 1st',
+      greeting: 'Dear clients,',
+      intro: 'Starting November 1st, we will have new booking rules at the studio:',
+      rules: [
+        'To confirm the appointment, a <strong>20% deposit of the total service value</strong> will be required.',
+        'The deposit payment must be made <strong>within 48 hours after booking</strong>. For appointments scheduled with less than 2 days notice, payment must be made <strong>on the same day</strong>. The appointment will only be confirmed after payment.',
+        'In case of <strong>delay exceeding 15 minutes</strong>, the service may be shortened or cancelled, and the deposit will be lost.',
+        'The deposit is <strong>non-refundable</strong> if cancellation occurs with less than <strong>24 hours notice</strong> or in case of <strong>no-show</strong>.'
+      ],
+      conclusion: 'These measures ensure punctuality and schedule organization, maintaining service quality for everyone 💖',
+      thanks: 'Thank you very much for your understanding and trust 💕'
     }
   },
 
@@ -1908,6 +1953,21 @@ export const translations = {
       'services.depilation.services.2': 'Depilación íntima con técnicas especializadas y productos adecuados',
       'services.depilation.services.3': 'Depilación facial con técnicas delicadas para piel del rostro',
       'services.depilation.services.4': 'Depilación corporal completa para una piel suave y libre de vello'
+    },
+
+    // Booking Notice
+    bookingNotice: {
+      title: 'Importante: Nuevas Reglas de Reserva a partir del 1 de Noviembre',
+      greeting: 'Queridas clientas,',
+      intro: 'A partir del 1 de noviembre, tendremos nuevas reglas de reserva en el estudio:',
+      rules: [
+        'Para confirmar la cita, será necesario un <strong>depósito del 20% del valor total del servicio</strong>.',
+        'El pago del depósito debe realizarse <strong>dentro de 48 horas después de la reserva</strong>. Para citas programadas con menos de 2 días de anticipación, el pago debe realizarse <strong>el mismo día</strong>. La cita solo se confirmará después del pago.',
+        'En caso de <strong>retraso superior a 15 minutos</strong>, el servicio puede ser acortado o cancelado, y se perderá el depósito.',
+        'El depósito <strong>no es reembolsable</strong> si la cancelación ocurre con menos de <strong>24 horas de anticipación</strong> o en caso de <strong>no presentarse</strong>.'
+      ],
+      conclusion: 'Estas medidas garantizan la puntualidad y la organización de la agenda, manteniendo la calidad del servicio para todas 💖',
+      thanks: 'Muchas gracias por su comprensión y confianza 💕'
     }
   }
 };

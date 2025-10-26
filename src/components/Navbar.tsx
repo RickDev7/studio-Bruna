@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { LanguageSelector } from './LanguageSelector'
+import { FreshaButton } from './FreshaButton'
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -99,12 +100,9 @@ export function Navbar() {
             {/* Botões de ação - Desktop */}
             <div className="hidden md:flex items-center space-x-4">
               <LanguageSelector />
-              <Link 
-                href="/agendar"
-                className="text-sm font-medium transition-all duration-300 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] text-white hover:shadow-lg hover:opacity-90 transform hover:scale-105"
-              >
+              <FreshaButton size="sm">
                 {t('nav.schedule')}
-              </Link>
+              </FreshaButton>
             </div>
 
             {/* Menu mobile */}
@@ -149,15 +147,16 @@ export function Navbar() {
                 <div className="flex items-center justify-center mb-3">
                   <LanguageSelector />
                 </div>
-                <Link 
-                  href="/agendar"
-                  onClick={() => setIsMenuOpen(false)}
-                  className={`block w-full text-center text-sm font-medium transition-all duration-300 px-6 py-3 rounded-xl bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] text-white hover:shadow-lg hover:opacity-90
-                    transform transition-transform delay-[${navItems.length * 50}ms]
-                    ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}
-                >
-                  {t('nav.schedule')}
-                </Link>
+                <div className={`transform transition-transform delay-[${navItems.length * 50}ms]
+                  ${isMenuOpen ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+                  <FreshaButton 
+                    size="sm" 
+                    className="w-full"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {t('nav.schedule')}
+                  </FreshaButton>
+                </div>
               </div>
             </div>
           </div>

@@ -5,6 +5,7 @@ import { Calendar, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useLanguage } from '@/contexts/LanguageContext'
+import { FreshaButton } from '@/components/FreshaButton'
 
 export function Hero() {
   const { t } = useLanguage()
@@ -46,13 +47,9 @@ export function Hero() {
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center animate-fadeIn delay-300">
-            <Link
-              href="/agendar"
-              className="group w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 text-base font-medium rounded-full text-white bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] hover:opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-            >
-              <Calendar className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+            <FreshaButton size="lg" className="w-full sm:w-auto">
               {t('hero.scheduleNow')}
-            </Link>
+            </FreshaButton>
 
             <Link
               href="/#servicos"

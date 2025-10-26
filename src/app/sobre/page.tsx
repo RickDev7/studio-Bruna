@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react';
+import { FreshaButton } from '@/components/FreshaButton';
 
 export default function SobrePage() {
   return (
@@ -79,12 +80,9 @@ export default function SobrePage() {
         </div>
 
         <div className="text-center mt-12">
-          <a
-            href="/agendar"
-            className="inline-flex items-center px-8 py-4 text-lg font-medium rounded-full text-white bg-gradient-to-r from-[#FFB6C1] to-[#FF69B4] hover:from-[#FF69B4] hover:to-[#FFB6C1] transform hover:scale-105 transition-all duration-300 hover:shadow-lg"
-          >
+          <FreshaButton size="lg">
             Agendar Horário
-          </a>
+          </FreshaButton>
         </div>
       </div>
     </div>

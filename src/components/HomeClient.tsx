@@ -7,16 +7,22 @@ import { Hero } from '@/components/sections/Hero'
 import About from '@/components/sections/About'
 import { Pricing } from '@/components/sections/Pricing'
 import { Gallery } from '@/components/sections/Gallery'
+import { AvisoAgendamento } from '@/components/AvisoAgendamento'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { translations } from '@/data/translations'
 
 const HomeClient = () => {
   const { t, language } = useLanguage()
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-1">
         <Hero />
+        
+        {/* Aviso de Agendamento */}
+        <AvisoAgendamento />
+        
         <section id="servicos" className="py-24 bg-gradient-to-b from-white to-pink-50/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">

@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { FreshaButton } from '../FreshaButton';
 
 export function Gallery() {
   const { t } = useLanguage();
@@ -38,10 +39,9 @@ export function Gallery() {
             <Image
                 src={imageSrc}
                 alt="Studio Bruna Silva - Aesthetic & Nails"
-              fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
+                fill
                 priority={index < 2}
+                style={{ objectFit: 'cover' }}
             />
             </div>
           ))}
@@ -52,12 +52,9 @@ export function Gallery() {
           <p className="text-lg text-gray-600 mb-8">
             {t('gallery.callToAction.description')}
           </p>
-          <a
-            href="/agendar"
-            className="inline-flex items-center px-8 py-4 text-lg font-medium rounded-full text-white bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] hover:opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-          >
+          <FreshaButton size="lg">
             {t('gallery.callToAction.button')}
-          </a>
+          </FreshaButton>
         </div>
       </div>
     </section>
