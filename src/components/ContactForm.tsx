@@ -181,41 +181,31 @@ export function ContactForm({ isOpen, onClose, onSubmit, serviceIds, date, time 
           {/* Booking Rules Section */}
           <div className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg p-4 border border-pink-200">
             <h3 className="text-lg font-semibold text-gray-900 mb-3">
-              ⚠️ Wichtige Hinweise
+              {t('scheduling.bookingRules.title')}
             </h3>
             <div className="space-y-3">
               <p className="text-sm text-gray-700">
-                Liebe Kundinnen,
+                {t('scheduling.bookingRules.greeting')}
               </p>
               <p className="text-sm text-gray-700">
-                Ab dem 1. November gelten neue Buchungsregeln im Studio:
+                {t('scheduling.bookingRules.intro')}
               </p>
               <ul className="space-y-2">
-                <li className="flex items-start space-x-2">
-                  <span className="text-pink-500 font-bold text-sm">✨</span>
-                  <span className="text-sm text-gray-700">Zur Bestätigung des Termins ist eine Anzahlung von 20% des Gesamtwerts der Dienstleistung erforderlich.</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <span className="text-pink-500 font-bold text-sm">✨</span>
-                  <span className="text-sm text-gray-700">Die Anzahlung muss innerhalb von 48 Stunden nach der Buchung erfolgen. Bei Buchungen mit weniger als 2 Tagen Vorlaufzeit muss die Zahlung am selben Tag erfolgen.</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <span className="text-pink-500 font-bold text-sm">✨</span>
-                  <span className="text-sm text-gray-700">Bei Verspätung von mehr als 15 Minuten kann die Behandlung verkürzt oder abgesagt werden, und die Anzahlung geht verloren.</span>
-                </li>
-                <li className="flex items-start space-x-2">
-                  <span className="text-pink-500 font-bold text-sm">✨</span>
-                  <span className="text-sm text-gray-700">Die Anzahlung ist nicht erstattungsfähig, wenn die Stornierung weniger als 24 Stunden im Voraus erfolgt oder bei Nichterscheinen.</span>
-                </li>
+                {translations[language].scheduling.bookingRules.rules.map((rule: string, index: number) => (
+                  <li key={index} className="flex items-start space-x-2">
+                    <span className="text-pink-500 font-bold text-sm">✨</span>
+                    <span className="text-sm text-gray-700">{rule}</span>
+                  </li>
+                ))}
               </ul>
               <p className="text-sm text-gray-700">
-                Diese Maßnahmen gewährleisten Pünktlichkeit und Organisation des Terminkalenders und erhalten die Qualität der Betreuung für alle 💖
+                {t('scheduling.bookingRules.conclusion')}
               </p>
               <p className="text-sm text-gray-700">
-                Vielen Dank für Ihr Verständnis und Vertrauen 💕
+                {t('scheduling.bookingRules.thanks')}
               </p>
               <p className="text-sm text-pink-600 font-medium">
-                — Bruna Silva Aesthetic & Nails 💅
+                {t('scheduling.bookingRules.signature')}
               </p>
             </div>
           </div>

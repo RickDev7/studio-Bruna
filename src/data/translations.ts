@@ -428,6 +428,22 @@ export const translations = {
         success: 'Buchungsanfrage erfolgreich gesendet! Überprüfen Sie Ihre E-Mail.',
         error: 'Die Bestätigung konnte nicht gesendet werden. Bitte versuchen Sie es erneut.',
         at: 'um'
+      },
+
+      // Booking Rules
+      bookingRules: {
+        title: '❗ Wichtige Hinweise',
+        greeting: 'Liebe Kundinnen,',
+        intro: 'Ab dem 1. November gelten neue Buchungsregeln im Studio:',
+        rules: [
+          'Zur Bestätigung des Termins ist eine Anzahlung von 20% des Gesamtwerts der Dienstleistung erforderlich.',
+          'Die Anzahlung muss innerhalb von 48 Stunden nach der Buchung erfolgen. Bei Buchungen mit weniger als 2 Tagen Vorlaufzeit muss die Zahlung am selben Tag erfolgen.',
+          'Bei Verspätung von mehr als 15 Minuten kann die Behandlung verkürzt oder abgesagt werden, und die Anzahlung geht verloren.',
+          'Die Anzahlung ist nicht erstattungsfähig, wenn die Stornierung weniger als 24 Stunden im Voraus erfolgt oder bei Nichterscheinen.'
+        ],
+        conclusion: 'Diese Maßnahmen gewährleisten Pünktlichkeit und Organisation des Terminkalenders und erhalten die Qualität der Betreuung für alle 💖',
+        thanks: 'Vielen Dank für Ihr Verständnis und Vertrauen 💕',
+        signature: '— Bruna Silva Aesthetic & Nails 💅'
       }
     },
 
@@ -890,6 +906,22 @@ export const translations = {
         success: 'Solicitação de agendamento enviada com sucesso! Verifique seu e-mail.',
         error: 'Não foi possível enviar a confirmação. Por favor, tente novamente.',
         at: 'às'
+      },
+
+      // Booking Rules
+      bookingRules: {
+        title: '❗ Importante: Novas Regras de Agendamento a partir de 1º de Novembro',
+        greeting: 'Queridas clientes,',
+        intro: 'A partir do dia 1 de novembro, teremos novas regras de agendamento no estúdio:',
+        rules: [
+          'Para confirmar o horário, será necessário um sinal de 20% do valor total do serviço.',
+          'O pagamento do sinal deve ser feito até 48h após o agendamento. Para agendamentos marcados com menos de 2 dias de antecedência, o pagamento deve ser feito no mesmo dia. Somente após o pagamento o horário será confirmado.',
+          'Em caso de atraso superior a 15 minutos, o atendimento poderá ser encurtado ou cancelado, e o sinal será perdido.',
+          'O sinal não é reembolsável se o cancelamento ocorrer com menos de 24h de antecedência ou em caso de não comparecimento.'
+        ],
+        conclusion: 'Essas medidas garantem a pontualidade e a organização da agenda, mantendo a qualidade do atendimento para todas 💖',
+        thanks: 'Agradeço muito pela compreensão e confiança 💕',
+        signature: '— Bruna Silva Aesthetic & Nails 💅'
       }
     },
 
@@ -1352,6 +1384,22 @@ export const translations = {
         success: 'Booking request sent successfully! Check your email.',
         error: 'Could not send confirmation. Please try again.',
         at: 'at'
+      },
+
+      // Booking Rules
+      bookingRules: {
+        title: '❗ Important: New Booking Rules from November 1st',
+        greeting: 'Dear clients,',
+        intro: 'Starting November 1st, we will have new booking rules at the studio:',
+        rules: [
+          'To confirm the appointment, a 20% deposit of the total service value will be required.',
+          'The deposit payment must be made within 48 hours after booking. For appointments scheduled with less than 2 days notice, payment must be made on the same day. The appointment will only be confirmed after payment.',
+          'In case of delay exceeding 15 minutes, the service may be shortened or cancelled, and the deposit will be lost.',
+          'The deposit is non-refundable if cancellation occurs with less than 24 hours notice or in case of no-show.'
+        ],
+        conclusion: 'These measures ensure punctuality and schedule organization, maintaining service quality for everyone 💖',
+        thanks: 'Thank you very much for your understanding and trust 💕',
+        signature: '— Bruna Silva Aesthetic & Nails 💅'
       }
     },
 
@@ -1814,6 +1862,22 @@ export const translations = {
         success: '¡Solicitud de reserva enviada con éxito! Revise su correo electrónico.',
         error: 'No se pudo enviar la confirmación. Por favor, inténtelo de nuevo.',
         at: 'a las'
+      },
+
+      // Booking Rules
+      bookingRules: {
+        title: '❗ Importante: Nuevas Reglas de Reserva a partir del 1 de Noviembre',
+        greeting: 'Queridas clientas,',
+        intro: 'A partir del 1 de noviembre, tendremos nuevas reglas de reserva en el estudio:',
+        rules: [
+          'Para confirmar la cita, será necesario un depósito del 20% del valor total del servicio.',
+          'El pago del depósito debe realizarse dentro de 48 horas después de la reserva. Para citas programadas con menos de 2 días de anticipación, el pago debe realizarse el mismo día. La cita solo se confirmará después del pago.',
+          'En caso de retraso superior a 15 minutos, el servicio puede ser acortado o cancelado, y se perderá el depósito.',
+          'El depósito no es reembolsable si la cancelación ocurre con menos de 24 horas de anticipación o en caso de no presentarse.'
+        ],
+        conclusion: 'Estas medidas garantizan la puntualidad y la organización de la agenda, manteniendo la calidad del servicio para todas 💖',
+        thanks: 'Muchas gracias por su comprensión y confianza 💕',
+        signature: '— Bruna Silva Aesthetic & Nails 💅'
       }
     },
 
