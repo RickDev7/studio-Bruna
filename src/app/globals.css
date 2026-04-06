@@ -42,11 +42,157 @@
   animation: scroll 2s ease-in-out infinite;
 }
 
+/* Font display utility */
+.font-display {
+  font-family: var(--font-display), Georgia, 'Times New Roman', serif;
+}
+
 /* Estilos base */
 :root {
-  --primary: #FF69B4;
-  --primary-light: #FFB6C1;
-  --primary-dark: #FF1493;
+  --bg-primary: #F5F1EC;
+  --bg-secondary: #E7DBD1;
+  --bg-card: #FFFFFF;
+  --text-primary: #2C2C2C;
+  --text-accent: #8A5C4A;
+  --button-soft: #CFAE9D;
+  --button-premium: #C8A27A;
+  --border-light: #D6C1B1;
+  --highlight: #E4D6CC;
+  --error: #B85C5C;
+  --success: #6B8F6B;
+  --neutral: #E4D6CC;
+  --accent-soft: #D6C1B1;
+  --accent-medium: #CFAE9D;
+  --highlight-soft: #EAD0C2;
+  --text-main: #8A5C4A;
+  --gold: #C8A27A;
+  --primary: #CFAE9D;
+  --primary-light: #EAD0C2;
+  --primary-dark: #8A5C4A;
+}
+
+@layer base {
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 16px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: var(--text-accent);
+  }
+}
+
+@media (min-width: 768px) {
+  body {
+    font-size: 18px;
+  }
+}
+
+.btn-primary {
+  background-color: var(--button-premium);
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background-color: var(--button-soft);
+  color: var(--text-accent);
+}
+
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+}
+
+@layer utilities {
+  .bg-white,
+  .bg-white\/90,
+  .bg-white\/95 {
+    background-color: var(--bg-primary) !important;
+  }
+
+  .text-white {
+    color: var(--bg-primary) !important;
+  }
+
+  .text-gray-900,
+  .text-gray-800,
+  .text-gray-700,
+  .text-gray-600,
+  .text-gray-500,
+  .text-gray-400 {
+    color: var(--text-main) !important;
+  }
+
+  .border-gray-100,
+  .border-gray-200,
+  .border-gray-300,
+  .border-pink-100 {
+    border-color: var(--border-light) !important;
+  }
+
+  .bg-gray-50,
+  .bg-gray-100,
+  .bg-pink-50,
+  .bg-pink-100,
+  .bg-rose-50 {
+    background-color: var(--bg-secondary) !important;
+  }
+
+  .text-pink-500,
+  .text-pink-600,
+  .text-pink-700 {
+    color: var(--text-main) !important;
+  }
+
+  .hover\:text-gray-700:hover,
+  .hover\:text-\[\#FF1493\]:hover,
+  .hover\:text-\[\#FF69B4\]:hover,
+  .group:hover .group-hover\:text-\[\#FF69B4\] {
+    color: var(--text-main) !important;
+  }
+
+  .hover\:bg-pink-50:hover {
+    background-color: var(--bg-secondary) !important;
+  }
+
+  .from-\[\#FF69B4\],
+  .from-\[\#FFB6C1\],
+  .from-\[\#FFC0CB\],
+  .from-pink-50,
+  .from-rose-50 {
+    --tw-gradient-from: var(--accent-medium) var(--tw-gradient-from-position) !important;
+    --tw-gradient-to: rgb(207 174 157 / 0) var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+  }
+
+  .via-white {
+    --tw-gradient-to: rgb(245 241 236 / 0) var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--bg-primary) var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+  }
+
+  .to-\[\#FFB6C1\],
+  .to-\[\#FF69B4\],
+  .to-\[\#FFE4E1\],
+  .to-transparent {
+    --tw-gradient-to: var(--highlight-soft) var(--tw-gradient-to-position) !important;
+  }
+
+  .text-\[\#FF69B4\],
+  .text-\[\#FFB6C1\] {
+    color: var(--text-main) !important;
+  }
+
+  .bg-\[\#FF69B4\] {
+    background-color: var(--accent-medium) !important;
+  }
+
+  .border-\[\#FF69B4\],
+  .border-\[\#FFC0CB\] {
+    border-color: var(--border-light) !important;
+  }
 }
 
 /* Scrollbar personalizada */
@@ -55,7 +201,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -70,10 +216,39 @@
 /* Seleção de texto */
 ::selection {
   background: var(--primary-light);
-  color: white;
+  color: var(--text-main);
 }
 
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
+}
+
+/* Nav link underline animation */
+.nav-link-underline {
+  position: relative;
+}
+.nav-link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.25s ease-out;
+}
+.nav-link-underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* Scroll hint bounce */
+@keyframes bounce-y {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(6px); }
+}
+.animate-bounce-y {
+  animation: bounce-y 1.6s ease-in-out infinite;
 }

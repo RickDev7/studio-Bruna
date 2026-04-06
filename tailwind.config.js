@@ -5,10 +5,22 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['var(--font-display)', 'Georgia', 'Times New Roman', 'serif'],
+        sans: ['var(--font-sans)', 'Inter', 'system-ui', 'sans-serif'],
+      },
       colors: {
-        'pink-primary': '#FF69B4',
-        'pink-secondary': '#FFB6C1',
-        'pink-light': '#FFC0CB',
+        'pink-primary': '#CFAE9D',
+        'pink-secondary': '#EAD0C2',
+        'pink-light': '#D6C1B1',
+        'luxury-bg-primary': '#F5F1EC',
+        'luxury-bg-secondary': '#E7DBD1',
+        'luxury-neutral': '#E4D6CC',
+        'luxury-accent-soft': '#D6C1B1',
+        'luxury-accent-medium': '#CFAE9D',
+        'luxury-highlight-soft': '#EAD0C2',
+        'luxury-text-main': '#8A5C4A',
+        'luxury-gold': '#C8A27A',
       },
       animation: {
         'fadeIn': 'fadeIn 1s ease-out forwards',

@@ -1,14 +1,23 @@
 import React from 'react'
-import { Inter } from 'next/font/google'
+import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import { AppProviders } from '@/components/AppProviders'
 import { Metadata } from 'next'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans',
+})
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-display',
+  style: ['normal', 'italic'],
+})
 
 export const metadata: Metadata = {
-  title: 'Bruna Silva - Aesthetic & Nails',
-  description: 'Serviços profissionais de estética e beleza em Cuxhaven.',
+  title: 'Bruna Silva - Aesthetic & Nails | Cuxhaven',
+  description: 'Professionelle Schönheitsbehandlungen und Nagelpflege in Cuxhaven. Termine über Fresha buchen.',
   icons: {
     icon: '/favicon.png',
     shortcut: '/favicon.png',
@@ -31,7 +40,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.png" />
       </head>
-      <body className={inter.className} suppressHydrationWarning>
+      <body className={`${inter.variable} ${playfair.variable} ${inter.className}`} suppressHydrationWarning>
         <div id="app" className="min-h-screen bg-gray-50">
           <AppProviders>
             {children}

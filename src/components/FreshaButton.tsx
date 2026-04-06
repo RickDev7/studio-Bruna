@@ -7,26 +7,19 @@ interface FreshaButtonProps {
   className?: string
   children?: React.ReactNode
   size?: 'sm' | 'md' | 'lg'
-  variant?: 'primary' | 'secondary'
   onClick?: () => void
 }
 
-export function FreshaButton({ 
-  className = '', 
-  children, 
+export function FreshaButton({
+  className = '',
+  children,
   size = 'md',
-  variant = 'primary',
-  onClick
+  onClick,
 }: FreshaButtonProps) {
   const sizeClasses = {
     sm: 'px-4 py-2 text-sm',
     md: 'px-6 py-3 text-base',
-    lg: 'px-8 py-4 text-lg'
-  }
-
-  const variantClasses = {
-    primary: 'bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] text-white shadow-xl hover:opacity-90',
-    secondary: 'bg-white text-[#FF69B4] border-2 border-[#FF69B4] shadow-lg hover:bg-[#FF69B4] hover:text-white'
+    lg: 'px-8 py-4 text-lg',
   }
 
   return (
@@ -36,17 +29,19 @@ export function FreshaButton({
       rel="noopener noreferrer"
       onClick={onClick}
       className={`
+        inline-flex items-center justify-center gap-2
+        rounded-[10px] font-medium
+        bg-[#8A5C4A] text-[#F5F1EC]
+        border border-transparent
+        shadow-[0_2px_12px_rgba(138,92,74,0.18)]
+        transition-all duration-300 ease-out
+        hover:bg-[#C8A27A] hover:scale-[1.02] hover:shadow-[0_4px_20px_rgba(138,92,74,0.28)]
+        focus:outline-none focus:ring-2 focus:ring-[#C8A27A]/30 focus:ring-offset-1
         ${sizeClasses[size]}
-        ${variantClasses[variant]}
-        rounded-full font-medium transition-all duration-300 
-        transform hover:scale-105 focus:outline-none 
-        focus:ring-4 focus:ring-pink-400 focus:ring-opacity-50
-        flex items-center justify-center space-x-2
-        border-2 border-transparent hover:border-pink-300
         ${className}
       `}
     >
-      <Calendar className="w-5 h-5" />
+      <Calendar className="w-4 h-4 shrink-0" />
       <span>{children || FRESHA_CONFIG.title}</span>
     </a>
   )

@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bruna Silva Aesthetic &amp; Nails – Schönheitsstudio Cuxhaven</title>
+  <meta name="description" content="Schönheitsstudio in Cuxhaven – Nägel, Gesichtsbehandlungen, Wimpern, Massagen. Professionelle Ästhetik von Bruna Silva seit 2020." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ── CSS VARIABLES ── */
+    :root {
+      --bg-primary: #F5F1EC;
+      --bg-secondary: #E7DBD1;
+      --bg-card: #FFFFFF;
+      --text-primary: #2C2C2C;
+      --text-accent: #8A5C4A;
+      --button-soft: #CFAE9D;
+      --button-premium: #C8A27A;
+      --border-light: #D6C1B1;
+      --highlight: #E4D6CC;
+      --accent-gold: #C8A27A;
+      --whatsapp: #25D366;
+      --error: #B85C5C;
+      --success: #6B8F6B;
+    }
+
+    /* ── RESET & BASE ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Open Sans', system-ui, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+    h1, h2, h3, h4, h5 {
+      font-family: 'Poppins', system-ui, sans-serif;
+    }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── UTILITY ── */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+    .section-title {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      color: var(--text-accent);
+      margin-bottom: 0.3rem;
+      font-weight: 700;
+    }
+    .section-subtitle {
+      font-size: 0.9rem;
+      color: var(--button-soft);
+      letter-spacing: 0.06em;
+      margin-bottom: 2.5rem;
+      text-transform: uppercase;
+    }
+    .section-header { text-align: center; margin-bottom: 0; }
+    .tag {
+      display: inline-block;
+      background: var(--highlight);
+      color: var(--text-accent);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.65rem 1.4rem;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+    .btn-premium  { background: var(--button-premium); color: #fff; }
+    .btn-soft     { background: var(--button-soft); color: #fff; }
+    .btn-wa       { background: var(--whatsapp); color: #fff; }
+    .btn-primary  { background: var(--button-premium); color: #fff; }
+    .btn-secondary{ background: var(--button-soft); color: var(--text-accent); }
+    .price {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      color: var(--accent-gold);
+    }
+
+    /* ── SCROLL ANIMATION ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ═══════════════════════════════════════
+       1. HEADER
+    ═══════════════════════════════════════ */
+    #header {
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-light);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+    }
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .logo {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-accent);
+      line-height: 1.2;
+    }
+    .logo span {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--button-soft);
+    }
+    .logo-seal {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--highlight);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 0.2rem 0.6rem;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--button-soft);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.3;
+      text-align: center;
+    }
+    @media (min-width: 900px) { .logo-seal { display: flex; } }
+    nav.main-nav { display: flex; align-items: center; gap: 0.5rem; }
+    nav.main-nav a {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-accent);
+      padding: 0.4rem 0.7rem;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+    nav.main-nav a:not(.btn):hover {
+      color: var(--button-premium);
+      background: var(--highlight);
+    }
+    .btn-reservar { margin-left: 0.5rem; font-size: 0.82rem; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 2px;
+      background: var(--text-accent);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-light);
+      padding: 1rem 1.25rem;
+      gap: 0.5rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      padding: 0.6rem 0.5rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+
+    /* ═══════════════════════════════════════
+       2. BANNER AVISO
+    ═══════════════════════════════════════ */
+    #booking-banner {
+      background: var(--bg-secondary);
+      border-left: 5px solid var(--accent-gold);
+      padding: 1.2rem 1.5rem;
+      transition: max-height 0.4s ease, padding 0.4s;
+      overflow: hidden;
+    }
+    #booking-banner.collapsed {
+      max-height: 0 !important;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    .banner-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .banner-text { flex: 1; min-width: 240px; }
+    .banner-text h3 {
+      font-size: 0.95rem;
+      color: var(--text-accent);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+    .banner-text p {
+      font-size: 0.82rem;
+      color: var(--text-primary);
+      margin-bottom: 0.3rem;
+    }
+    .banner-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      margin-top: 0.8rem;
+    }
+    .banner-close {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      color: var(--text-accent);
+      cursor: pointer;
+      align-self: flex-start;
+      padding: 0.1rem 0.3rem;
+      border-radius: 4px;
+    }
+    .banner-close:hover { background: var(--highlight); }
+
+    /* ═══════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════ */
+    #hero {
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 60%, var(--highlight) 100%);
+      padding: 5rem 0 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 350px; height: 350px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,162,122,0.18), transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--highlight);
+      color: var(--text-accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    #hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--text-accent);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+    #hero p {
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      color: var(--text-primary);
+      max-width: 560px;
+      margin: 0 auto 2rem;
+      opacity: 0.85;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
+    .hero-ornament {
+      margin-top: 2.5rem;
+      font-size: 1.5rem;
+      color: var(--accent-gold);
+      opacity: 0.5;
+      letter-spacing: 1rem;
+    }
+
+    /* ═══════════════════════════════════════
+       SEÇÕES COMUNS
+    ═══════════════════════════════════════ */
+    section { padding: 4.5rem 0; }
+    section:nth-child(even) { background: var(--bg-secondary); }
+
+    /* ── CARD BASE ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      padding: 1.5rem;
+      transition: transform 0.28s ease, box-shadow 0.28s ease;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+    .card-icon {
+      font-size: 1.8rem;
+      color: var(--accent-gold);
+      margin-bottom: 0.8rem;
+    }
+    .card h3 {
+      font-size: 0.95rem;
+      color: var(--text-accent);
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1.35;
+    }
+    .card p.description {
+      font-size: 0.82rem;
+      color: var(--text-primary);
+      opacity: 0.8;
+      margin-bottom: 0.9rem;
+      line-height: 1.5;
+    }
+    .price-list { margin-bottom: 1rem; }
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.22rem 0;
+      border-bottom: 1px dashed var(--border-light);
+      font-size: 0.83rem;
+    }
+    .price-row:last-child { border-bottom: none; }
+    .price-label { color: var(--text-primary); opacity: 0.85; }
+
+    /* ═══════════════════════════════════════
+       3. NÄGEL | UNHAS
+    ═══════════════════════════════════════ */
+    #nagel { background: var(--bg-primary); }
+    .nagel-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.4rem;
+    }
+
+    /* ═══════════════════════════════════════
+       4. SPA & EXTRAS
+    ═══════════════════════════════════════ */
+    #spa { background: var(--highlight); }
+    .spa-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 1.3rem;
+    }
+    .extras-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    .extras-block h3 {
+      font-size: 1rem;
+      color: var(--text-accent);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .extras-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 0.5rem;
+    }
+    .extra-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-primary);
+      border-radius: 8px;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.82rem;
+    }
+    .notice-box {
+      margin-top: 1.5rem;
+      background: var(--bg-secondary);
+      border-left: 4px solid var(--accent-gold);
+      border-radius: 0 10px 10px 0;
+      padding: 0.9rem 1.2rem;
+      font-size: 0.83rem;
+      color: var(--text-accent);
+      font-weight: 500;
+    }
+    .notice-box i { margin-right: 0.4rem; }
+
+    /* ═══════════════════════════════════════
+       5. WIMPERN & AUGENBRAUEN
+    ═══════════════════════════════════════ */
+    #wimpern { background: var(--bg-primary); }
+    .lash-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.3rem;
+    }
+
+    /* ═══════════════════════════════════════
+       6. GESICHT | ROSTO
+    ═══════════════════════════════════════ */
+    #gesicht { background: var(--bg-secondary); }
+    .face-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 1.3rem;
+    }
+    .card.featured {
+      background: #EAD0C2;
+      border-color: var(--accent-gold);
+    }
+
+    /* ═══════════════════════════════════════
+       7. MASSAGE | MASSAGEM
+    ═══════════════════════════════════════ */
+    #massage { background: var(--bg-primary); }
+    .massage-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.3rem;
+    }
+    .card.massage-card {
+      background: var(--bg-primary);
+      border-color: var(--button-soft);
+    }
+
+    /* ═══════════════════════════════════════
+       8. ÜBER MICH | SOBRE MIM
+    ═══════════════════════════════════════ */
+    #uber-mich { background: var(--bg-secondary); }
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.7fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .about-photo-wrap { text-align: center; }
+    .about-photo {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid var(--accent-gold);
+      margin: 0 auto 1rem;
+      background: var(--highlight);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      color: var(--button-soft);
+    }
+    .about-seal {
+      display: inline-block;
+      background: var(--accent-gold);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      letter-spacing: 0.06em;
+    }
+    .about-text h2 { margin-bottom: 0.3rem; }
+    .about-text .about-sub { font-size: 0.8rem; color: var(--button-soft); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.2rem; }
+    .about-text p { font-size: 0.9rem; margin-bottom: 0.9rem; line-height: 1.7; }
+    .about-text p.de { font-style: italic; opacity: 0.75; font-size: 0.85rem; }
+    .about-text .mission {
+      background: var(--highlight);
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      font-size: 0.85rem;
+      color: var(--text-accent);
+      margin-bottom: 1.2rem;
+      border-left: 3px solid var(--accent-gold);
+    }
+
+    /* ═══════════════════════════════════════
+       9. POLÍTICA DE CANCELAMENTO
+    ═══════════════════════════════════════ */
+    #politica { background: var(--highlight); }
+    .policy-inner {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .policy-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+    .policy-list li {
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+      font-size: 0.88rem;
+      background: var(--bg-card);
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+    }
+    .policy-list li i {
+      color: var(--accent-gold);
+      font-size: 1rem;
+      margin-top: 0.1rem;
+      flex-shrink: 0;
+    }
+    .policy-list li .text-de { font-style: italic; opacity: 0.7; font-size: 0.82rem; display: block; margin-top: 0.2rem; }
+
+    /* ═══════════════════════════════════════
+       10. FOOTER
+    ═══════════════════════════════════════ */
+    #footer {
+      background: var(--button-soft);
+      color: #fff;
+      padding: 3rem 0 1.5rem;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .footer-col h4 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      color: #fff;
+    }
+    .footer-col p, .footer-col address {
+      font-size: 0.82rem;
+      line-height: 1.7;
+      font-style: normal;
+      opacity: 0.9;
+    }
+    .footer-social {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .footer-social a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255,255,255,0.18);
+      border-radius: 8px;
+      padding: 0.45rem 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .footer-social a:hover { background: rgba(255,255,255,0.32); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.25);
+      padding-top: 1.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      opacity: 0.85;
+    }
+
+    /* ═══════════════════════════════════════
+       11. BOTÃO FLUTUANTE WHATSAPP
+    ═══════════════════════════════════════ */
+    #wa-fab {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      z-index: 990;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--whatsapp);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 18px rgba(37,211,102,0.45);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+    #wa-fab:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 24px rgba(37,211,102,0.55);
+    }
+    #wa-fab .tooltip {
+      position: absolute;
+      right: 66px;
+      background: #333;
+      color: #fff;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      padding: 0.35rem 0.7rem;
+      border-radius: 6px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    #wa-fab:hover .tooltip { opacity: 1; }
+    #wa-fab .tooltip::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -5px;
+      transform: translateY(-50%);
+      border-width: 5px 0 5px 5px;
+      border-style: solid;
+      border-color: transparent transparent transparent #333;
+    }
+
+    /* ═══════════════════════════════════════
+       12. PREISE TABLE
+    ═══════════════════════════════════════ */
+    #preise { background: var(--bg-primary); }
+    .preise-table-wrap {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+    .preise-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    .preise-table thead tr {
+      background: var(--text-accent);
+      color: #fff;
+    }
+    .preise-table thead th {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.9rem 1.1rem;
+      text-align: left;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .preise-table thead th:last-child { text-align: center; }
+    .preise-table tbody tr { border-bottom: 1px solid var(--border-light); }
+    .preise-table tbody tr:last-child { border-bottom: none; }
+    .preise-table tbody tr:nth-child(even) td { background: rgba(214,193,177,0.13); }
+    .preise-table tbody td {
+      padding: 0.7rem 1.1rem;
+      vertical-align: middle;
+      color: var(--text-primary);
+    }
+    .preise-table tbody td:nth-child(3) {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      color: var(--accent-gold);
+      white-space: nowrap;
+      text-align: center;
+    }
+    .preise-table tbody td:last-child { text-align: center; }
+    .pt-cat {
+      background: var(--bg-secondary) !important;
+    }
+    .pt-cat td {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-accent) !important;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.1rem !important;
+    }
+    .pt-cat td i { margin-right: 0.4rem; }
+    .btn-buchen {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: var(--button-premium);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.35rem 0.75rem;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .btn-buchen:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .price-anfrage {
+      font-size: 0.75rem;
+      color: var(--text-accent);
+      font-style: italic;
+    }
+    .preise-table-scroll { overflow-x: auto; }
+
+    /* ═══════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════ */
+    @media (max-width: 768px) {
+      nav.main-nav { display: none; }
+      .hamburger { display: flex; }
+      .nagel-grid { grid-template-columns: 1fr; }
+      .about-inner { grid-template-columns: 1fr; }
+      .about-photo { width: 160px; height: 160px; font-size: 4rem; }
+      .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      #hero { padding: 3.5rem 0 3rem; }
+      .hero-ornament { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .spa-grid, .lash-grid, .face-grid, .massage-grid { grid-template-columns: 1fr; }
+      .banner-inner { flex-direction: column; }
+      .preise-table thead th:nth-child(1),
+      .preise-table tbody td:nth-child(1) { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════
+       1. HEADER
+  ══════════════════════════════════════ -->
+  <header id="header">
+    <div class="container header-inner">
+      <div class="logo-wrap">
+        <a href="#" class="logo">
+          Bruna Silva
+          <span>Aesthetic &amp; Nails · Cuxhaven</span>
+        </a>
+        <div class="logo-seal" aria-hidden="true">
+          <i class="fa-solid fa-star" style="font-size:.6rem;color:var(--accent-gold)"></i>
+          Beauty Studio<br/>Cuxhaven
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="Hauptnavigation">
+        <a href="#nagel">Leistungen</a>
+        <a href="#preise">Preise</a>
+        <a href="#uber-mich">Über mich</a>
+        <a href="#footer">Kontakt</a>
+        <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium btn-reservar">
+          <i class="fa-regular fa-calendar-check"></i> Reservar Agora
+        </a>
+      </nav>
+
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+      <a href="#nagel" class="mobile-link">🪟 Leistungen | Serviços</a>
+      <a href="#preise" class="mobile-link">💰 Preise | Preços</a>
+      <a href="#uber-mich" class="mobile-link">👩 Über mich | Sobre mim</a>
+      <a href="#footer" class="mobile-link">📍 Kontakt | Contato</a>
+      <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="margin-top:.5rem;justify-content:center;">
+        <i class="fa-brands fa-whatsapp"></i> Reservar Agora
+      </a>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════
+       2. BANNER AVISO
+  ══════════════════════════════════════ -->
+  <div id="booking-banner" role="region" aria-label="Buchungshinweis">
+    <div class="container">
+      <div class="banner-inner">
+        <div class="banner-text">
+          <h3>📅 Wichtige Hinweise zur Terminbuchung | Informações sobre Agendamento</h3>
+          <p><strong>DE:</strong> Für die Terminbestätigung ist eine Anzahlung von <strong>30%</strong> des Behandlungswertes erforderlich.</p>
+          <p><strong>PT:</strong> Para confirmar o agendamento, é necessário um sinal de <strong>30%</strong> do valor do serviço.</p>
+          <p><i class="fa-solid fa-triangle-exclamation" style="color:var(--text-accent)"></i> Stornierung: weniger als 24 Stunden vorher → Anzahlung verfällt | Cancelamento: menos de 24h → sinal não reembolsável.</p>
+          <div class="banner-actions">
+            <a href="https://wa.me/49123456789" target="_blank" class="btn btn-wa">
+              <i class="fa-brands fa-whatsapp"></i> Agendar via WhatsApp
+            </a>
+            <a href="https://www.fresha.com" target="_blank" class="btn btn-soft">
+              <i class="fa-regular fa-calendar"></i> Agendar via Fresha
+            </a>
+          </div>
+        </div>
+        <button class="banner-close" id="banner-close" title="Schließen | Fechar" aria-label="Banner schließen">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       HERO
+  ══════════════════════════════════════ -->
+  <section id="hero" aria-label="Hero">
+    <div class="container">
+      <div class="hero-badge">✨ Schönheitsstudio Cuxhaven · seit 2020</div>
+      <h1>Bruna Silva<br/>Aesthetic &amp; Nails</h1>
+      <p>Ihr Wohlfühlort für Nägel, Gesicht, Wimpern &amp; Massage — Cuxhaven.<br/>
+         <em>Seu espaço de beleza e cuidado em Cuxhaven.</em></p>
+      <div class="hero-actions">
+        <a href="https://wa.me/49123456789" target="_blank" class="btn btn-wa">
+          <i class="fa-brands fa-whatsapp"></i> Agendar via WhatsApp
+        </a>
+        <a href="https://www.fresha.com" target="_blank" class="btn btn-premium">
+          <i class="fa-regular fa-calendar-check"></i> Buchen via Fresha
+        </a>
+        <a href="#nagel" class="btn btn-soft">
+          <i class="fa-solid fa-chevron-down"></i> Leistungen entdecken
+        </a>
+      </div>
+      <div class="hero-ornament">— ✦ —</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       3. NÄGEL | UNHAS
+  ══════════════════════════════════════ -->
+  <section id="nagel" aria-labelledby="nagel-title">
+    <div class="container">
+      <div class="section-header">
+        <div class="tag"><i class="fa-solid fa-hand-sparkles"></i> Nails</div>
+        <h2 class="section-title" id="nagel-title">Nägel | Unhas</h2>
+        <p class="section-subtitle">Gelmodellage · Maniküre · Pediküre</p>
+      </div>
+
+      <div class="nagel-grid">
+
+        <!-- GEL -->
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          <h3>Gelmodellage | Unhas em Gel</h3>
+          <p class="description">Modelagem profissional em gel para unhas longas e duradouras.<br/><em>Professionelle Gelnägel für lang anhaltende Schönheit.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Neu / Aplicação</span><span class="price">38 €</span></div>
+            <div class="price-row"><span class="price-label">Auf / Manutenção</span><span class="price">35 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <!-- MANIKÜRE -->
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-hand"></i></div>
+          <h3>Maniküre | Manicure</h3>
+          <p class="description">Cuidado completo das mãos e unhas, clássico ou com verniz gel.<br/><em>Vollständige Handpflege, klassisch oder mit Shellac-Lack.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">mit Shellac / Com Verniz Gel</span><span class="price">30 €</span></div>
+            <div class="price-row"><span class="price-label">Klassisch / Clássica</span><span class="price">18 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <!-- PEDIKÜRE -->
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-shoe-prints"></i></div>
+          <h3>Pediküre | Pedicure</h3>
+          <p class="description">Tratamento completo dos pés e unhas, clássico ou com verniz gel.<br/><em>Vollständige Fußpflege, klassisch oder mit Shellac-Lack.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">mit Shellac / Com Verniz Gel</span><span class="price">35 €</span></div>
+            <div class="price-row"><span class="price-label">Klassisch / Clássica</span><span class="price">30 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <!-- SHELLAC -->
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-palette"></i></div>
+          <h3>Shellac | Verniz Gel</h3>
+          <p class="description">Acabamento brilhante e duradouro com verniz gel de qualidade.<br/><em>Langanhaltender Hochglanz-Look mit Shellac.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Maniküre / Manicure</span><span class="price">30 €</span></div>
+            <div class="price-row"><span class="price-label">Pediküre / Pedicure</span><span class="price">35 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       4. SPA & EXTRAS
+  ══════════════════════════════════════ -->
+  <section id="spa" aria-labelledby="spa-title">
+    <div class="container">
+      <div class="section-header">
+        <div class="tag"><i class="fa-solid fa-spa"></i> Spa</div>
+        <h2 class="section-title" id="spa-title">Spa &amp; Extras</h2>
+        <p class="section-subtitle">Verwöhnprogramm · Mimo e Bem-estar</p>
+      </div>
+
+      <div class="spa-grid">
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-droplet"></i></div>
+          <h3>Spa Pediküre | Pedicure Spa</h3>
+          <p class="description">Tratamento de luxo para os pés com hidratação profunda.<br/><em>Luxus-Fußpflege mit intensiver Feuchtigkeitspflege.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">mit Shellac / Com Verniz Gel</span><span class="price">53 €</span></div>
+            <div class="price-row"><span class="price-label">Klassisch / Clássica</span><span class="price">48 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-hands-holding"></i></div>
+          <h3>Hand Spa | Spa das Mãos</h3>
+          <p class="description">Hidratação e cuidado intensivo para as mãos.<br/><em>Intensive Feuchtigkeitspflege für die Hände.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Hand Spa</span><span class="price">20 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-eraser"></i></div>
+          <h3>Gel Entfernen | Remoção de Gel</h3>
+          <p class="description">Remoção segura e cuidadosa do gel das unhas.<br/><em>Schonende und sichere Gelentfernung.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Gel Entfernen</span><span class="price">18 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+      </div>
+
+      <div class="extras-block fade-up">
+        <h3><i class="fa-solid fa-plus" style="margin-right:.4rem;color:var(--accent-gold)"></i>Extras &amp; Add-ons</h3>
+        <div class="extras-grid">
+          <div class="extra-item"><span>French / Babyboomer</span><span class="price">+ 5 €</span></div>
+          <div class="extra-item"><span>Nail Art</span><span class="price">ab 2,50 €</span></div>
+          <div class="extra-item"><span>Nagelreparatur | Reparação</span><span class="price">ab 3,50 €</span></div>
+          <div class="extra-item"><span>Länge XL | Comprimento XL</span><span class="price">ab 15 €</span></div>
+        </div>
+        <div class="notice-box">
+          <i class="fa-solid fa-circle-info"></i>
+          <strong>Hinweis | Aviso:</strong> Para French, Babyboomer ou Nail Art, informar no agendamento – precisam de mais tempo. |
+          <em>Für French, Babyboomer oder Nail Art beim Termin angeben – diese benötigen mehr Zeit.</em>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       5. WIMPERN & AUGENBRAUEN
+  ══════════════════════════════════════ -->
+  <section id="wimpern" aria-labelledby="wimpern-title">
+    <div class="container">
+      <div class="section-header">
+        <div class="tag"><i class="fa-solid fa-eye"></i> Augen</div>
+        <h2 class="section-title" id="wimpern-title">Wimpern &amp; Augenbrauen | Pestanas &amp; Sobrancelhas</h2>
+        <p class="section-subtitle">Lash Lifting · Laminação · Design</p>
+      </div>
+
+      <div class="lash-grid">
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-eye"></i></div>
+          <h3>Lash Lifting | Lifting de Pestanas</h3>
+          <p class="description">Levantamento e curvatura natural das pestanas para um olhar aberto e expressivo.<br/><em>Natürliche Wimpernkrümmung für einen ausdrucksstarken Blick.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Lash Lifting</span><span class="price">48 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-paintbrush"></i></div>
+          <h3>Wimpern Färben | Coloração de Pestanas</h3>
+          <p class="description">Coloração profissional das pestanas para mais intensidade e definição.<br/><em>Professionelle Wimperntönung für mehr Intensität und Definition.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Wimpern Färben</span><span class="price">18 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-star"></i></div>
+          <h3>Brown Lamination | Laminação</h3>
+          <p class="description">Laminação de sobrancelhas para fios mais alinhados e definidos.<br/><em>Augenbrauen-Laminierung für perfekt geformte Brauen.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Brown Lamination</span><span class="price">48 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-regular fa-star"></i></div>
+          <h3>Augenbrauen Design | Design de Sobrancelhas</h3>
+          <p class="description">Design personalizado de sobrancelhas para valorizar seu rosto.<br/><em>Individuelles Augenbrauen-Shaping für Ihr Gesicht.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Design de Sobrancelhas</span><span class="price" style="font-size:.78rem;color:var(--text-accent)">auf Anfrage | sob consulta</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-soft" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Anfragen | Consultar
+          </a>
+        </div>
+
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-seedling"></i></div>
+          <h3>Brow Regeneration</h3>
+          <p class="description">Tratamento regenerador para sobrancelhas com ativos nutritivos.<br/><em>Regenerierende Behandlung für die Augenbrauen.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Brow Regeneration</span><span class="price" style="font-size:.78rem;color:var(--text-accent)">auf Anfrage | sob consulta</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-soft" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Anfragen | Consultar
+          </a>
+        </div>
+
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-syringe"></i></div>
+          <h3>Brow Regeneration + Microneedling</h3>
+          <p class="description">Regeneração intensiva com microagulhamento para máxima eficácia.<br/><em>Intensive Regeneration mit Microneedling.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Brow Regen. + Microneedling</span><span class="price" style="font-size:.78rem;color:var(--text-accent)">auf Anfrage | sob consulta</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-soft" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Anfragen | Consultar
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       6. GESICHT | ROSTO
+  ══════════════════════════════════════ -->
+  <section id="gesicht" aria-labelledby="gesicht-title">
+    <div class="container">
+      <div class="section-header">
+        <div class="tag"><i class="fa-solid fa-face-smile-beam"></i> Gesicht</div>
+        <h2 class="section-title" id="gesicht-title">Gesicht | Rosto</h2>
+        <p class="section-subtitle">Tiefenreinigung · Microneedling · Peeling · Hydra Lips</p>
+      </div>
+
+      <div class="face-grid">
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-wind"></i></div>
+          <h3>Klassische Tiefenreinigung | Limpeza de Pele</h3>
+          <p class="description">Limpeza de pele clássica com extração e hidratação.<br/><em>Klassische Tiefenreinigung mit Extraktion und Feuchtigkeitspflege.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Limpeza Clássica</span><span class="price">60 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+          <h3>Intensive Tiefenreinigung | Limpeza Intensiva</h3>
+          <p class="description">Limpeza profunda intensiva com tratamentos avançados.<br/><em>Intensive Tiefenreinigung mit fortschrittlichen Behandlungen.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Limpeza Intensiva</span><span class="price">80 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <div class="card featured fade-up">
+          <div class="card-icon"><i class="fa-solid fa-syringe"></i></div>
+          <h3>✦ Microneedling | Microagulhamento</h3>
+          <p class="description">Tratamento de ponta para rejuvenescimento e estímulo de colágeno.<br/><em>Spitzentechnologie für Verjüngung und Kollagenstimulation.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Microneedling</span><span class="price">80 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-vial"></i></div>
+          <h3>AHA Peeling | Peeling Químico</h3>
+          <p class="description">Renovação celular com ácidos de frutas para pele mais uniforme.<br/><em>Zellerneuerndes Fruchtsäure-Peeling für eine ebenmäßige Haut.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">AHA Peeling</span><span class="price">80 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <div class="card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-kiss-wink-heart"></i></div>
+          <h3>Hydra Lips Basic</h3>
+          <p class="description">Hidratação e volume para os lábios, resultado imediato.<br/><em>Sofortige Lippen-Feuchtigkeitspflege mit sichtbarem Ergebnis.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Hydra Lips Basic</span><span class="price">32 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <div class="card featured fade-up">
+          <div class="card-icon"><i class="fa-solid fa-wand-sparkles"></i></div>
+          <h3>✦ Hydra Lips Pro</h3>
+          <p class="description">Tratamento premium com microneedling para lábios hidratados e volumosos.<br/><em>Premium-Behandlung mit Microneedling für volle, gepflegte Lippen.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">mit Microneedling</span><span class="price">65 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       7. MASSAGE | MASSAGEM
+  ══════════════════════════════════════ -->
+  <section id="massage" aria-labelledby="massage-title">
+    <div class="container">
+      <div class="section-header">
+        <div class="tag"><i class="fa-solid fa-heart-pulse"></i> Massage</div>
+        <h2 class="section-title" id="massage-title">Massage | Massagem</h2>
+        <p class="section-subtitle">Körperformend · Drenagem · Relaxamento</p>
+      </div>
+
+      <div class="massage-grid">
+        <div class="card massage-card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-person-running"></i></div>
+          <h3>Körperformende Massage | Massagem Modeladora</h3>
+          <p class="description">Massagem modeladora que melhora a circulação e contorno corporal. (30 min)<br/><em>Körperformende Massage für bessere Durchblutung und Körperkonturen. (30 Min.)</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">30 Minuten / minutos</span><span class="price">35 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <div class="card massage-card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-water"></i></div>
+          <h3>Lymphdrainage | Drenagem Linfática</h3>
+          <p class="description">Drenagem linfática manual para redução de inchaço e desintoxicação.<br/><em>Manuelle Lymphdrainage zur Entstauung und Entgiftung.</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">Lymphdrainage</span><span class="price">45 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+
+        <div class="card massage-card fade-up">
+          <div class="card-icon"><i class="fa-solid fa-leaf"></i></div>
+          <h3>Teilmassage Relax | Massagem de Relaxamento</h3>
+          <p class="description">Massagem relaxante parcial para aliviar tensões e estresse. (30 min)<br/><em>Entspannende Teilmassage gegen Verspannungen und Stress. (30 Min.)</em></p>
+          <div class="price-list">
+            <div class="price-row"><span class="price-label">30 Minuten / minutos</span><span class="price">30 €</span></div>
+          </div>
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-premium" style="width:100%;justify-content:center;margin-top:.5rem;">
+            <i class="fa-brands fa-whatsapp"></i> Buchen | Reservar
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       8. ÜBER MICH | SOBRE MIM
+  ══════════════════════════════════════ -->
+  <section id="uber-mich" aria-labelledby="about-title">
+    <div class="container">
+      <div class="about-inner">
+        <div class="about-photo-wrap fade-up">
+          <div class="about-photo" aria-label="Foto de Bruna Silva">
+            <i class="fa-solid fa-user-tie"></i>
+          </div>
+          <div class="about-seal">✦ seit 2020 | desde 2020</div>
+        </div>
+
+        <div class="about-text fade-up">
+          <div class="tag"><i class="fa-solid fa-heart"></i> Über mich</div>
+          <h2 class="section-title" id="about-title">Über mich | Sobre mim</h2>
+          <p class="about-sub">Bruna Silva – Ästhetik &amp; Kosmetologie · Cuxhaven</p>
+
+          <p>
+            Hallo, ich bin <strong>Bruna Silva</strong>. Ich habe Ästhetik und Kosmetologie studiert und arbeite seit 2020 in diesem Bereich.
+          </p>
+          <p class="de">
+            Olá, sou <strong>Bruna Silva</strong>. Estudei Estética e Cosmetologia e atuo na área desde 2020.
+          </p>
+
+          <p>
+            Aufgewachsen in einer Familie von Friseurinnen und Kosmetikerinnen, habe ich schon früh eine Leidenschaft für Schönheit und Pflege entwickelt.
+          </p>
+          <p class="de">
+            Cresci em uma família de cabeleireiras e esteticistas, e desenvolvi desde cedo uma paixão por beleza e cuidado.
+          </p>
+
+          <div class="mission">
+            <i class="fa-solid fa-quote-left" style="margin-right:.4rem;opacity:.5"></i>
+            <strong>Minha missão</strong> é criar um espaço acolhedor onde cada pessoa se sinta valorizada e especial. |
+            <em>Meine Mission ist es, einen einladenden Ort zu schaffen, an dem sich jeder Mensch wertgeschätzt und besonders fühlt.</em>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:.75rem;">
+            <a href="https://instagram.com/brunasilva.aesthetic" target="_blank" class="btn btn-premium">
+              <i class="fa-brands fa-instagram"></i> Instagram folgen | Seguir no Instagram
+            </a>
+            <a href="https://wa.me/49123456789" target="_blank" class="btn btn-wa">
+              <i class="fa-brands fa-whatsapp"></i> Kontakt | Contato
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       12. PREISE | PREÇOS — TABELA COMPLETA
+  ══════════════════════════════════════ -->
+  <section id="preise" aria-labelledby="preise-title">
+    <div class="container">
+      <div class="section-header">
+        <div class="tag"><i class="fa-solid fa-list"></i> Preisliste</div>
+        <h2 class="section-title" id="preise-title">Preise | Preços</h2>
+        <p class="section-subtitle">Alle Leistungen · Todos os serviços · Inkl. MwSt.</p>
+      </div>
+
+      <div class="preise-table-wrap fade-up">
+        <div class="preise-table-scroll">
+          <table class="preise-table" role="table">
+            <thead>
+              <tr>
+                <th scope="col">Leistung (DE)</th>
+                <th scope="col">Serviço (PT)</th>
+                <th scope="col">Preis</th>
+                <th scope="col">Buchen</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <!-- ── NÄGEL ── -->
+              <tr class="pt-cat"><td colspan="4"><i class="fa-solid fa-hand-sparkles"></i>Nägel | Unhas</td></tr>
+              <tr>
+                <td>Gelmodellage – Neu (Aplicação)</td>
+                <td>Unhas em Gel – Aplicação</td>
+                <td>38 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Gelmodellage – Auf (Manutenção)</td>
+                <td>Unhas em Gel – Manutenção</td>
+                <td>35 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+
+              <!-- ── MANIKÜRE ── -->
+              <tr class="pt-cat"><td colspan="4"><i class="fa-solid fa-hand"></i>Maniküre | Manicure</td></tr>
+              <tr>
+                <td>Maniküre mit Shellac</td>
+                <td>Manicure com Verniz Gel</td>
+                <td>30 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Klassische Maniküre</td>
+                <td>Manicure Clássica</td>
+                <td>18 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+
+              <!-- ── PEDIKÜRE ── -->
+              <tr class="pt-cat"><td colspan="4"><i class="fa-solid fa-shoe-prints"></i>Pediküre | Pedicure</td></tr>
+              <tr>
+                <td>Pediküre mit Shellac</td>
+                <td>Pedicure com Verniz Gel</td>
+                <td>35 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Klassische Pediküre</td>
+                <td>Pedicure Clássica</td>
+                <td>30 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+
+              <!-- ── SPA ── -->
+              <tr class="pt-cat"><td colspan="4"><i class="fa-solid fa-spa"></i>SPA</td></tr>
+              <tr>
+                <td>Spa Pediküre mit Shellac</td>
+                <td>Pedicure Spa com Verniz Gel</td>
+                <td>53 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Spa Pediküre Klassisch</td>
+                <td>Pedicure Spa Clássica</td>
+                <td>48 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Hand Spa</td>
+                <td>Spa das Mãos</td>
+                <td>20 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Gel Entfernen</td>
+                <td>Remoção de Gel</td>
+                <td>18 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+
+              <!-- ── EXTRAS ── -->
+              <tr class="pt-cat"><td colspan="4"><i class="fa-solid fa-plus"></i>Extras</td></tr>
+              <tr>
+                <td>French / Babyboomer</td>
+                <td>French / Babyboomer</td>
+                <td>+ 5 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Nail Art</td>
+                <td>Nail Art</td>
+                <td>ab 2,50 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Nagelreparatur</td>
+                <td>Reparo de Unha</td>
+                <td>ab 3,50 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Länge XL</td>
+                <td>Tamanho XL</td>
+                <td>ab 15 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+
+              <!-- ── WIMPERN & AUGENBRAUEN ── -->
+              <tr class="pt-cat"><td colspan="4"><i class="fa-solid fa-eye"></i>Wimpern &amp; Augenbrauen | Pestanas &amp; Sobrancelhas</td></tr>
+              <tr>
+                <td>Lash Lifting</td>
+                <td>Lifting de Pestanas</td>
+                <td>48 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Wimpern Färben</td>
+                <td>Coloração de Pestanas</td>
+                <td>18 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Brown Lamination</td>
+                <td>Laminação de Sobrancelhas</td>
+                <td>48 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Augenbrauen Design</td>
+                <td>Design de Sobrancelhas</td>
+                <td><span class="price-anfrage">auf Anfrage | sob consulta</span></td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-brands fa-whatsapp"></i> Anfragen</a></td>
+              </tr>
+              <tr>
+                <td>Brow Regeneration</td>
+                <td>Regeneração de Sobrancelhas</td>
+                <td><span class="price-anfrage">auf Anfrage | sob consulta</span></td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-brands fa-whatsapp"></i> Anfragen</a></td>
+              </tr>
+              <tr>
+                <td>Brow Regeneration + Microneedling</td>
+                <td>Regeneração + Microagulhamento</td>
+                <td><span class="price-anfrage">auf Anfrage | sob consulta</span></td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-brands fa-whatsapp"></i> Anfragen</a></td>
+              </tr>
+
+              <!-- ── GESICHT ── -->
+              <tr class="pt-cat"><td colspan="4"><i class="fa-solid fa-face-smile-beam"></i>Gesicht | Rosto</td></tr>
+              <tr>
+                <td>Klassische Tiefenreinigung</td>
+                <td>Limpeza de Pele Clássica</td>
+                <td>60 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Intensive Tiefenreinigung</td>
+                <td>Limpeza de Pele Intensiva</td>
+                <td>80 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Microneedling</td>
+                <td>Microagulhamento</td>
+                <td>80 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>AHA Peeling</td>
+                <td>Peeling Químico</td>
+                <td>80 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Hydra Lips Basic</td>
+                <td>Hydra Lips Basic</td>
+                <td>32 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Hydra Lips Pro (mit Microneedling)</td>
+                <td>Hydra Lips Pro (com Microagulhamento)</td>
+                <td>65 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+
+              <!-- ── MASSAGE ── -->
+              <tr class="pt-cat"><td colspan="4"><i class="fa-solid fa-heart-pulse"></i>Massage | Massagem</td></tr>
+              <tr>
+                <td>Körperformende Massage (30 min)</td>
+                <td>Massagem Modeladora (30 min)</td>
+                <td>35 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Lymphdrainage</td>
+                <td>Drenagem Linfática</td>
+                <td>45 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+              <tr>
+                <td>Teilmassage Relax (30 min)</td>
+                <td>Massagem de Relaxamento (30 min)</td>
+                <td>30 €</td>
+                <td><a href="https://wa.me/49123456789" target="_blank" class="btn-buchen"><i class="fa-regular fa-calendar-check"></i> Buchen</a></td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p style="text-align:center;font-size:0.78rem;color:var(--button-soft);margin-top:1.2rem;">
+        <i class="fa-solid fa-circle-info"></i>
+        Preise inkl. MwSt. | Os preços incluem IVA &nbsp;·&nbsp;
+        Alle Preise vorbehaltlich Änderungen | Preços sujeitos a alteração
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       9. POLÍTICA DE CANCELAMENTO
+  ══════════════════════════════════════ -->
+  <section id="politica" aria-labelledby="policy-title">
+    <div class="container">
+      <div class="policy-inner">
+        <div class="section-header">
+          <div class="tag"><i class="fa-solid fa-calendar-xmark"></i> Buchung</div>
+          <h2 class="section-title" id="policy-title">Terminbuchung &amp; Stornierung | Agendamento &amp; Cancelamento</h2>
+          <p class="section-subtitle">Wichtige Informationen | Informações Importantes</p>
+        </div>
+
+        <ul class="policy-list" role="list">
+          <li>
+            <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+            <div>
+              Agende via WhatsApp, Instagram ou diretamente pelo app Fresha.
+              <span class="text-de">Termin via WhatsApp, Instagram oder direkt über die Fresha-App buchen.</span>
+            </div>
+          </li>
+          <li>
+            <i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i>
+            <div>
+              A confirmação do agendamento é feita mediante pagamento de um <strong>sinal de 30%</strong> do valor do serviço.
+              <span class="text-de">Die Terminbestätigung erfolgt nach Zahlung einer <strong>Anzahlung von 30%</strong> des Behandlungswertes.</span>
+            </div>
+          </li>
+          <li>
+            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+            <div>
+              Em caso de cancelamento com <strong>menos de 24 horas</strong> de antecedência ou falta de comparecimento, o valor do sinal não será reembolsado.
+              <span class="text-de">Bei Absagen <strong>weniger als 24 Stunden</strong> im Voraus oder Nichterscheinen wird die Anzahlung nicht zurückerstattet.</span>
+            </div>
+          </li>
+          <li>
+            <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+            <div>
+              Reagendamentos com mais de 24h de antecedência são bem-vindos sem custo adicional.
+              <span class="text-de">Umterminierungen mit mehr als 24 Stunden Vorlauf sind kostenlos möglich.</span>
+            </div>
+          </li>
+        </ul>
+
+        <div style="display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem;justify-content:center;">
+          <a href="https://wa.me/49123456789" target="_blank" class="btn btn-wa">
+            <i class="fa-brands fa-whatsapp"></i> Agendar via WhatsApp
+          </a>
+          <a href="https://www.fresha.com" target="_blank" class="btn btn-soft">
+            <i class="fa-regular fa-calendar"></i> Agendar via Fresha
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       10. FOOTER
+  ══════════════════════════════════════ -->
+  <footer id="footer" aria-label="Rodapé">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Bruna Silva Aesthetic &amp; Nails</h4>
+          <p>Schönheitsstudio em Cuxhaven<br/>Profissional de Estética e Cosmetologia<br/>desde 2020 · seit 2020</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Redes | Kontakt</h4>
+          <div class="footer-social">
+            <a href="https://wa.me/49123456789" target="_blank" aria-label="WhatsApp">
+              <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="https://instagram.com/brunasilva.aesthetic" target="_blank" aria-label="Instagram">
+              <i class="fa-brands fa-instagram"></i> Instagram
+            </a>
+            <a href="https://www.fresha.com" target="_blank" aria-label="Fresha">
+              <i class="fa-regular fa-calendar-check"></i> Fresha
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Endereço | Adresse</h4>
+          <address>
+            Musterstraße 12<br/>
+            27474 Cuxhaven<br/>
+            Deutschland<br/>
+            <a href="mailto:contato@brunasilva.de" style="opacity:.85">contato@brunasilva.de</a>
+          </address>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2025 Bruna Silva – Aesthetic &amp; Nails</span>
+        <span>Preise inkl. MwSt. | Os preços incluem IVA</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════════════
+       11. BOTÃO FLUTUANTE WHATSAPP
+  ══════════════════════════════════════ -->
+  <a href="https://wa.me/49123456789" target="_blank" id="wa-fab" aria-label="Fale conosco via WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+    <span class="tooltip">Fale conosco via WhatsApp</span>
+  </a>
+
+  <!-- ══════════════════════════════════════
+       JAVASCRIPT
+  ══════════════════════════════════════ -->
+  <script>
+    /* ── HAMBURGER MENU ── */
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      hamburger.setAttribute('aria-expanded', String(isOpen));
+      mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+    });
+
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+      });
+    });
+
+    /* ── BANNER COM LOCALSTORAGE ── */
+    const banner = document.getElementById('booking-banner');
+    const bannerClose = document.getElementById('banner-close');
+    const BANNER_KEY = 'bs_banner_closed';
+
+    if (localStorage.getItem(BANNER_KEY)) {
+      banner.style.maxHeight = '0';
+      banner.style.padding = '0';
+      banner.style.overflow = 'hidden';
+    } else {
+      banner.style.maxHeight = banner.scrollHeight + 'px';
+    }
+
+    bannerClose.addEventListener('click', () => {
+      banner.style.maxHeight = banner.scrollHeight + 'px';
+      requestAnimationFrame(() => {
+        banner.classList.add('collapsed');
+        localStorage.setItem(BANNER_KEY, '1');
+      });
+    });
+
+    /* ── SCROLL FADE-UP ANIMATION ── */
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    fadeEls.forEach(el => observer.observe(el));
+
+    /* ── ACTIVE NAV LINK ── */
+    const sections = document.querySelectorAll('section[id], div[id="booking-banner"]');
+    const navLinks = document.querySelectorAll('nav.main-nav a');
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.style.color = '';
+            link.style.background = '';
+            if (link.getAttribute('href') === '#' + entry.target.id) {
+              link.style.color = 'var(--text-accent)';
+              link.style.background = 'var(--highlight)';
+            }
+          });
+        }
+      });
+    }, { threshold: 0.35 });
+
+    document.querySelectorAll('section[id]').forEach(s => navObserver.observe(s));
+  </script>
+</body>
+</html>

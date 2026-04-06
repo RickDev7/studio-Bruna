@@ -1,90 +1,76 @@
 'use client'
 
-import React from 'react';
-import { FreshaButton } from '@/components/FreshaButton';
+import React from 'react'
+import { Check } from 'lucide-react'
+import { Navbar } from '@/components/Navbar'
+import { Footer } from '@/components/Footer'
+import { FreshaButton } from '@/components/FreshaButton'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function SobrePage() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFC0CB] via-white to-[#FFE4E1] py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-[#FF69B4] to-[#FFB6C1] bg-clip-text text-transparent mb-4">
-            Sobre a Bruna Silva - Aesthetic & Nails
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Conheça nossa história e compromisso com a beleza
-          </p>
-        </div>
+  const { t } = useLanguage()
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="space-y-8">
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#FFC0CB] transform hover:scale-105 transition-all duration-300">
-              <h3 className="text-2xl font-bold text-[#FF69B4] mb-4">Nossa Missão</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Nosso compromisso é realçar a beleza natural de cada cliente, oferecendo serviços personalizados
-                e de alta qualidade. Buscamos não apenas resultados estéticos excepcionais, mas também
-                proporcionar uma experiência relaxante e acolhedora.
-              </p>
+  const valueItems = [0, 1, 2, 3, 4].map((i) => t(`about.values.items.${i}`))
+
+  return (
+    <div className="flex min-h-screen flex-col bg-[#F5F1EC]">
+      <Navbar />
+      <main className="flex-1 py-16 pt-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+          <div className="mb-12 text-center">
+            <p className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.26em] text-[#C8A27A]">
+              {t('luxury.about.label')}
+            </p>
+            <h1 className="font-display text-4xl italic text-[#8A5C4A]">
+              {t('about.title')}
+            </h1>
+            <p className="mx-auto mt-3 max-w-xl text-base text-[#8A5C4A]/65">
+              {t('about.subtitle')}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {/* Mission */}
+            <div className="rounded-2xl border border-[#D6C1B1] bg-white p-8">
+              <h3 className="font-display text-xl italic text-[#8A5C4A]">{t('about.mission.title')}</h3>
+              <p className="mt-3 text-sm leading-[1.75] text-[#8A5C4A]/70">{t('about.mission.description')}</p>
             </div>
 
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#FFC0CB] transform hover:scale-105 transition-all duration-300">
-              <h3 className="text-2xl font-bold text-[#FF69B4] mb-4">Nossos Valores</h3>
-              <ul className="space-y-4">
-                {[
-                  'Excelência em cada atendimento',
-                  'Compromisso com a satisfação do cliente',
-                  'Ambiente acolhedor e higienizado',
-                  'Profissionais altamente qualificados',
-                  'Produtos de primeira qualidade'
-                ].map((valor, index) => (
-                  <li key={index} className="flex items-center">
-                    <svg
-                      className="h-5 w-5 text-[#FFB6C1] mr-3"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-gray-600">{valor}</span>
+            {/* Values */}
+            <div className="rounded-2xl border border-[#D6C1B1] bg-white p-8">
+              <h3 className="font-display text-xl italic text-[#8A5C4A]">{t('about.values.title')}</h3>
+              <ul className="mt-3 space-y-3">
+                {valueItems.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2.5">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#C8A27A]" />
+                    <span className="text-sm text-[#8A5C4A]/75">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
-          </div>
 
-          <div className="space-y-8">
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#FFC0CB] transform hover:scale-105 transition-all duration-300">
-              <h3 className="text-2xl font-bold text-[#FF69B4] mb-4">Nossa História</h3>
-              <p className="text-gray-600 leading-relaxed">
-                A Bruna Silva - Aesthetic & Nails nasceu do sonho de proporcionar serviços de estética de alta qualidade em Cuxhaven.
-                Com anos de experiência e formação especializada, nossa equipe se dedica a oferecer o melhor em
-                cuidados de beleza, combinando técnicas tradicionais com as mais recentes inovações do setor.
-              </p>
+            {/* History */}
+            <div className="rounded-2xl border border-[#D6C1B1] bg-white p-8">
+              <h3 className="font-display text-xl italic text-[#8A5C4A]">{t('about.history.title')}</h3>
+              <p className="mt-3 text-sm leading-[1.75] text-[#8A5C4A]/70">{t('about.history.description')}</p>
             </div>
 
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-[#FFC0CB] transform hover:scale-105 transition-all duration-300">
-              <h3 className="text-2xl font-bold text-[#FF69B4] mb-4">Localização</h3>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                Estamos localizados em um ponto privilegiado de Cuxhaven, com fácil acesso e estacionamento.
-                Nosso espaço foi pensado para proporcionar conforto e tranquilidade durante seu momento de
-                cuidado pessoal.
-              </p>
+            {/* Location */}
+            <div className="rounded-2xl border border-[#D6C1B1] bg-white p-8">
+              <h3 className="font-display text-xl italic text-[#8A5C4A]">{t('about.location.title')}</h3>
+              <p className="mt-3 text-sm leading-[1.75] text-[#8A5C4A]/70">{t('about.location.text')}</p>
             </div>
           </div>
-        </div>
 
-        <div className="text-center mt-12">
-          <FreshaButton size="lg">
-            Agendar Horário
-          </FreshaButton>
+          <div className="mt-12 text-center">
+            <FreshaButton size="lg">
+              {t('about.bookButton')}
+            </FreshaButton>
+          </div>
         </div>
-      </div>
+      </main>
+      <Footer />
     </div>
-  );
-} 
+  )
+}

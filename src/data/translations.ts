@@ -98,6 +98,11 @@ export const translations = {
     },
 
     // Footer
+    splash: {
+      tagline: 'Aesthetic & Nails',
+      enter: 'Website betreten',
+      sub: 'Erleben Sie Schönheit neu',
+    },
     footer: {
       contact: 'Kontakt',
       sendWhatsApp: 'Nachricht über WhatsApp senden',
@@ -113,7 +118,8 @@ export const translations = {
       closed: 'Geschlossen',
       germany: 'Deutschland',
       slogan: 'Ihr Beauty-Studio für professionelle Behandlungen und Wohlbefinden.',
-      copyright: 'Alle Rechte vorbehalten.'
+      copyright: 'Alle Rechte vorbehalten.',
+      vatNote: 'Alle Preise inkl. MwSt.'
     },
 
     // About Section
@@ -131,7 +137,16 @@ export const translations = {
       mission: {
         title: 'Unsere Mission',
         description: 'Unser Engagement ist es, die natürliche Schönheit jedes Kunden zu betonen, indem wir personalisierte und hochwertige Dienstleistungen anbieten. Wir streben nicht nur außergewöhnliche ästhetische Ergebnisse an, sondern auch eine entspannende und einladende Erfahrung zu bieten.'
-      }
+      },
+      values: {
+        title: 'Unsere Werte',
+        items: ['Exzellenz bei jedem Termin', 'Engagement für Kundenzufriedenheit', 'Einladende und gepflegte Umgebung', 'Hochqualifizierte Fachkraft', 'Erstklassige Produkte']
+      },
+      location: {
+        title: 'Standort',
+        text: 'Wir befinden uns in einer privilegierten Lage in Cuxhaven, mit guter Erreichbarkeit. Unser Raum wurde für Komfort und Ruhe während Ihres Pflegemoments gestaltet.'
+      },
+      bookButton: 'Termin buchen'
     },
 
     // Pricing Section
@@ -250,12 +265,24 @@ export const translations = {
         overview: {
           title: 'Überblick',
           description: 'Lernen Sie unseren gesamten Raum kennen'
+        },
+        nailDesign: {
+          title: 'Nageldesign',
+          description: 'Bereich für spezielle Designs und Nail Art'
+        },
+        frenchManicure: {
+          title: 'Französische Maniküre',
+          description: 'Bereich für die klassische elegante Française'
         }
       },
       callToAction: {
         description: 'Kommen Sie uns persönlich kennen und entdecken Sie eine Umgebung, die speziell für Sie gestaltet wurde',
         button: 'Besuch vereinbaren'
-      }
+      },
+      studioName: 'Studio Bruna',
+      studioTagline: 'Ein Ort, der für Sie gedacht ist',
+      safetyTitle: 'Biosicherheit und Komfort',
+      safetyText: 'Unser Studio wurde sorgfältig gestaltet, um maximalen Komfort und Wohlbefinden bei jedem Termin zu gewährleisten. Wir nutzen moderne Ausstattung und halten alle Hygieneprotokolle ein, um Ihre Sicherheit und Zufriedenheit zu garantieren.'
     },
 
     // Payment Finalization Modal
@@ -489,6 +516,141 @@ export const translations = {
       ],
       conclusion: 'Diese Maßnahmen gewährleisten Pünktlichkeit und Organisation des Terminkalenders und erhalten die Qualität der Betreuung für alle 💖',
       thanks: 'Vielen Dank für Ihr Verständnis und Vertrauen 💕'
+    },
+
+    // Luxury Layout
+    luxury: {
+      hero: {
+        headline: 'Schönheit, die man von innen spürt',
+        sub: 'Individuelle Ästhetik-, Nagel- und Wellnessbehandlungen in einer einladenden und eleganten Atmosphäre.',
+        cta: 'Jetzt buchen',
+        ctaServices: 'Dienstleistungen',
+      },
+      trust: {
+        clientsLabel: 'Zufriedene Kunden',
+        clientsSub: 'und wachsend',
+        sinceLabel: 'Erfahrung',
+        sinceSub: 'in Ästhetik & Nails',
+        careLabel: 'Persönliche',
+        careSub: 'Betreuung',
+      },
+      story1: {
+        title: 'Pflege. Präzision. Eleganz.',
+        sub: 'Jeder Schritt wurde geschaffen, um Vertrauen, Schönheit und Ausstrahlung zu wecken.',
+      },
+      services: {
+        label: 'Preisliste',
+        title: 'Dienstleistungen & Preise',
+        sub: 'Öffnen Sie jede Kategorie, um alle Behandlungen und Preise zu sehen.',
+        compareLabel: 'Vergleich',
+        compareTitle: 'Maniküre & Pediküre',
+        compareClassic: 'Klassisch',
+        compareShellac: 'Mit Shellac',
+        compareFooter: 'Shellac (Gel-Lack) bietet bis zu 3 Wochen perfekten Halt ohne Absplittern.',
+        compareWeeks: 'bis 3 Wochen',
+        compareRow1: 'Maniküre',
+        compareRow2: 'Pediküre',
+      },
+      cats: {
+        nails: 'Nägel',
+        spa: 'SPA & Extras',
+        brows: 'Wimpern & Augenbrauen',
+        face: 'Gesicht',
+        massage: 'Massagen',
+        depil: 'Haarentfernung',
+        threading: 'Fadentechnik',
+        wax: 'Wachsdepilation',
+        nailsSub: 'Gel, Maniküre, Pediküre & SPA',
+        browsSub: 'Lifting, Färben & Lamination',
+        faceSub: 'Reinigung, Peeling & Lippen',
+        depilSub: 'Fadentechnik & Wachsdepilation',
+        massageSub: 'Entspannung & Körperpflege',
+        viewBtn: 'Alle anzeigen',
+        fromPrefix: 'ab',
+      },
+      svc: {
+        gelNeu: 'Gelverlängerung und -struktur mit elegantem, langhaltendem Finish.',
+        gelAuf: '',
+        maniShellac: 'Komplette Handpflege mit Gel-Lack.',
+        pediShellac: 'Fußpflege mit Hygienisierung und Premium-Finish.',
+        french: 'Bitte bei der Buchung angeben – benötigt mehr Zeit.',
+        browRegen: 'Intensive Behandlung mit Analyse, Peeling und Wirkstoffen.',
+        tiefenClass: 'Tiefenreinigung zur Hauterneuerung.',
+        tiefenIntens: 'Intensives Revitalisierungsprotokoll.',
+        microneedling: 'Regt Kollagen an und verbessert die Hauttextur.',
+        ahaPeeling: 'Chemisches Peeling für strahlende Haut.',
+        hydraBasic: 'Sofortige Lippenpflege.',
+        hydraPro: 'Fortgeschrittene Version für Definition und Frische.',
+        spaPedi: 'Intensivpflege mit Peeling, Maske und Massage für verwöhnte Füße.',
+        handSpa: 'Intensivpflege mit Peeling, Maske und Massage für gepflegte Hände.',
+        gelRemoval: 'Schonende Entfernung ohne Schädigung des Naturnagels.',
+        lashLifting: 'Natürliche Wimpernhebung für einen offenen und ausdrucksstarken Blick.',
+        wimpernFarben: 'Verstärkt die natürliche Wimpernfarbe für mehr Tiefe.',
+        browLamination: 'Formt und fixiert die Augenbrauen für ein volleres und perfekt definiertes Ergebnis.',
+        augenbrauenDesign: 'Individuelle Formgebung der Augenbrauen passend zu Ihrem Gesicht.',
+        browRegenMicro: 'Intensivpflege mit Microneedling für tiefere und langanhaltende Wirkung.',
+        fadentechnik: 'Sanfte und präzise Haarentfernung mit Fadentechnik für ein sauberes Ergebnis.',
+        wachsDepilation: 'Sanfte und effektive Haarentfernung mit Wachs für ein glattes und langhaltendes Ergebnis.',
+        bodyMassage: 'Lokale Massage zur Verbesserung der Körperkonturen und des Wohlbefindens.',
+        lymphDrainage: 'Aktiviert das Lymphsystem und reduziert Schwellungen und Wassereinlagerungen.',
+        relaxMassage: 'Entspannende Massage für Rücken oder Beine zur Lösung von Verspannungen.',
+      },
+      nails: {
+        fromPrice: 'Ab',
+        detailsBtn: 'Details',
+        variants: 'Varianten & Preise',
+        notesTitle: 'Wichtige Hinweise',
+        notesText: 'Für French, Babyboomer oder Nail Art bitten wir Sie, dies bei der Terminbuchung anzugeben. Diese Leistungen benötigen mehr Zeit und können ohne vorherige Angabe am Termin möglicherweise nicht durchgeführt werden.',
+        close: 'Schließen',
+        extrasLabel: 'Add-ons',
+      },
+      experience: {
+        label: 'Erlebnis',
+        title: 'Mehr als eine Behandlung',
+        sub: 'Ein Pflege- und Wohlfühlritual, das für jede Kundin individuell gestaltet wird.',
+        relaxTitle: 'Entspannung',
+        relaxText: 'Eine einladende Atmosphäre, um zur Ruhe zu kommen und den Moment zu genießen.',
+        exclTitle: 'Exklusivität',
+        exclText: 'Jedes Detail ist darauf ausgelegt, Ihr Erlebnis auf ein höheres Niveau zu heben.',
+        indTitle: 'Individualisierung',
+        indText: 'Jedes Protokoll wird an Ihre persönlichen Bedürfnisse angepasst.',
+      },
+      about: {
+        label: 'Die Expertin',
+        title: 'Über Bruna Silva',
+        quote: '„Meine Mission ist es, einen Ort zu schaffen, an dem sich jede Kundin wirklich umsorgt fühlt."',
+        bio: 'Hallo, ich bin Bruna Silva. Ich habe Ästhetik und Kosmetologie studiert und arbeite seit 2020 in diesem Bereich. Meine Leidenschaft für die Welt der Schönheit begann sehr früh, denn ich bin in einer Familie von Friseurinnen und Kosmetikerinnen aufgewachsen, in der Pflege und Wohlbefinden immer zum Alltag gehörten. Heute ist es mein Ziel, einen Ort zu schaffen, an dem sich jede Kundin willkommen, entspannt und wirklich gut versorgt fühlt. Ich glaube, das Wichtigste ist nicht nur das Äußere, sondern auch das innere Wohlbefinden – sich selbst zu pflegen und die eigene Essenz zu schätzen.',
+        instagram: 'Instagram folgen · @bs.aesthetic.nails',
+      },
+      story2: {
+        title: 'Sie verdienen diesen Moment',
+        sub: 'Ein Ort, der dafür geschaffen wurde, dass Sie durchatmen, sich erneuern und für sich sorgen.',
+      },
+      booking: {
+        label: 'Terminbuchung',
+        title: 'So buchen Sie',
+        sub: 'Einfach, schnell und unkompliziert.',
+        pTitle: 'Pünktlichkeit',
+        pSub: 'Pünktlichkeit',
+        pText: 'Bitte 5 Minuten früher erscheinen.',
+        cTitle: 'Absage',
+        cSub: 'Stornierung',
+        cText: 'Mindestens 24 Stunden im Voraus. Die Anzahlung von 30% verfällt bei Nichterscheinen oder zu später Absage.',
+        qTitle: 'Fragen',
+        qSub: 'Kontakt',
+        qText: 'Schreiben Sie uns bei schnellen Fragen per WhatsApp.',
+        qCta: 'WhatsApp schreiben',
+        dLabel: 'Anzahlung zur Bestätigung',
+        dText: 'Für die Terminbestätigung ist eine Anzahlung von 30% des Behandlungswertes erforderlich.',
+        dFresha: 'Termin über Fresha buchen',
+        dWa: 'WhatsApp',
+      },
+      cta: {
+        label: 'Terminbuchung',
+        headline: 'Ihr Moment beginnt jetzt',
+        text: 'Anzahlung von 30% zur Terminbestätigung erforderlich. Absagen weniger als 24 Stunden vorher sind nicht erstattungsfähig.',
+        fresha: 'Behandlung buchen',
+      },
     }
   },
 
@@ -590,6 +752,12 @@ export const translations = {
       scheduleNow: 'Agendar Agora'
     },
 
+    splash: {
+      tagline: 'Aesthetic & Nails',
+      enter: 'Entrar no Site',
+      sub: 'Viva uma experiência de beleza única',
+    },
+
     // Footer
     footer: {
       contact: 'Contato',
@@ -606,7 +774,8 @@ export const translations = {
       closed: 'Fechado',
       germany: 'Alemanha',
       slogan: 'Seu estúdio de beleza para tratamentos profissionais e bem-estar.',
-      copyright: 'Todos os direitos reservados.'
+      copyright: 'Todos os direitos reservados.',
+      vatNote: 'Preços incluem IVA.'
     },
 
     // About Section
@@ -624,7 +793,16 @@ export const translations = {
       mission: {
         title: 'Nossa Missão',
         description: 'Nosso compromisso é realçar a beleza natural de cada cliente, oferecendo serviços personalizados e de alta qualidade. Buscamos não apenas resultados estéticos excepcionais, mas também proporcionar uma experiência relaxante e acolhedora.'
-      }
+      },
+      values: {
+        title: 'Nossos Valores',
+        items: ['Excelência em cada atendimento', 'Compromisso com a satisfação do cliente', 'Ambiente acolhedor e higienizado', 'Profissional altamente qualificada', 'Produtos de primeira qualidade']
+      },
+      location: {
+        title: 'Localização',
+        text: 'Estamos localizados em Cuxhaven, com fácil acesso e estacionamento. Nosso espaço foi pensado para proporcionar conforto e tranquilidade durante seu momento de cuidado pessoal.'
+      },
+      bookButton: 'Agendar Horário'
     },
 
     // Pricing Section
@@ -743,12 +921,24 @@ export const translations = {
         overview: {
           title: 'Vista Geral',
           description: 'Conheça todo nosso espaço'
+        },
+        nailDesign: {
+          title: 'Design com Manicure Rosa',
+          description: 'Espaço dedicado para designs especiais e nail art'
+        },
+        frenchManicure: {
+          title: 'Manicure Francesa',
+          description: 'Ambiente preparado para realizar a tradicional e elegante francesinha'
         }
       },
       callToAction: {
         description: 'Venha nos conhecer pessoalmente e descubra um ambiente pensado especialmente para você',
         button: 'Agende sua Visita'
-      }
+      },
+      studioName: 'Studio Bruna',
+      studioTagline: 'Um espaço pensado em você',
+      safetyTitle: 'Biossegurança e Conforto',
+      safetyText: 'Nosso espaço foi cuidadosamente planejado para proporcionar o máximo de conforto e bem-estar durante seu atendimento. Contamos com equipamentos modernos e um ambiente totalmente higienizado, seguindo todos os protocolos de biossegurança para garantir sua segurança e satisfação.'
     },
 
     // Payment Finalization Modal
@@ -982,6 +1172,141 @@ export const translations = {
       ],
       conclusion: 'Essas medidas garantem a pontualidade e a organização da agenda, mantendo a qualidade do atendimento para todas 💖',
       thanks: 'Agradeço muito pela compreensão e confiança 💕'
+    },
+
+    // Luxury Layout
+    luxury: {
+      hero: {
+        headline: 'Beleza que se sente por dentro',
+        sub: 'Tratamentos personalizados de estética, unhas e bem-estar num ambiente acolhedor e elegante.',
+        cta: 'Agendar agora',
+        ctaServices: 'Serviços',
+      },
+      trust: {
+        clientsLabel: 'Clientes satisfeitas',
+        clientsSub: 'e crescendo',
+        sinceLabel: 'Experiência',
+        sinceSub: 'em Estética & Unhas',
+        careLabel: 'Atendimento',
+        careSub: 'personalizado',
+      },
+      story1: {
+        title: 'Cuidado. Precisão. Elegância.',
+        sub: 'Cada etapa foi criada para despertar confiança, beleza e presença.',
+      },
+      services: {
+        label: 'Lista de Preços',
+        title: 'Serviços & Valores',
+        sub: 'Expanda cada categoria para ver os serviços e preços completos.',
+        compareLabel: 'Comparativo',
+        compareTitle: 'Manicure & Pedicure',
+        compareClassic: 'Clássica',
+        compareShellac: 'Com Verniz Gel',
+        compareFooter: 'O Shellac oferece até 3 semanas de durabilidade sem lascar.',
+        compareWeeks: 'até 3 semanas',
+        compareRow1: 'Manicure',
+        compareRow2: 'Pedicure',
+      },
+      cats: {
+        nails: 'Unhas',
+        spa: 'SPA & Extras',
+        brows: 'Cílios & Sobrancelhas',
+        face: 'Rosto',
+        massage: 'Massagens',
+        depil: 'Depilação',
+        threading: 'Depilação com Linha',
+        wax: 'Depilação com Cera',
+        nailsSub: 'Gel, Manicure, Pedicure & SPA',
+        browsSub: 'Lifting, Coloração & Laminação',
+        faceSub: 'Limpeza, Peeling & Lábios',
+        depilSub: 'Linha & Cera',
+        massageSub: 'Relaxamento & Modelação',
+        viewBtn: 'Ver Serviços',
+        fromPrefix: 'a partir de',
+      },
+      svc: {
+        gelNeu: 'Alongamento e estrutura de gel com acabamento elegante e duradouro.',
+        gelAuf: '',
+        maniShellac: 'Cuidado completo para mãos com verniz em gel.',
+        pediShellac: 'Tratamento dos pés com higienização e acabamento premium.',
+        french: 'Informar no agendamento – precisa de mais tempo.',
+        browRegen: 'Tratamento intensivo com análise, peeling e ativos.',
+        tiefenClass: 'Limpeza profunda para renovação da pele.',
+        tiefenIntens: 'Protocolo intensivo de revitalização.',
+        microneedling: 'Estimula colágeno e textura uniforme.',
+        ahaPeeling: 'Esfoliação química para luminosidade.',
+        hydraBasic: 'Hidratação labial imediata.',
+        hydraPro: 'Versão avançada para definição e viço.',
+        spaPedi: 'Tratamento intensivo com peeling, máscara e massagem para pés renovados.',
+        handSpa: 'Tratamento intensivo com peeling, máscara e massagem para mãos cuidadas.',
+        gelRemoval: 'Remoção segura do gel sem danificar a unha natural.',
+        lashLifting: 'Elevação natural dos cílios para um olhar mais aberto e expressivo.',
+        wimpernFarben: 'Realça a cor natural dos cílios para mais profundidade.',
+        browLamination: 'Alinha e fixa os pelos das sobrancelhas para um efeito mais cheio e definido.',
+        augenbrauenDesign: 'Design personalizado das sobrancelhas adaptado ao seu rosto.',
+        browRegenMicro: 'Tratamento avançado com microagulhamento para resultados mais profundos e duradouros.',
+        fadentechnik: 'Depilação precisa e suave com linha para um acabamento limpo.',
+        wachsDepilation: 'Depilação eficaz com cera para um acabamento suave e duradouro.',
+        bodyMassage: 'Massagem localizada para melhora do contorno corporal e bem-estar.',
+        lymphDrainage: 'Ativa o sistema linfático e reduz retenção de líquidos e inchaços.',
+        relaxMassage: 'Massagem de relaxamento para costas ou pernas, aliviando tensões.',
+      },
+      nails: {
+        fromPrice: 'A partir de',
+        detailsBtn: 'Detalhes',
+        variants: 'Variações & Preços',
+        notesTitle: 'Informações Importantes',
+        notesText: 'Para serviços como French, Babyboomer ou Nail Art, pedimos que informe no momento do agendamento. Estes serviços requerem mais tempo e, caso não sejam mencionados previamente, poderão não ser realizados no dia.',
+        close: 'Fechar',
+        extrasLabel: 'Adicionais',
+      },
+      experience: {
+        label: 'Experiência',
+        title: 'Mais do que um atendimento',
+        sub: 'Um ritual de cuidado e bem-estar pensado para cada cliente.',
+        relaxTitle: 'Relaxamento',
+        relaxText: 'Ambiente acolhedor para desacelerar e aproveitar o seu momento com calma.',
+        exclTitle: 'Exclusividade',
+        exclText: 'Cada detalhe é pensado para elevar a sua experiência a um nível superior.',
+        indTitle: 'Personalização',
+        indText: 'Cada protocolo adaptado para as suas necessidades únicas.',
+      },
+      about: {
+        label: 'A Especialista',
+        title: 'Sobre Bruna Silva',
+        quote: '"Minha missão é criar um espaço onde cada cliente sente que foi verdadeiramente cuidada."',
+        bio: 'Olá, sou Bruna Silva. Estudei Estética e Cosmetologia e exerço nesta área desde 2020. A minha paixão pelo mundo da beleza começou muito cedo, pois cresci numa família de cabeleireiras e esteticistas, onde o cuidado e o bem-estar sempre fizeram parte do dia a dia. Hoje, o meu objetivo é criar um espaço onde cada cliente se sinta bem-vinda, relaxada e verdadeiramente cuidada. Acredito que o mais importante não é apenas o exterior, mas também sentir-se bem por dentro, cuidar de si mesma e valorizar a própria essência.',
+        instagram: 'Seguir no Instagram · @bs.aesthetic.nails',
+      },
+      story2: {
+        title: 'Você merece esse momento',
+        sub: 'Um espaço criado para você respirar, renovar e cuidar de si.',
+      },
+      booking: {
+        label: 'Agendamento',
+        title: 'Como agendar',
+        sub: 'Simples, rápido e sem complicações.',
+        pTitle: 'Pontualidade',
+        pSub: 'Pontualidade',
+        pText: 'Chegar 5 minutos antes do horário marcado.',
+        cTitle: 'Cancelamento',
+        cSub: 'Cancelamento',
+        cText: 'Mínimo 24h de antecedência. O sinal de 30% não é reembolsável em falta ou cancelamento tardio.',
+        qTitle: 'Dúvidas',
+        qSub: 'Contacto',
+        qText: 'Escreva-nos pelo WhatsApp para qualquer questão rápida.',
+        qCta: 'Escrever no WhatsApp',
+        dLabel: 'Sinal de confirmação',
+        dText: 'A confirmação é feita mediante pagamento de um sinal de 30% do valor do serviço.',
+        dFresha: 'Agendar via Fresha',
+        dWa: 'WhatsApp',
+      },
+      cta: {
+        label: 'Agendar',
+        headline: 'O seu momento começa agora',
+        text: 'Sinal de 30% para confirmação. Cancelamento com menos de 24h não reembolsável.',
+        fresha: 'Agendar tratamento',
+      },
     }
   },
 
@@ -1083,6 +1408,12 @@ export const translations = {
       scheduleNow: 'Schedule Now'
     },
 
+    splash: {
+      tagline: 'Aesthetic & Nails',
+      enter: 'Enter the Site',
+      sub: 'Experience beauty redefined',
+    },
+
     // Footer
     footer: {
       contact: 'Contact',
@@ -1099,7 +1430,8 @@ export const translations = {
       closed: 'Closed',
       germany: 'Germany',
       slogan: 'Your beauty studio for professional treatments and well-being.',
-      copyright: 'All rights reserved.'
+      copyright: 'All rights reserved.',
+      vatNote: 'All prices include VAT.'
     },
 
     // About Section
@@ -1117,7 +1449,16 @@ export const translations = {
       mission: {
         title: 'Our Mission',
         description: 'Our commitment is to enhance the natural beauty of each client, offering personalized and high-quality services. We seek not only exceptional aesthetic results, but also to provide a relaxing and welcoming experience.'
-      }
+      },
+      values: {
+        title: 'Our Values',
+        items: ['Excellence at every appointment', 'Commitment to client satisfaction', 'Welcoming and hygienic environment', 'Highly qualified professional', 'Top-quality products']
+      },
+      location: {
+        title: 'Location',
+        text: 'We are located in a privileged spot in Cuxhaven, easily accessible with parking available. Our space was designed to provide comfort and tranquillity during your personal care moment.'
+      },
+      bookButton: 'Book an Appointment'
     },
 
     // Pricing Section
@@ -1236,12 +1577,24 @@ export const translations = {
         overview: {
           title: 'Overview',
           description: 'Get to know our entire space'
+        },
+        nailDesign: {
+          title: 'Nail Design',
+          description: 'Space dedicated to special designs and nail art'
+        },
+        frenchManicure: {
+          title: 'French Manicure',
+          description: 'Area prepared for the classic and elegant French manicure'
         }
       },
       callToAction: {
         description: 'Come meet us in person and discover an environment specially designed for you',
         button: 'Schedule Your Visit'
-      }
+      },
+      studioName: 'Studio Bruna',
+      studioTagline: 'A space designed for you',
+      safetyTitle: 'Biosafety and Comfort',
+      safetyText: 'Our studio was carefully designed to provide maximum comfort and well-being at every appointment. We use modern equipment and follow all hygiene protocols to guarantee your safety and satisfaction.'
     },
 
     // Payment Finalization Modal
@@ -1475,6 +1828,141 @@ export const translations = {
       ],
       conclusion: 'These measures ensure punctuality and schedule organization, maintaining service quality for everyone 💖',
       thanks: 'Thank you very much for your understanding and trust 💕'
+    },
+
+    // Luxury Layout
+    luxury: {
+      hero: {
+        headline: 'Beauty you feel from within',
+        sub: 'Personalised aesthetic, nail and wellness treatments in a welcoming and elegant atmosphere.',
+        cta: 'Book now',
+        ctaServices: 'Services',
+      },
+      trust: {
+        clientsLabel: 'Happy clients',
+        clientsSub: 'and growing',
+        sinceLabel: 'Experience',
+        sinceSub: 'in Aesthetics & Nails',
+        careLabel: 'Personalised',
+        careSub: 'care',
+      },
+      story1: {
+        title: 'Care. Precision. Elegance.',
+        sub: 'Every step was created to inspire confidence, beauty and presence.',
+      },
+      services: {
+        label: 'Price List',
+        title: 'Services & Prices',
+        sub: 'Expand each category to see all treatments and prices.',
+        compareLabel: 'Comparison',
+        compareTitle: 'Manicure & Pedicure',
+        compareClassic: 'Classic',
+        compareShellac: 'With Shellac',
+        compareFooter: 'Shellac (gel polish) provides up to 3 weeks of flawless wear without chipping.',
+        compareWeeks: 'up to 3 weeks',
+        compareRow1: 'Manicure',
+        compareRow2: 'Pedicure',
+      },
+      cats: {
+        nails: 'Nails',
+        spa: 'SPA & Extras',
+        brows: 'Lashes & Brows',
+        face: 'Facial',
+        massage: 'Massages',
+        depil: 'Hair Removal',
+        threading: 'Threading',
+        wax: 'Wax Depilation',
+        nailsSub: 'Gel, Manicure, Pedicure & SPA',
+        browsSub: 'Lifting, Tinting & Lamination',
+        faceSub: 'Cleansing, Peeling & Lips',
+        depilSub: 'Threading & Wax Removal',
+        massageSub: 'Relaxation & Body Care',
+        viewBtn: 'View Services',
+        fromPrefix: 'from',
+      },
+      svc: {
+        gelNeu: 'Gel extension and structure with elegant, long-lasting finish.',
+        gelAuf: '',
+        maniShellac: 'Complete hand care with gel polish.',
+        pediShellac: 'Foot care with hygiene treatment and premium finish.',
+        french: 'Please note when booking – requires extra time.',
+        browRegen: 'Intensive treatment with analysis, peeling and active ingredients.',
+        tiefenClass: 'Deep cleansing for skin renewal.',
+        tiefenIntens: 'Intensive revitalisation protocol.',
+        microneedling: 'Stimulates collagen and improves skin texture.',
+        ahaPeeling: 'Chemical exfoliation for radiant skin.',
+        hydraBasic: 'Immediate lip hydration.',
+        hydraPro: 'Advanced version for definition and freshness.',
+        spaPedi: 'Intensive treatment with peeling, mask and massage for pampered feet.',
+        handSpa: 'Intensive treatment with peeling, mask and massage for well-groomed hands.',
+        gelRemoval: 'Gentle removal without damaging the natural nail.',
+        lashLifting: 'Natural lash lift for a more open and expressive look.',
+        wimpernFarben: 'Enhances the natural lash colour for added depth.',
+        browLamination: 'Shapes and sets brows for a fuller, perfectly defined result.',
+        augenbrauenDesign: 'Individual brow shaping tailored to your face.',
+        browRegenMicro: 'Advanced treatment with microneedling for deeper and longer-lasting results.',
+        fadentechnik: 'Gentle and precise hair removal using threading for clean results.',
+        wachsDepilation: 'Gentle and effective wax hair removal for smooth, long-lasting results.',
+        bodyMassage: 'Targeted massage to improve body contour and well-being.',
+        lymphDrainage: 'Activates the lymphatic system and reduces swelling and water retention.',
+        relaxMassage: 'Relaxation massage for back or legs, relieving tension.',
+      },
+      nails: {
+        fromPrice: 'From',
+        detailsBtn: 'Details',
+        variants: 'Variants & Prices',
+        notesTitle: 'Important Notes',
+        notesText: 'For French, Babyboomer or Nail Art services, please let us know when booking. These treatments require extra time and may not be possible on the day if not mentioned in advance.',
+        close: 'Close',
+        extrasLabel: 'Add-ons',
+      },
+      experience: {
+        label: 'Experience',
+        title: 'More than a treatment',
+        sub: 'A care and wellbeing ritual designed individually for every client.',
+        relaxTitle: 'Relaxation',
+        relaxText: 'A welcoming atmosphere to slow down and enjoy your moment in peace.',
+        exclTitle: 'Exclusivity',
+        exclText: 'Every detail is designed to elevate your experience to a higher level.',
+        indTitle: 'Personalisation',
+        indText: 'Every protocol adapted to your unique needs.',
+      },
+      about: {
+        label: 'The Expert',
+        title: 'About Bruna Silva',
+        quote: '"My mission is to create a space where every client feels truly cared for."',
+        bio: 'Hello, I\'m Bruna Silva. I studied Aesthetics and Cosmetology and have been working in this field since 2020. My passion for the world of beauty started very early — I grew up in a family of hairdressers and beauticians, where care and well-being were always part of everyday life. Today, my goal is to create a space where every client feels welcome, relaxed and truly cared for. I believe the most important thing is not just the exterior, but also feeling good on the inside — taking care of yourself and valuing your own essence.',
+        instagram: 'Follow on Instagram · @bs.aesthetic.nails',
+      },
+      story2: {
+        title: 'You deserve this moment',
+        sub: 'A space created for you to breathe, renew and take care of yourself.',
+      },
+      booking: {
+        label: 'Booking',
+        title: 'How to book',
+        sub: 'Simple, fast and straightforward.',
+        pTitle: 'Punctuality',
+        pSub: 'Punctuality',
+        pText: 'Please arrive 5 minutes early.',
+        cTitle: 'Cancellation',
+        cSub: 'Cancellation',
+        cText: 'At least 24 hours in advance. The 30% deposit is non-refundable for no-shows or late cancellations.',
+        qTitle: 'Questions',
+        qSub: 'Contact',
+        qText: 'Message us on WhatsApp for any quick questions.',
+        qCta: 'Message on WhatsApp',
+        dLabel: 'Confirmation deposit',
+        dText: 'A deposit of 30% of the service value is required to confirm your appointment.',
+        dFresha: 'Book via Fresha',
+        dWa: 'WhatsApp',
+      },
+      cta: {
+        label: 'Book now',
+        headline: 'Your moment starts now',
+        text: '30% deposit required for confirmation. Cancellations under 24h are non-refundable.',
+        fresha: 'Book a treatment',
+      },
     }
   },
 
@@ -1576,6 +2064,12 @@ export const translations = {
       scheduleNow: 'Agendar Ahora'
     },
 
+    splash: {
+      tagline: 'Aesthetic & Nails',
+      enter: 'Entrar al Sitio',
+      sub: 'Vive una experiencia de belleza única',
+    },
+
     // Footer
     footer: {
       contact: 'Contacto',
@@ -1592,7 +2086,8 @@ export const translations = {
       closed: 'Cerrado',
       germany: 'Alemania',
       slogan: 'Tu estudio de belleza para tratamientos profesionales y bienestar.',
-      copyright: 'Todos los derechos reservados.'
+      copyright: 'Todos los derechos reservados.',
+      vatNote: 'Todos los precios incluyen IVA.'
     },
 
     // About Section
@@ -1610,7 +2105,16 @@ export const translations = {
       mission: {
         title: 'Nuestra Misión',
         description: 'Nuestro compromiso es realzar la belleza natural de cada cliente, ofreciendo servicios personalizados y de alta calidad. Buscamos no solo resultados estéticos excepcionales, sino también proporcionar una experiencia relajante y acogedora.'
-      }
+      },
+      values: {
+        title: 'Nuestros Valores',
+        items: ['Excelencia en cada cita', 'Compromiso con la satisfacción del cliente', 'Ambiente acogedor e higienizado', 'Profesional altamente cualificada', 'Productos de primera calidad']
+      },
+      location: {
+        title: 'Ubicación',
+        text: 'Nos encontramos en un punto privilegiado de Cuxhaven, con fácil acceso y aparcamiento. Nuestro espacio fue diseñado para proporcionar comodidad y tranquilidad durante su momento de cuidado personal.'
+      },
+      bookButton: 'Reservar Cita'
     },
 
     // Pricing Section
@@ -1729,12 +2233,24 @@ export const translations = {
         overview: {
           title: 'Vista General',
           description: 'Conoce todo nuestro espacio'
+        },
+        nailDesign: {
+          title: 'Diseño de Uñas',
+          description: 'Espacio dedicado a diseños especiales y nail art'
+        },
+        frenchManicure: {
+          title: 'Manicura Francesa',
+          description: 'Área preparada para la clásica y elegante francesa'
         }
       },
       callToAction: {
         description: 'Ven a conocernos personalmente y descubre un ambiente pensado especialmente para ti',
         button: 'Agenda tu Visita'
-      }
+      },
+      studioName: 'Studio Bruna',
+      studioTagline: 'Un espacio pensado para ti',
+      safetyTitle: 'Bioseguridad y Confort',
+      safetyText: 'Nuestro estudio fue cuidadosamente diseñado para proporcionar el máximo confort y bienestar en cada cita. Utilizamos equipos modernos y seguimos todos los protocolos de higiene para garantizar su seguridad y satisfacción.'
     },
 
     // Payment Finalization Modal
@@ -1968,6 +2484,141 @@ export const translations = {
       ],
       conclusion: 'Estas medidas garantizan la puntualidad y la organización de la agenda, manteniendo la calidad del servicio para todas 💖',
       thanks: 'Muchas gracias por su comprensión y confianza 💕'
+    },
+
+    // Luxury Layout
+    luxury: {
+      hero: {
+        headline: 'Belleza que se siente por dentro',
+        sub: 'Tratamientos personalizados de estética, uñas y bienestar en un ambiente acogedor y elegante.',
+        cta: 'Reservar ahora',
+        ctaServices: 'Servicios',
+      },
+      trust: {
+        clientsLabel: 'Clientas satisfechas',
+        clientsSub: 'y creciendo',
+        sinceLabel: 'Experiencia',
+        sinceSub: 'en Estética & Uñas',
+        careLabel: 'Atención',
+        careSub: 'personalizada',
+      },
+      story1: {
+        title: 'Cuidado. Precisión. Elegancia.',
+        sub: 'Cada paso fue creado para despertar confianza, belleza y presencia.',
+      },
+      services: {
+        label: 'Lista de Precios',
+        title: 'Servicios & Precios',
+        sub: 'Abra cada categoría para ver todos los tratamientos y precios.',
+        compareLabel: 'Comparativa',
+        compareTitle: 'Manicura & Pedicura',
+        compareClassic: 'Clásica',
+        compareShellac: 'Con Shellac',
+        compareFooter: 'El Shellac ofrece hasta 3 semanas de duración sin astillarse.',
+        compareWeeks: 'hasta 3 semanas',
+        compareRow1: 'Manicura',
+        compareRow2: 'Pedicura',
+      },
+      svc: {
+        gelNeu: 'Extensión y estructura de gel con acabado elegante y duradero.',
+        gelAuf: '',
+        maniShellac: 'Cuidado completo de manos con esmalte en gel.',
+        pediShellac: 'Tratamiento de pies con higienización y acabado premium.',
+        french: 'Indicar al reservar – requiere más tiempo.',
+        browRegen: 'Tratamiento intensivo con análisis, peeling e ingredientes activos.',
+        tiefenClass: 'Limpieza profunda para la renovación de la piel.',
+        tiefenIntens: 'Protocolo intensivo de revitalización.',
+        microneedling: 'Estimula el colágeno y mejora la textura de la piel.',
+        ahaPeeling: 'Exfoliación química para una piel luminosa.',
+        hydraBasic: 'Hidratación labial inmediata.',
+        hydraPro: 'Versión avanzada para definición y frescura.',
+        spaPedi: 'Tratamiento intensivo con peeling, mascarilla y masaje para pies renovados.',
+        handSpa: 'Tratamiento intensivo con peeling, mascarilla y masaje para manos cuidadas.',
+        gelRemoval: 'Eliminación cuidadosa sin dañar la uña natural.',
+        lashLifting: 'Elevación natural de pestañas para una mirada más abierta y expresiva.',
+        wimpernFarben: 'Realza el color natural de las pestañas para mayor profundidad.',
+        browLamination: 'Moldea y fija las cejas para un resultado más voluminoso y definido.',
+        augenbrauenDesign: 'Diseño individual de cejas adaptado a tu rostro.',
+        browRegenMicro: 'Tratamiento avanzado con microagujas para resultados más profundos y duraderos.',
+        fadentechnik: 'Depilación precisa y suave con hilo para un acabado limpio.',
+        wachsDepilation: 'Depilación eficaz con cera para resultados suaves y duraderos.',
+        bodyMassage: 'Masaje localizado para mejorar el contorno corporal y el bienestar.',
+        lymphDrainage: 'Activa el sistema linfático y reduce la retención de líquidos e hinchazones.',
+        relaxMassage: 'Masaje de relajación para espalda o piernas, aliviando las tensiones.',
+      },
+      cats: {
+        nails: 'Uñas',
+        spa: 'SPA & Extras',
+        brows: 'Pestañas & Cejas',
+        face: 'Rostro',
+        massage: 'Masajes',
+        depil: 'Depilación',
+        threading: 'Depilación con Hilo',
+        wax: 'Depilación con Cera',
+        nailsSub: 'Gel, Manicura, Pedicura & SPA',
+        browsSub: 'Lifting, Tinte & Laminado',
+        faceSub: 'Limpieza, Peeling & Labios',
+        depilSub: 'Hilo & Cera',
+        massageSub: 'Relajación & Cuidado Corporal',
+        viewBtn: 'Ver Servicios',
+        fromPrefix: 'desde',
+      },
+      nails: {
+        fromPrice: 'Desde',
+        detailsBtn: 'Detalles',
+        variants: 'Variantes & Precios',
+        notesTitle: 'Avisos Importantes',
+        notesText: 'Para servicios como French, Babyboomer o Nail Art, infórmenos al momento de reservar. Estos servicios requieren más tiempo y pueden no ser posibles si no se mencionan con antelación.',
+        close: 'Cerrar',
+        extrasLabel: 'Adicionales',
+      },
+      experience: {
+        label: 'Experiencia',
+        title: 'Más que un tratamiento',
+        sub: 'Un ritual de cuidado y bienestar pensado para cada clienta.',
+        relaxTitle: 'Relajación',
+        relaxText: 'Un ambiente acogedor para desacelerar y disfrutar su momento con calma.',
+        exclTitle: 'Exclusividad',
+        exclText: 'Cada detalle está pensado para llevar su experiencia a un nivel superior.',
+        indTitle: 'Personalización',
+        indText: 'Cada protocolo adaptado a sus necesidades únicas.',
+      },
+      about: {
+        label: 'La Especialista',
+        title: 'Sobre Bruna Silva',
+        quote: '"Mi misión es crear un espacio donde cada clienta sienta que ha sido verdaderamente atendida."',
+        bio: 'Hola, soy Bruna Silva. Estudié Estética y Cosmetología y ejerzo en esta área desde 2020. Mi pasión por el mundo de la belleza comenzó muy pronto, pues crecí en una familia de peluqueras y esteticistas, donde el cuidado y el bienestar siempre formaron parte del día a día. Hoy, mi objetivo es crear un espacio donde cada clienta se sienta bienvenida, relajada y verdaderamente atendida. Creo que lo más importante no es solo el exterior, sino también sentirse bien por dentro, cuidarse a una misma y valorar la propia esencia.',
+        instagram: 'Seguir en Instagram · @bs.aesthetic.nails',
+      },
+      story2: {
+        title: 'Se merece este momento',
+        sub: 'Un espacio creado para respirar, renovarse y cuidarse.',
+      },
+      booking: {
+        label: 'Reservas',
+        title: 'Cómo reservar',
+        sub: 'Simple, rápido y sin complicaciones.',
+        pTitle: 'Puntualidad',
+        pSub: 'Puntualidad',
+        pText: 'Por favor llegue 5 minutos antes.',
+        cTitle: 'Cancelación',
+        cSub: 'Cancelación',
+        cText: 'Mínimo 24 horas de antelación. El depósito del 30% no es reembolsable por ausencia o cancelación tardía.',
+        qTitle: 'Preguntas',
+        qSub: 'Contacto',
+        qText: 'Escríbanos por WhatsApp para cualquier duda rápida.',
+        qCta: 'Escribir por WhatsApp',
+        dLabel: 'Depósito de confirmación',
+        dText: 'Se requiere un depósito del 30% del valor del servicio para confirmar su cita.',
+        dFresha: 'Reservar via Fresha',
+        dWa: 'WhatsApp',
+      },
+      cta: {
+        label: 'Reservar',
+        headline: 'Su momento comienza ahora',
+        text: 'Depósito del 30% para confirmación. Cancelaciones con menos de 24h no son reembolsables.',
+        fresha: 'Reservar tratamiento',
+      },
     }
   }
 };

@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Bruna Silva Aesthetic &amp; Nails – Ihr Schönheitsstudio in Cuxhaven. Nails, Lashes, Facial, Massage und mehr. Jetzt online buchen!" />
+  <title>Bruna Silva Aesthetic &amp; Nails – Schönheitsstudio Cuxhaven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── Variables ──────────────────────────────────────────── */
+    :root {
+      --bg-primary:    #F5F1EC;
+      --bg-secondary:  #E7DBD1;
+      --bg-card:       #FFFFFF;
+      --text-primary:  #2C2C2C;
+      --text-accent:   #8A5C4A;
+      --button-soft:   #CFAE9D;
+      --button-premium:#C8A27A;
+      --border-light:  #D6C1B1;
+      --highlight:     #E4D6CC;
+      --accent-gold:   #C8A27A;
+      --wa-green:      #25D366;
+    }
+
+    /* ─── Reset ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Open Sans', system-ui, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1,h2,h3,h4,h5 {
+      font-family: 'Poppins', system-ui, sans-serif;
+      color: var(--text-accent);
+      line-height: 1.25;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    button { font-family: inherit; cursor: pointer; }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+    ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--button-soft); }
+
+    /* ─── Layout ─────────────────────────────────────────────── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    @media(min-width:768px) { .container { padding: 0 40px; } }
+
+    .section { padding: 52px 0; }
+    @media(min-width:768px) { .section { padding: 80px 0; } }
+
+    .section-head { margin-bottom: 36px; }
+    .section-head-c { text-align: center; margin-bottom: 40px; }
+    .eyebrow {
+      display: inline-block;
+      font-size: .65rem; font-weight: 700; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--accent-gold); margin-bottom: 10px;
+    }
+    .sec-title {
+      font-size: clamp(1.375rem, 3vw, 2rem);
+      font-weight: 700; color: var(--text-accent);
+      max-width: 28ch; line-height: 1.28; margin-bottom: 10px;
+    }
+    .sec-title-c { margin: 0 auto 10px; }
+    .sec-sub {
+      font-size: .9375rem; color: var(--text-accent);
+      opacity: .72; max-width: 58ch; line-height: 1.65;
+    }
+    .sec-sub-c { margin: 0 auto; }
+
+    hr.sep { border: none; height: 1px; background: rgba(138,92,74,.10); }
+
+    /* ─── Animations ─────────────────────────────────────────── */
+    @keyframes slideDown { from{transform:translateY(-100%);opacity:0} to{transform:none;opacity:1} }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,.4)} 50%{box-shadow:0 0 0 12px rgba(37,211,102,0)} }
+
+    .fade-up { opacity:0; transform:translateY(22px); transition:opacity .5s ease-out, transform .5s ease-out; }
+    .fade-up.in { opacity:1; transform:none; }
+    .d1{transition-delay:.07s} .d2{transition-delay:.14s} .d3{transition-delay:.21s} .d4{transition-delay:.28s}
+
+    /* ─── Buttons ─────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 7px; min-height: 44px; padding: 10px 22px;
+      font-family: 'Poppins', sans-serif; font-size: .875rem; font-weight: 600;
+      border-radius: 8px; border: none; transition: all .2s ease-out;
+      white-space: nowrap; cursor: pointer; text-decoration: none; line-height: 1.2;
+    }
+    .btn:hover  { transform: scale(1.03); }
+    .btn:active { transform: scale(0.97); }
+
+    .btn-gold   { background: var(--button-premium); color: #fff; box-shadow: 0 4px 14px rgba(200,162,122,.30); }
+    .btn-gold:hover { background: var(--text-accent); box-shadow: 0 6px 22px rgba(200,162,122,.45); }
+
+    .btn-soft   { background: var(--button-soft); color: var(--text-accent); border: 1px solid var(--border-light); }
+    .btn-soft:hover { background: var(--bg-secondary); border-color: var(--accent-gold); }
+
+    .btn-ghost  { background: transparent; color: var(--text-accent); border: 1.5px solid var(--border-light); }
+    .btn-ghost:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
+
+    .btn-wa { background: var(--wa-green); color: #fff; box-shadow: 0 4px 14px rgba(37,211,102,.28); }
+    .btn-wa:hover { background: #1da851; box-shadow: 0 6px 20px rgba(37,211,102,.40); }
+
+    .btn-sm  { min-height: 38px; padding: 8px 16px; font-size: .8125rem; }
+    .btn-lg  { min-height: 50px; padding: 13px 30px; font-size: .9375rem; }
+
+    /* ─── Cards ──────────────────────────────────────────────── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(138,92,74,.06);
+      transition: all .32s ease-out;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(138,92,74,.12);
+      border-color: var(--accent-gold);
+    }
+    .card-icon { width: 36px; height: 36px; color: var(--accent-gold); margin-bottom: 14px; }
+    .card-title {
+      font-family: 'Poppins', sans-serif; font-size: .9375rem;
+      font-weight: 700; color: var(--text-accent); margin-bottom: 8px; line-height: 1.3;
+    }
+    .card-desc { font-size: .8125rem; color: var(--text-primary); opacity: .75; margin-bottom: 12px; line-height: 1.6; }
+    .card-prices { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .price-badge {
+      font-family: 'Poppins', sans-serif; font-size: .8125rem; font-weight: 700;
+      color: var(--accent-gold); background: rgba(200,162,122,.10);
+      border: 1px solid rgba(200,162,122,.25); border-radius: 6px;
+      padding: 4px 10px; white-space: nowrap;
+    }
+
+    /* Grid */
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media(min-width:640px)  { .grid-2 { grid-template-columns: repeat(2,1fr); } }
+    @media(min-width:768px)  { .grid-3 { grid-template-columns: repeat(2,1fr); } }
+    @media(min-width:1024px) { .grid-3 { grid-template-columns: repeat(3,1fr); } }
+
+    /* ─── Banner de aviso ────────────────────────────────────── */
+    .booking-banner {
+      background: var(--bg-secondary);
+      border-left: 5px solid var(--accent-gold);
+      animation: slideDown .5s ease-out both;
+      overflow: hidden;
+      transition: max-height .4s ease-out, opacity .3s ease-out;
+    }
+    .booking-banner-inner {
+      display: flex; align-items: flex-start; gap: 14px; padding: 16px 0;
+    }
+    .booking-banner-body { flex: 1; }
+    .booking-banner-title {
+      font-family: 'Poppins', sans-serif; font-weight: 700;
+      font-size: .875rem; color: var(--text-accent); margin-bottom: 8px;
+    }
+    .booking-banner-text { font-size: .8125rem; color: var(--text-primary); line-height: 1.6; margin-bottom: 12px; }
+    .booking-banner-text p + p { margin-top: 4px; }
+    .booking-banner-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+    .booking-banner-close {
+      background: none; border: none; font-size: 1.375rem; line-height: 1;
+      color: var(--text-accent); opacity: .6; padding: 2px 4px;
+      transition: opacity .2s; flex-shrink: 0; margin-top: -2px;
+    }
+    .booking-banner-close:hover { opacity: 1; }
+
+    /* ─── Header ─────────────────────────────────────────────── */
+    .header {
+      position: sticky; top: 0; z-index: 90;
+      background: transparent;
+      transition: background .3s ease, box-shadow .3s ease;
+    }
+    .header.scrolled {
+      background: rgba(245,241,236,.96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 20px rgba(138,92,74,.10);
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px; gap: 20px;
+    }
+    .logo { display: flex; flex-direction: column; gap: 1px; }
+    .logo-name  { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1rem; color: var(--text-accent); line-height: 1.2; }
+    .logo-badge { font-size: .6rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-gold); }
+
+    .nav { display: none; align-items: center; gap: 26px; }
+    @media(min-width:768px) { .nav { display: flex; } }
+    .nav a { font-size: .8125rem; font-weight: 500; color: var(--text-accent); transition: color .2s ease; }
+    .nav a:hover { color: var(--accent-gold); }
+
+    .header-cta { display: none; }
+    @media(min-width:768px) { .header-cta { display: inline-flex; } }
+
+    .hamburger { display: flex; flex-direction: column; gap: 5px; background: none; border: none; padding: 4px; }
+    @media(min-width:768px) { .hamburger { display: none; } }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text-accent); border-radius: 2px; transition: all .25s ease; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ─── Mobile menu ────────────────────────────────────────── */
+    .mmenu {
+      display: none; position: fixed; inset: 0; z-index: 80;
+      background: var(--bg-primary); padding: 88px 28px 48px;
+      flex-direction: column; gap: 4px;
+    }
+    .mmenu.open { display: flex; }
+    .mmenu a {
+      font-family: 'Poppins', sans-serif; font-size: 1.25rem; font-weight: 600;
+      color: var(--text-accent); padding: 13px 0;
+      border-bottom: 1px solid var(--border-light); transition: color .2s;
+    }
+    .mmenu a:hover { color: var(--accent-gold); }
+    .mmenu-close { position: absolute; top: 20px; right: 22px; background: none; border: none; font-size: 1.5rem; color: var(--text-accent); line-height: 1; }
+
+    /* ─── Hero ───────────────────────────────────────────────── */
+    .hero {
+      position: relative; min-height: 100svh;
+      display: flex; align-items: center; overflow: hidden; padding: 0;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      animation: heroBg 14s ease-out forwards;
+    }
+    @keyframes heroBg { from{transform:scale(1)} to{transform:scale(1.05)} }
+    .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(to bottom, rgba(245,241,236,.70) 0%, rgba(245,241,236,.50) 45%, rgba(245,241,236,.96) 100%);
+    }
+    .hero-content { position: relative; z-index: 2; padding: 100px 0 80px; width: 100%; }
+    .hero-eyebrow { font-size: .65rem; font-weight: 700; letter-spacing: .24em; text-transform: uppercase; color: var(--accent-gold); margin-bottom: 18px; animation: fadeUp .45s .08s ease-out both; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+    .hero-h1 { font-size: clamp(2.125rem,5vw,3.75rem); font-weight: 700; color: var(--text-accent); max-width: 18ch; line-height: 1.18; letter-spacing: -.01em; margin-bottom: 10px; animation: fadeUp .45s .14s ease-out both; }
+    .hero-h2 { font-size: clamp(1.375rem,3vw,2.25rem); font-weight: 400; color: rgba(138,92,74,.85); max-width: 22ch; line-height: 1.38; margin-bottom: 8px; animation: fadeUp .45s .20s ease-out both; }
+    .hero-h3 { font-size: clamp(1rem,2vw,1.4rem); font-weight: 600; color: var(--accent-gold); max-width: 30ch; line-height: 1.4; margin-bottom: 34px; animation: fadeUp .45s .25s ease-out both; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; animation: fadeUp .42s .30s ease-out both; }
+    @media(max-width:599px) { .hero-cta .btn { width: 100%; } }
+
+    /* ─── Trust bar ──────────────────────────────────────────── */
+    .trust-bar { background: var(--bg-secondary); padding: 48px 0; }
+    @media(min-width:768px) { .trust-bar { padding: 60px 0; } }
+    .trust-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    @media(min-width:580px) { .trust-grid { grid-template-columns: repeat(3,1fr); } }
+    .trust-card {
+      background: var(--bg-primary); border: 1px solid var(--border-light);
+      border-radius: 14px; padding: 26px 20px; text-align: center;
+      transition: all .32s ease-out;
+    }
+    .trust-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(138,92,74,.09); border-color: var(--accent-gold); }
+    .trust-icon { width: 40px; height: 40px; margin: 0 auto 12px; color: var(--accent-gold); }
+    .trust-stat { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--text-accent); line-height: 1.2; }
+    .trust-lbl  { font-size: .8125rem; color: var(--text-accent); opacity: .65; margin-top: 5px; line-height: 1.5; }
+
+    /* ─── Nails section ──────────────────────────────────────── */
+    .nails-section { background: var(--bg-primary); }
+
+    /* ─── SPA section ────────────────────────────────────────── */
+    .spa-section { background: var(--highlight); }
+    .spa-note {
+      margin-top: 24px; padding: 16px 20px;
+      background: var(--bg-primary); border: 1px solid var(--border-light);
+      border-left: 4px solid var(--accent-gold); border-radius: 10px;
+      font-size: .875rem; color: var(--text-accent); line-height: 1.6;
+    }
+
+    /* ─── Lashes section ─────────────────────────────────────── */
+    .lashes-section { background: var(--bg-primary); }
+    .card-lash { border-left: 4px solid var(--accent-gold); }
+
+    /* ─── Facial section ─────────────────────────────────────── */
+    .facial-section { background: var(--bg-secondary); }
+    .card-highlight-facial { background: #EAD0C2; }
+
+    /* ─── Massage section ────────────────────────────────────── */
+    .massage-section { background: var(--bg-primary); }
+    .card-massage { background: var(--bg-primary); border-color: var(--button-soft); }
+
+    /* ─── About section ──────────────────────────────────────── */
+    .about-section { background: var(--bg-secondary); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 40px; align-items: center;
+    }
+    @media(min-width:860px) { .about-grid { grid-template-columns: 1fr 1fr; gap: 64px; } }
+    .portrait-wrap { position: relative; width: 280px; height: 280px; max-width: min(320px,55vw); margin: 0 auto; }
+    @media(min-width:860px) { .portrait-wrap { width: 320px; height: 320px; margin: 0; } }
+    .portrait-circle {
+      width: 100%; height: 100%; border-radius: 50%;
+      overflow: hidden; border: 1px solid var(--border-light);
+    }
+    .portrait-circle img { width: 100%; height: 100%; object-fit: cover; transition: transform .55s ease-out; }
+    .portrait-circle:hover img { transform: scale(1.04); }
+    .portrait-badge {
+      position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+      background: var(--bg-primary); border: 1px solid var(--border-light);
+      border-radius: 999px; padding: 5px 14px;
+      font-size: .6875rem; font-weight: 700; color: var(--text-accent);
+      white-space: nowrap; letter-spacing: .04em;
+    }
+    .about-text { display: flex; flex-direction: column; gap: 14px; }
+    .about-p { font-size: .9375rem; line-height: 1.68; color: var(--text-primary); max-width: 58ch; }
+    .about-mission { font-size: .9375rem; font-weight: 600; color: var(--text-accent); line-height: 1.55; }
+
+    /* ─── Cancellation policy ────────────────────────────────── */
+    .policy-section { background: var(--highlight); }
+    .policy-card {
+      max-width: 760px; margin: 0 auto;
+      background: var(--bg-primary); border: 1px solid var(--border-light);
+      border-radius: 14px; padding: 32px;
+      box-shadow: 0 2px 12px rgba(138,92,74,.06);
+    }
+    @media(min-width:768px) { .policy-card { padding: 40px 48px; } }
+    .policy-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+    .policy-item { display: flex; align-items: flex-start; gap: 14px; font-size: .9375rem; line-height: 1.65; color: var(--text-accent); }
+    .policy-icon { width: 20px; height: 20px; color: var(--accent-gold); flex-shrink: 0; margin-top: 3px; }
+    .policy-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+
+    /* ─── Final CTA ──────────────────────────────────────────── */
+    .final-cta {
+      background: var(--text-accent);
+      padding: 72px 0; text-align: center;
+    }
+    @media(min-width:768px) { .final-cta { padding: 88px 0; } }
+    .fcta-eye { font-size: .6rem; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: var(--accent-gold); margin-bottom: 16px; }
+    .fcta-title { font-size: clamp(1.875rem,4vw,3rem); font-weight: 700; color: var(--bg-primary); max-width: 22ch; margin: 0 auto 16px; line-height: 1.22; }
+    .fcta-line  { width: 48px; height: 1px; background: rgba(200,162,122,.55); margin: 0 auto 18px; }
+    .fcta-sub   { font-size: .9375rem; color: rgba(245,241,236,.65); max-width: 46ch; margin: 0 auto 36px; line-height: 1.6; }
+    .fcta-btns  { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+    @media(max-width:599px) { .fcta-btns .btn { width: 100%; } }
+    .btn-ghost-light { background: transparent; color: var(--bg-primary); border: 1.5px solid rgba(245,241,236,.35); }
+    .btn-ghost-light:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
+
+    /* ─── Footer ─────────────────────────────────────────────── */
+    .footer { background: var(--border-light); border-top: 1px solid rgba(138,92,74,.13); padding: 56px 0 32px; }
+    .footer-grid { display: grid; grid-template-columns: 1fr; gap: 36px; margin-bottom: 36px; }
+    @media(min-width:640px) { .footer-grid { grid-template-columns: repeat(3,1fr); } }
+    .footer-head { font-family: 'Poppins', sans-serif; font-size: .875rem; font-weight: 700; color: var(--text-accent); margin-bottom: 12px; letter-spacing: .04em; }
+    .footer-text { font-size: .875rem; color: var(--text-accent); opacity: .68; line-height: 1.65; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .footer-links a { font-size: .875rem; color: var(--text-accent); opacity: .7; transition: all .2s; }
+    .footer-links a:hover { opacity: 1; color: var(--accent-gold); }
+    .footer-socials { display: flex; flex-direction: column; gap: 10px; }
+    .footer-soc { display: inline-flex; align-items: center; gap: 10px; font-size: .875rem; color: var(--text-accent); opacity: .7; transition: all .2s; }
+    .footer-soc:hover { opacity: 1; color: var(--accent-gold); }
+    .footer-soc svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .footer-bottom {
+      border-top: 1px solid rgba(138,92,74,.13); padding-top: 20px;
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px;
+      font-size: .75rem; color: var(--text-accent); opacity: .55;
+    }
+
+    /* ─── Floating WhatsApp ──────────────────────────────────── */
+    .fwa { position: fixed; bottom: 22px; right: 20px; z-index: 70; }
+    .fwa-btn {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--wa-green); color: #fff; border: none;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,.38);
+      transition: transform .2s ease-out, box-shadow .2s ease-out;
+      animation: pulse 6s ease-in-out infinite;
+      text-decoration: none;
+    }
+    .fwa-btn:hover { transform: scale(1.1); box-shadow: 0 6px 26px rgba(37,211,102,.52); animation: none; }
+    .fwa-btn svg { width: 26px; height: 26px; }
+    .fwa-tip {
+      position: absolute; right: 66px; top: 50%; transform: translateY(-50%);
+      background: var(--text-accent); color: var(--bg-primary);
+      font-size: .75rem; font-weight: 600; white-space: nowrap;
+      padding: 7px 12px; border-radius: 8px;
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .fwa-tip::after {
+      content: ''; position: absolute; left: 100%; top: 50%;
+      transform: translateY(-50%); border: 5px solid transparent; border-left-color: var(--text-accent);
+    }
+    .fwa:hover .fwa-tip { opacity: 1; }
+
+    /* ─── Responsive button helpers ──────────────────────────── */
+    @media(max-width:599px) {
+      .booking-banner-btns .btn { width: 100%; }
+      .policy-btns .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     BANNER DE AVISO
+════════════════════════════════════════════════════════════ -->
+<div class="booking-banner" id="booking-banner">
+  <div class="container">
+    <div class="booking-banner-inner">
+      <div class="booking-banner-body">
+        <p class="booking-banner-title">📅 Wichtige Hinweise zur Terminbuchung | Informações sobre Agendamento</p>
+        <div class="booking-banner-text">
+          <p>Für die Terminbestätigung ist eine <strong>Anzahlung von 30%</strong> des Behandlungswertes erforderlich.</p>
+          <p>Para confirmar o agendamento, é necessário um <strong>sinal de 30%</strong> do valor do serviço.</p>
+          <p>Stornierung: weniger als 24 Stunden vorher → Anzahlung verfällt &nbsp;|&nbsp; Cancelamento: menos de 24h → sinal não reembolsável.</p>
+        </div>
+        <div class="booking-banner-btns">
+          <a href="https://wa.me/4915208007814" target="_blank" rel="noopener noreferrer" class="btn btn-wa btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Agendar via WhatsApp
+          </a>
+          <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-soft btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Agendar via Fresha
+          </a>
+        </div>
+      </div>
+      <button class="booking-banner-close" id="banner-close" aria-label="Fechar">×</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     HEADER
+════════════════════════════════════════════════════════════ -->
+<header class="header" id="header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <span class="logo-name">Bruna Silva</span>
+        <span class="logo-badge">Aesthetic &amp; Nails · Beauty Studio Cuxhaven</span>
+      </a>
+      <nav class="nav" aria-label="Hauptnavigation">
+        <a href="#unhas">Leistungen</a>
+        <a href="#precos">Preise</a>
+        <a href="#sobre">Über mich</a>
+        <a href="#agendamento">Kontakt</a>
+      </nav>
+      <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm header-cta">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Reservar Agora
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Menü" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="mmenu" id="mmenu" role="dialog" aria-modal="true">
+  <button class="mmenu-close" id="mmenu-close" aria-label="Fechar">×</button>
+  <a href="#unhas"      class="mlink">Leistungen</a>
+  <a href="#precos"     class="mlink">Preise</a>
+  <a href="#sobre"      class="mlink">Über mich</a>
+  <a href="#agendamento" class="mlink">Kontakt</a>
+  <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold" style="margin-top:28px">Reservar Agora</a>
+</div>
+
+<main>
+
+<!-- ════════════════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-bg">
+    <img src="/images/banner-bruna-silva-original.png" alt="Bruna Silva – Aesthetic &amp; Nails Cuxhaven" loading="eager" fetchpriority="high" />
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content container">
+    <p class="hero-eyebrow">Bruna Silva · Aesthetic &amp; Nails · Cuxhaven</p>
+    <h1 class="hero-h1">Beleza não é apenas aparência</h1>
+    <h2 class="hero-h2">É como você se sente</h2>
+    <h3 class="hero-h3">Bem-vinda à sua experiência</h3>
+    <div class="hero-cta">
+      <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-lg">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Comenzar / Starten
+      </a>
+      <a href="#unhas" class="btn btn-ghost btn-lg">Ver Serviços / Leistungen</a>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ════════════════════════════════════════════════════════════
+     TRUST
+════════════════════════════════════════════════════════════ -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-grid">
+      <div class="trust-card fade-up">
+        <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <p class="trust-stat">+100</p>
+        <p class="trust-lbl">Kunden · clientes satisfeitas</p>
+      </div>
+      <div class="trust-card fade-up d1">
+        <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        <p class="trust-stat">Seit 2020</p>
+        <p class="trust-lbl">Erfahrung in Ästhetik · desde 2020</p>
+      </div>
+      <div class="trust-card fade-up d2">
+        <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <p class="trust-stat">100%</p>
+        <p class="trust-lbl">Persönliche Betreuung · atendimento personalizado</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- ════════════════════════════════════════════════════════════
+     NÄGEL | UNHAS
+════════════════════════════════════════════════════════════ -->
+<section class="nails-section section" id="unhas">
+  <div class="container">
+    <div class="section-head-c fade-up">
+      <span class="eyebrow">Nägel | Unhas</span>
+      <h2 class="sec-title sec-title-c">Nageldesign &amp; Pflege</h2>
+      <p class="sec-sub sec-sub-c">Gel, Maniküre, Pediküre – hochwertige Behandlungen für Ihre Hände und Füße.</p>
+    </div>
+    <div class="grid-2" id="precos">
+      <!-- Gel Nails -->
+      <div class="card fade-up">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        <h3 class="card-title">GELMODELLAGE | UNHAS EM GEL</h3>
+        <p class="card-desc">Alongamento e estrutura de gel com acabamento elegante e duradouro. / Hochwertige Gelmodellage für einen dauerhaften Look.</p>
+        <div class="card-prices">
+          <span class="price-badge">Neu / Aplicação: 38€</span>
+          <span class="price-badge">Auf / Manutenção: 35€</span>
+        </div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+      <!-- Maniküre -->
+      <div class="card fade-up d1">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+        <h3 class="card-title">MANIKÜRE | MANICURE</h3>
+        <p class="card-desc">Cuidado completo para mãos com opção clássica ou verniz em gel. / Professionelle Nagelpflege für gepflegte Hände.</p>
+        <div class="card-prices">
+          <span class="price-badge">mit Shellac / Com Verniz Gel: 30€</span>
+          <span class="price-badge">Klassisch / Clássica: 18€</span>
+        </div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+      <!-- Pediküre -->
+      <div class="card fade-up d2" style="grid-column: 1 / -1;">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <h3 class="card-title">PEDIKÜRE | PEDICURE</h3>
+        <p class="card-desc">Tratamento dos pés com higienização, acabamento e conforto premium. / Professionelle Fußpflege mit Gel oder klassisch.</p>
+        <div class="card-prices">
+          <span class="price-badge">mit Shellac / Com Verniz Gel: 35€</span>
+          <span class="price-badge">Klassisch / Clássica: 30€</span>
+        </div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ════════════════════════════════════════════════════════════
+     SPA & EXTRAS
+════════════════════════════════════════════════════════════ -->
+<section class="spa-section section">
+  <div class="container">
+    <div class="section-head-c fade-up">
+      <span class="eyebrow">SPA &amp; Extras</span>
+      <h2 class="sec-title sec-title-c">SPA &amp; Extras</h2>
+      <p class="sec-sub sec-sub-c">Tratamentos especiais e extras para um cuidado completo. / Besondere Verwöhnbehandlungen.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card fade-up">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <h3 class="card-title">SPA PEDIKURE / PEDICURE SPA</h3>
+        <p class="card-desc">Verwöhnende Fußbehandlung mit intensiver Pflege. / Pedicure spa com hidratação intensa.</p>
+        <div class="card-prices">
+          <span class="price-badge">mit Shellac / Com Verniz Gel: 53€</span>
+          <span class="price-badge">Klassisch / Clássica: 48€</span>
+        </div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+      <div class="card fade-up d1">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+        <h3 class="card-title">HAND SPA / SPA DAS MÃOS</h3>
+        <p class="card-desc">Intensiva Handpflege für geschmeidige Hände. / Hidratação intensa para as mãos.</p>
+        <div class="card-prices"><span class="price-badge">20€</span></div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+      <div class="card fade-up d2">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        <h3 class="card-title">GEL ENTFERNEN / REMOÇÃO DE GEL</h3>
+        <p class="card-desc">Professionelle Gelentfernung ohne Schäden. / Remoção profissional do gel.</p>
+        <div class="card-prices"><span class="price-badge">18€</span></div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+    </div>
+
+    <!-- Extras -->
+    <div style="margin-top:32px">
+      <h3 style="font-family:'Poppins',sans-serif;font-size:1.125rem;font-weight:700;color:var(--text-accent);margin-bottom:16px">EXTRAS</h3>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px">
+        <span class="price-badge">French / Babyboomer: +5€</span>
+        <span class="price-badge">Nail Art: ab 2,50€</span>
+        <span class="price-badge">Nagelreparatur / Reparo: ab 3,50€</span>
+        <span class="price-badge">Länge XL / Tamanho XL: ab 15€</span>
+      </div>
+    </div>
+    <div class="spa-note fade-up">
+      <strong>⏱ Bitte beachten | Atenção:</strong> Para French, Babyboomer ou Nail Art, informar no agendamento – precisam de mais tempo. / Bitte bei der Buchung French, Babyboomer oder Nail Art angeben – diese Behandlungen benötigen mehr Zeit.
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ════════════════════════════════════════════════════════════
+     WIMPERN & AUGENBRAUEN | PESTANAS & SOBRANCELHAS
+════════════════════════════════════════════════════════════ -->
+<section class="lashes-section section">
+  <div class="container">
+    <div class="section-head-c fade-up">
+      <span class="eyebrow">Wimpern &amp; Augenbrauen | Pestanas &amp; Sobrancelhas</span>
+      <h2 class="sec-title sec-title-c">Lashes &amp; Brows</h2>
+      <p class="sec-sub sec-sub-c">Lifting, Färbung und Augenbrauenpflege für einen definierten Blick. / Lifting, coloração e design para um olhar definido.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card card-lash fade-up">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3 class="card-title">LASH LIFTING | LIFTING DE PESTANAS</h3>
+        <p class="card-desc">Dauerhafter Curl für natürlich geschwungene Wimpern. / Curvatura duradoura para cílios naturalmente elevados.</p>
+        <div class="card-prices"><span class="price-badge">48€</span></div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+      <div class="card card-lash fade-up d1">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <h3 class="card-title">WIMPERN FÄRBEN | COLORAÇÃO DE PESTANAS</h3>
+        <p class="card-desc">Intensive Wimpernfärbung für mehr Tiefe. / Coloração intensa para um olhar mais profundo.</p>
+        <div class="card-prices"><span class="price-badge">18€</span></div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+      <div class="card card-lash fade-up d2">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3 class="card-title">BROW LAMINATION</h3>
+        <p class="card-desc">Augenbrauen-Lamination für einen definierten und gepflegten Look. / Laminação de sobrancelhas para um visual definido.</p>
+        <div class="card-prices"><span class="price-badge">48€</span></div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+      <div class="card card-lash fade-up d1">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <h3 class="card-title">AUGENBRAUEN DESIGN | DESIGN DE SOBRANCELHAS</h3>
+        <p class="card-desc">Professionelle Augenbrauenformung. / Design profissional de sobrancelhas.</p>
+        <div class="card-prices"><span class="price-badge">auf Anfrage | sob consulta</span></div>
+        <a href="https://wa.me/4915208007814" target="_blank" rel="noopener noreferrer" class="btn btn-soft btn-sm">Anfrage senden</a>
+      </div>
+      <div class="card card-lash fade-up d2">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
+        <h3 class="card-title">BROW REGENERATION</h3>
+        <p class="card-desc">Regenerationsbehandlung für Augenbrauen. / Tratamento de regeneração das sobrancelhas.</p>
+        <div class="card-prices"><span class="price-badge">auf Anfrage | sob consulta</span></div>
+        <a href="https://wa.me/4915208007814" target="_blank" rel="noopener noreferrer" class="btn btn-soft btn-sm">Anfrage senden</a>
+      </div>
+      <div class="card card-lash fade-up d3">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <h3 class="card-title">BROW REGENERATION + MICRONEEDLING</h3>
+        <p class="card-desc">Kombination aus Regeneration und Microneedling für maximale Wirkung. / Combinação regeneração + microagulhamento.</p>
+        <div class="card-prices"><span class="price-badge">auf Anfrage | sob consulta</span></div>
+        <a href="https://wa.me/4915208007814" target="_blank" rel="noopener noreferrer" class="btn btn-soft btn-sm">Anfrage senden</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ════════════════════════════════════════════════════════════
+     GESICHT | ROSTO
+════════════════════════════════════════════════════════════ -->
+<section class="facial-section section">
+  <div class="container">
+    <div class="section-head-c fade-up">
+      <span class="eyebrow">Gesicht | Rosto</span>
+      <h2 class="sec-title sec-title-c">Facial Treatments</h2>
+      <p class="sec-sub sec-sub-c">Gesichtsbehandlungen für strahlende Haut. / Tratamentos faciais para uma pele radiante.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card fade-up">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        <h3 class="card-title">KLASSISCHE TIEFENREINIGUNG | LIMPEZA DE PELE</h3>
+        <p class="card-desc">Tiefenreinigung für reine Haut. / Limpeza profunda para renovação da pele.</p>
+        <div class="card-prices"><span class="price-badge">60€</span></div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+      <div class="card fade-up d1">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        <h3 class="card-title">INTENSIVE TIEFENREINIGUNG | LIMPEZA INTENSIVA</h3>
+        <p class="card-desc">Intensives Protokoll zur Revitalisierung. / Protocolo intensivo de revitalização.</p>
+        <div class="card-prices"><span class="price-badge">80€</span></div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+      <div class="card card-highlight-facial fade-up d2">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
+        <h3 class="card-title">MICRONEEDLING | MICROAGULHAMENTO ✨</h3>
+        <p class="card-desc">Stimuliert Kollagen für gleichmäßige Textur. / Estimula colágeno e textura uniforme.</p>
+        <div class="card-prices"><span class="price-badge">80€</span></div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+      <div class="card card-highlight-facial fade-up d1">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        <h3 class="card-title">AHA PEELING | PEELING QUÍMICO ✨</h3>
+        <p class="card-desc">Chemisches Peeling für Leuchtkraft. / Esfoliação química para luminosidade.</p>
+        <div class="card-prices"><span class="price-badge">80€</span></div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+      <div class="card fade-up d2">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8"/></svg>
+        <h3 class="card-title">HYDRA LIPS BASIC</h3>
+        <p class="card-desc">Sofortige Lippenpflege. / Hidratação labial imediata.</p>
+        <div class="card-prices"><span class="price-badge">32€</span></div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+      <div class="card fade-up d3">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
+        <h3 class="card-title">HYDRA LIPS PRO (mit Microneedling)</h3>
+        <p class="card-desc">Erweiterte Lippenpflege mit Microneedling. / Versão avançada com microagulhamento.</p>
+        <div class="card-prices"><span class="price-badge">65€</span></div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ════════════════════════════════════════════════════════════
+     MASSAGE | MASSAGEM
+════════════════════════════════════════════════════════════ -->
+<section class="massage-section section">
+  <div class="container">
+    <div class="section-head-c fade-up">
+      <span class="eyebrow">Massage | Massagem</span>
+      <h2 class="sec-title sec-title-c">Entspannung &amp; Wohlbefinden</h2>
+      <p class="sec-sub sec-sub-c">Wohltuende Massagen für Körper und Seele. / Massagens relaxantes para corpo e mente.</p>
+    </div>
+    <div class="grid-3">
+      <div class="card card-massage fade-up">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 7.5 7 7.5c-.29 0-1.15.52-2.29 1.45S3 10.09 3 11.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M21 12c0 4.42-4.03 8-9 8a9.863 9.863 0 0 1-4.255-.96L3 21l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.42 4.03-8 9-8s9 3.58 9 8z"/></svg>
+        <h3 class="card-title">KÖRPERFORMENDE MASSAGE (30 min) | MASSAGEM MODELADORA</h3>
+        <p class="card-desc">Formende Massage für Körperkontur. / Massagem modeladora para contorno corporal.</p>
+        <div class="card-prices"><span class="price-badge">35€</span></div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+      <div class="card card-massage fade-up d1">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.66V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h5.34"/><polygon points="18 2 22 6 12 16 8 16 8 12 18 2"/></svg>
+        <h3 class="card-title">LYMPHDRAINAGE | DRENAGEM LINFÁTICA</h3>
+        <p class="card-desc">Sanfte Lymphdrainage für Entgiftung und Wohlbefinden. / Drenagem linfática suave para desintoxicação.</p>
+        <div class="card-prices"><span class="price-badge">45€</span></div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+      <div class="card card-massage fade-up d2">
+        <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17 12h.01"/><path d="M7 12h.01"/><path d="M5 12a7 7 0 1 0 14 0 7 7 0 0 0-14 0"/><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0"/></svg>
+        <h3 class="card-title">TEILMASSAGE RELAX (30 min) | MASSAGEM DE RELAXAMENTO</h3>
+        <p class="card-desc">Rücken/Beine – Entspannung pur. / Costas/pernas – relaxamento puro.</p>
+        <div class="card-prices"><span class="price-badge">30€</span></div>
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm">Buchen | Reservar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ════════════════════════════════════════════════════════════
+     ÜBER MICH | SOBRE MIM
+════════════════════════════════════════════════════════════ -->
+<section class="about-section section" id="sobre">
+  <div class="container">
+    <div class="about-grid">
+      <div class="portrait-wrap fade-up">
+        <div class="portrait-circle">
+          <img src="/images/banner-bruna-silva-original.png" alt="Bruna Silva" loading="lazy" />
+        </div>
+        <span class="portrait-badge">seit 2020 | desde 2020</span>
+      </div>
+      <div class="about-text fade-up d1">
+        <span class="eyebrow">Über mich | Sobre mim</span>
+        <h2 class="sec-title" style="margin-bottom:4px">Bruna Silva</h2>
+        <p class="about-p">Hallo, ich bin Bruna Silva. Ich habe Ästhetik und Kosmetologie studiert und arbeite seit 2020 leidenschaftlich in diesem Bereich.</p>
+        <p class="about-p">Olá, sou Bruna Silva. Estudei Estética e Cosmetologia e atuo desde 2020 com paixão pelo bem-estar das minhas clientes.</p>
+        <p class="about-p">Aufgewachsen in einer Familie von Friseurinnen und Kosmetikerinnen / Cresci em uma família de cabeleireiras e esteticistas — a beleza sempre foi parte da minha vida.</p>
+        <p class="about-mission">Missão: criar um espaço acolhedor onde você se sente cuidada. / Einen einladenden Ort schaffen, an dem Sie sich wohlfühlen.</p>
+        <a href="https://www.instagram.com/bs.aesthetic.nails" target="_blank" rel="noopener noreferrer" class="btn btn-gold" style="width:fit-content;margin-top:4px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram folgen | Seguir no Instagram
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ════════════════════════════════════════════════════════════
+     POLÍTICA DE CANCELAMENTO | STORNIERUNG
+════════════════════════════════════════════════════════════ -->
+<section class="policy-section section" id="agendamento">
+  <div class="container">
+    <div class="section-head-c fade-up">
+      <span class="eyebrow">Buchung &amp; Stornierung | Agendamento &amp; Cancelamento</span>
+      <h2 class="sec-title sec-title-c">Terminbuchung &amp; Stornierung</h2>
+      <p class="sec-sub sec-sub-c">Informações importantes para garantir sua experiência. / Wichtige Hinweise für Ihre Buchung.</p>
+    </div>
+    <div class="policy-card fade-up">
+      <ul class="policy-list">
+        <li class="policy-item">
+          <svg class="policy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Agende via <strong>WhatsApp</strong>, <strong>Instagram</strong> ou pelo app <strong>Fresha</strong>. / Buchen Sie über WhatsApp, Instagram oder die Fresha-App.</span>
+        </li>
+        <li class="policy-item">
+          <svg class="policy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span>A confirmação é feita mediante pagamento de um <strong>sinal de 30%</strong> do valor do serviço. / Die Terminbestätigung erfolgt durch eine <strong>Anzahlung von 30%</strong>.</span>
+        </li>
+        <li class="policy-item">
+          <svg class="policy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Bei Absagen weniger als <strong>24 Stunden</strong> im Voraus oder Nichterscheinen wird die Anzahlung nicht zurückerstattet.</span>
+        </li>
+        <li class="policy-item">
+          <svg class="policy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Em caso de cancelamento com menos de <strong>24 horas</strong> de antecedência ou falta de comparecimento, o valor do sinal <strong>não será reembolsado</strong>.</span>
+        </li>
+      </ul>
+      <div class="policy-btns">
+        <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Agendar via Fresha
+        </a>
+        <a href="https://wa.me/4915208007814" target="_blank" rel="noopener noreferrer" class="btn btn-wa">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
+        <a href="https://www.instagram.com/bs.aesthetic.nails" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">Instagram</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="sep">
+
+<!-- ════════════════════════════════════════════════════════════
+     FINAL CTA
+════════════════════════════════════════════════════════════ -->
+<section class="final-cta">
+  <div class="container">
+    <p class="fcta-eye fade-up">Jetzt buchen | Reservar agora</p>
+    <h2 class="fcta-title fade-up d1">Seu momento começa agora</h2>
+    <div class="fcta-line fade-up d2"></div>
+    <p class="fcta-sub fade-up d2">Sinal de 30% para confirmação. Cancelamento com menos de 24h não reembolsável.</p>
+    <div class="fcta-btns fade-up d3">
+      <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-lg">Agendar experiência</a>
+      <a href="https://wa.me/4915208007814" target="_blank" rel="noopener noreferrer" class="btn btn-wa btn-lg">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <a href="https://www.instagram.com/bs.aesthetic.nails" target="_blank" rel="noopener noreferrer" class="btn btn-ghost-light btn-lg">Instagram</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ════════════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-head">Bruna Silva</p>
+        <p class="footer-text">Aesthetic &amp; Nails<br>Beauty Studio Cuxhaven<br>Cuxhaven, Deutschland</p>
+        <p style="font-size:.75rem;color:var(--text-accent);opacity:.5;margin-top:10px">Preise inkl. MwSt. | Os preços incluem IVA</p>
+      </div>
+      <div>
+        <p class="footer-head">Redes Sociais | Social</p>
+        <div class="footer-socials">
+          <a href="https://wa.me/4915208007814" target="_blank" rel="noopener noreferrer" class="footer-soc">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp: +49 152 0800 7814
+          </a>
+          <a href="https://www.instagram.com/bs.aesthetic.nails" target="_blank" rel="noopener noreferrer" class="footer-soc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            @bs.aesthetic.nails
+          </a>
+          <a href="https://www.fresha.com" target="_blank" rel="noopener noreferrer" class="footer-soc">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Buchen via Fresha
+          </a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-head">Kontakt</p>
+        <ul class="footer-links">
+          <li><a href="https://wa.me/4915208007814">+49 152 0800 7814</a></li>
+          <li><a href="mailto:brunasilva.aesthetic@email.com">brunasilva.aesthetic@email.com</a></li>
+          <li><a href="#agendamento">Terminvereinbarung</a></li>
+          <li><span style="font-size:.875rem;opacity:.55">Cuxhaven, Deutschland</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Bruna Silva – Aesthetic &amp; Nails</span>
+      <span>Beauty Studio Cuxhaven · Preise inkl. MwSt.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════════════════════════════
+     FLOATING WHATSAPP
+════════════════════════════════════════════════════════════ -->
+<div class="fwa">
+  <div class="fwa-tip">Fale conosco via WhatsApp</div>
+  <a href="https://wa.me/4915208007814" target="_blank" rel="noopener noreferrer" class="fwa-btn" aria-label="WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── Banner ─────────────────────────────────────────────── */
+  var banner  = document.getElementById('booking-banner');
+  var bannerX = document.getElementById('banner-close');
+  if (banner && bannerX) {
+    if (localStorage.getItem('bs_banner_v2') === '1') {
+      banner.style.display = 'none';
+    }
+    bannerX.addEventListener('click', function () {
+      banner.style.maxHeight  = banner.offsetHeight + 'px';
+      banner.style.overflow   = 'hidden';
+      banner.style.transition = 'max-height .38s ease-out, opacity .28s ease-out';
+      requestAnimationFrame(function () {
+        banner.style.maxHeight = '0';
+        banner.style.opacity   = '0';
+      });
+      setTimeout(function () { banner.style.display = 'none'; }, 420);
+      localStorage.setItem('bs_banner_v2', '1');
+    });
+  }
+
+  /* ── Header scroll ──────────────────────────────────────── */
+  var hdr = document.getElementById('header');
+  if (hdr) {
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        requestAnimationFrame(function () {
+          hdr.classList.toggle('scrolled', window.scrollY > 40);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  }
+
+  /* ── Hamburger menu ─────────────────────────────────────── */
+  var ham   = document.getElementById('hamburger');
+  var mm    = document.getElementById('mmenu');
+  var mmClose = document.getElementById('mmenu-close');
+  if (ham && mm) {
+    function openMM() {
+      mm.classList.add('open');
+      ham.classList.add('open');
+      ham.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMM() {
+      mm.classList.remove('open');
+      ham.classList.remove('open');
+      ham.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    ham.addEventListener('click', openMM);
+    if (mmClose) mmClose.addEventListener('click', closeMM);
+    mm.querySelectorAll('.mlink').forEach(function (l) { l.addEventListener('click', closeMM); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeMM(); });
+  }
+
+  /* ── Intersection Observer — fade-up ────────────────────── */
+  var els = document.querySelectorAll('.fade-up');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.10, rootMargin: '0px 0px -32px 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  } else {
+    els.forEach(function (el) { el.classList.add('in'); });
+  }
+
+})();
+</script>
+</body>
+</html>
