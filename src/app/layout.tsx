@@ -19,13 +19,9 @@ export const metadata: Metadata = {
   title: 'Bruna Silva - Aesthetic & Nails | Cuxhaven',
   description: 'Professionelle Schönheitsbehandlungen und Nagelpflege in Cuxhaven. Termine über Fresha buchen.',
   icons: {
-    icon: '/favicon.png',
+    icon: [{ url: '/favicon.png', type: 'image/png' }],
     shortcut: '/favicon.png',
     apple: '/apple-touch-icon.png',
-    other: {
-      rel: 'apple-touch-icon-precomposed',
-      url: '/apple-touch-icon.png',
-    },
   },
 }
 
@@ -38,7 +34,8 @@ export default function RootLayout({
     <html lang="de" suppressHydrationWarning>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.png" />
+        <link rel="icon" type="image/png" href="/favicon.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={`${inter.variable} ${playfair.variable} ${inter.className}`} suppressHydrationWarning>
         <div id="app" className="min-h-screen bg-gray-50">
