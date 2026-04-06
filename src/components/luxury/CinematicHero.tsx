@@ -3,6 +3,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { FreshaButton } from '@/components/FreshaButton'
 
@@ -88,7 +89,7 @@ export function CinematicHero() {
               <FreshaButton size="lg" className="min-h-[52px] px-7">
                 {L('hero.cta')}
               </FreshaButton>
-              <a
+              <Link
                 href="/#servicos"
                 onClick={(e) => {
                   e.preventDefault()
@@ -98,7 +99,7 @@ export function CinematicHero() {
                 className="inline-flex min-h-[52px] items-center gap-2 rounded-[10px] border border-[#D6C1B1] bg-[#F5F1EC]/70 px-7 text-sm font-medium text-[#8A5C4A]/70 backdrop-blur-sm transition-all duration-300 ease-out hover:border-[#C8A27A]/60 hover:bg-[#F5F1EC]/90 hover:text-[#8A5C4A]"
               >
                 {L('hero.ctaServices')}
-              </a>
+              </Link>
             </motion.div>
 
           </div>
