@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useState, useMemo } from 'react'
+import { createClient } from '@/config/supabase-client'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
@@ -22,7 +22,7 @@ export function ClientesDashboard({ initialClients }: ClientesDashboardProps) {
   const [clients, setClients] = useState(initialClients || [])
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const supabase = createClientComponentClient()
+  const supabase = useMemo(() => createClient(), [])
 
   const makeAdmin = async (userId: string) => {
     try {
@@ -77,83 +77,94 @@ export function ClientesDashboard({ initialClients }: ClientesDashboardProps) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Gerenciar Clientes</h1>
-      
-      <div className="bg-white shadow-md rounded-lg overflow-hidden">
+    <div className="mx-auto max-w-7xl space-y-10 px-0 py-2">
+      <h1 className="font-display text-3xl font-semibold tracking-tight text-[var(--text-main)] md:text-4xl">
+        Gerenciar Clientes
+      </h1>
+
+      <div className="admin-card overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-[var(--border)] text-left">
+            <thead className="admin-table-head">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-[var(--text-main)]">
                   Nome
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-[var(--text-main)]">
                   Email
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-[var(--text-main)]">
                   Telefone
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-[var(--text-main)]">
                   Papel
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-[var(--text-main)]">
                   Data de Cadastro
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-[var(--text-main)]">
                   Ações
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-y divide-[var(--border)] bg-[var(--bg-main)]/25">
               {clients.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                  <td
+                    colSpan={6}
+                    className="whitespace-nowrap px-6 py-8 text-center text-sm text-[var(--text-main)]/65"
+                  >
                     Nenhum cliente encontrado
                   </td>
                 </tr>
               ) : (
                 clients.map((client) => (
-                  <tr key={client.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
+                  <tr key={client.id} className="admin-table-row">
+                    <td className="whitespace-nowrap px-6 py-4">
+                      <div className="text-sm font-medium text-[var(--text-main)]">
                         {client.full_name}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">
+                    <td className="whitespace-nowrap px-6 py-4">
+                      <div className="text-sm text-[var(--text-main)]/75">
                         {client.email}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-500">
+                    <td className="whitespace-nowrap px-6 py-4">
+                      <div className="text-sm text-[var(--text-main)]/75">
                         {client.phone || 'Não informado'}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex text-sm font-semibold ${
-                        client.role === 'admin' ? 'text-pink-600' : 'text-gray-600'
-                      }`}>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      <span
+                        className={`inline-flex text-sm font-semibold ${
+                          client.role === 'admin'
+                            ? 'text-[var(--gold)]'
+                            : 'text-[var(--text-main)]/80'
+                        }`}
+                      >
                         {client.role === 'admin' ? 'Administrador' : 'Cliente'}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-[var(--text-main)]/70">
                       {new Date(client.created_at).toLocaleDateString('pt-BR')}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
                       {client.role === 'admin' ? (
                         <button
+                          type="button"
                           onClick={() => removeAdmin(client.id)}
                           disabled={loading}
-                          className="text-red-600 hover:text-red-900 disabled:opacity-50"
+                          className="text-[#a85c5c] underline-offset-2 transition-opacity duration-300 hover:opacity-80 disabled:opacity-50"
                         >
                           Remover Admin
                         </button>
                       ) : (
                         <button
+                          type="button"
                           onClick={() => makeAdmin(client.id)}
                           disabled={loading}
-                          className="text-pink-600 hover:text-pink-900 disabled:opacity-50"
+                          className="text-[var(--gold)] underline-offset-2 transition-opacity duration-300 hover:opacity-80 disabled:opacity-50"
                         >
                           Tornar Admin
                         </button>

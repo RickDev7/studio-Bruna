@@ -12,10 +12,10 @@ export default function ThankYou() {
         </div>
         <div className="mt-4">
           <a
-            href="/dashboard"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+            href="/login"
+            className="flex w-full justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
           >
-            Ir para o Dashboard
+            Área da equipa (login)
           </a>
         </div>
       </div>

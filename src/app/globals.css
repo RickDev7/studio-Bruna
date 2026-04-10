@@ -195,6 +195,63 @@
   }
 }
 
+/* Admin — paleta luxury */
+.admin-app {
+  --bg-main: #f5f1ec;
+  --bg-card: #e7dbd1;
+  --bg-soft: #e4d6cc;
+  --border: #d6c1b1;
+  --hover: #cfae9d;
+  --highlight: #ead0c2;
+  --text-main: #8a5c4a;
+  --gold: #c8a27a;
+}
+
+@layer components {
+  .admin-app .admin-card {
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background-color: var(--bg-card);
+    box-shadow: 0 1px 3px rgb(138 92 74 / 0.08);
+  }
+
+  .admin-app .admin-field {
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .admin-app .admin-field:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px var(--gold);
+  }
+
+  .admin-app .admin-table-shell {
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .admin-app .admin-table-head {
+    background-color: var(--bg-soft);
+    color: var(--text-main);
+  }
+
+  .admin-app .admin-table-row {
+    border-color: var(--border);
+    transition: background-color 0.3s ease;
+  }
+
+  .admin-app .admin-table-row:hover {
+    background-color: var(--highlight);
+  }
+}
+
 /* Scrollbar personalizada */
 ::-webkit-scrollbar {
   width: 10px;

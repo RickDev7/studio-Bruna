@@ -1,44 +1,22 @@
-import { createBrowserClient } from '@supabase/ssr';
-import type { Database } from '@/types/database.types';
+import { createBrowserClient } from '@supabase/ssr'
+import type { Database } from '@/types/database.types'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim()
 
 if (!supabaseUrl) {
-  throw new Error('NEXT_PUBLIC_SUPABASE_URL não está definida');
+  throw new Error('NEXT_PUBLIC_SUPABASE_URL não está definida')
 }
 
 if (!supabaseAnonKey) {
-  throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEY não está definida');
+  throw new Error('NEXT_PUBLIC_SUPABASE_ANON_KEY não está definida')
 }
 
+/**
+ * Cliente browser alinhado com o servidor (@supabase/ssr).
+ * Não uses get/set manuais em document.cookie — partiam valores com '=' (JWT)
+ * e a sessão não chegava ao layout/API no Next.
+ */
 export function createClient() {
-  return createBrowserClient<Database>(
-    supabaseUrl,
-    supabaseAnonKey,
-    {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true
-      },
-      cookies: {
-        get: (name: string) => {
-          if (typeof document === 'undefined') return ''
-          const cookie = document.cookie
-            .split('; ')
-            .find((row) => row.startsWith(`${name}=`))
-          return cookie ? cookie.split('=')[1] : ''
-        },
-        set: (name: string, value: string, options: { path?: string; maxAge?: number }) => {
-          if (typeof document === 'undefined') return
-          document.cookie = `${name}=${value}; path=${options.path || '/'}`
-        },
-        remove: (name: string, options: { path?: string }) => {
-          if (typeof document === 'undefined') return
-          document.cookie = `${name}=; path=${options.path || '/'}`
-        }
-      }
-    }
-  );
-} 
+  return createBrowserClient<Database>(supabaseUrl, supabaseAnonKey)
+}

@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/config/supabase-client'
 import { toast } from 'sonner'
 import { PasswordInput } from '@/components/PasswordInput'
 
@@ -18,7 +18,7 @@ export default function ResetPassword() {
     confirmPassword: '',
     form: ''
   })
-  const supabase = createClientComponentClient()
+  const supabase = useMemo(() => createClient(), [])
 
   const validateForm = () => {
     const newErrors = {

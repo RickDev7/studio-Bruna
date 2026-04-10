@@ -1,10 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import { GoogleButton } from '@/components/GoogleButton'
 import { PasswordInput } from '@/components/PasswordInput'
 import { createClient } from '@/config/supabase-client'
@@ -24,6 +22,19 @@ export default function LoginPage() {
     password: '',
     form: ''
   })
+  /** Evita hydration mismatch quando extensões injetam atributos (ex. fdprocessedid) nos inputs. */
+  const [formMounted, setFormMounted] = useState(false)
+  useEffect(() => {
+    setFormMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const reason = new URLSearchParams(window.location.search).get('reason')
+    if (reason === 'admin_only') {
+      toast.error('Acesso reservado a administradores.')
+    }
+  }, [])
 
   const validateForm = () => {
     const newErrors = {
@@ -81,7 +92,36 @@ export default function LoginPage() {
         return
       }
 
-      router.push('/dashboard')
+      const {
+        data: { user: signedUser },
+      } = await supabase.auth.getUser()
+      if (!signedUser) {
+        setErrors((prev) => ({
+          ...prev,
+          form: 'Sessão inválida após login. Tenta novamente.',
+        }))
+        return
+      }
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', signedUser.id)
+        .maybeSingle()
+
+      const role = String(profile?.role ?? '')
+        .trim()
+        .toLowerCase()
+      if (role !== 'admin') {
+        await supabase.auth.signOut()
+        setErrors((prev) => ({
+          ...prev,
+          form: 'Acesso reservado a administradores. Contacta a responsável se precisares de permissões.',
+        }))
+        return
+      }
+
+      router.push('/admin')
       router.refresh()
     } catch (error) {
       console.error('Erro de login:', error)
@@ -99,7 +139,7 @@ export default function LoginPage() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `${window.location.origin}/admin`,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent'
@@ -132,92 +172,109 @@ export default function LoginPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleLogin}>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <div className="mt-1">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF69B4] focus:border-[#FF69B4] sm:text-sm ${
-                    errors.email ? 'border-red-300' : 'border-gray-300'
-                  }`}
-                />
-                {errors.email && (
-                  <p className="mt-2 text-sm text-red-600">{errors.email}</p>
-                )}
+          {!formMounted ? (
+            <div className="space-y-6" aria-hidden>
+              <div className="space-y-2">
+                <div className="h-4 w-12 rounded bg-gray-200" />
+                <div className="h-10 w-full rounded-md bg-gray-100" />
               </div>
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Senha
-              </label>
-              <div className="mt-1">
-                <PasswordInput
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                  error={errors.password}
-                  className="appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF69B4] focus:border-[#FF69B4] sm:text-sm"
-                />
-                {errors.password && (
-                  <p className="mt-2 text-sm text-red-600">{errors.password}</p>
-                )}
+              <div className="space-y-2">
+                <div className="h-4 w-14 rounded bg-gray-200" />
+                <div className="h-10 w-full rounded-md bg-gray-100" />
               </div>
+              <div className="h-10 w-full rounded-md bg-gray-100" />
+              <div className="h-10 w-full rounded-md bg-gray-100" />
             </div>
-
-            <div className="flex items-center justify-between">
-              <div className="text-sm">
-                <Link href="/forgot-password" className="font-medium text-[#FF69B4] hover:text-[#FF1493]">
-                  Esqueceu sua senha?
-                </Link>
-              </div>
-            </div>
-
-            {errors.form && (
-              <div className="rounded-md bg-red-50 p-4">
-                <div className="flex">
-                  <div className="ml-3">
-                    <p className="text-sm font-medium text-red-800">{errors.form}</p>
+          ) : (
+            <>
+              <form className="space-y-6" onSubmit={handleLogin}>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <div className="mt-1">
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                      className={`appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF69B4] focus:border-[#FF69B4] sm:text-sm ${
+                        errors.email ? 'border-red-300' : 'border-gray-300'
+                      }`}
+                    />
+                    {errors.email && (
+                      <p className="mt-2 text-sm text-red-600">{errors.email}</p>
+                    )}
                   </div>
                 </div>
-              </div>
-            )}
 
-            <div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#FF69B4] hover:bg-[#FF1493] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF69B4] disabled:opacity-50"
-              >
-                {loading ? 'Entrando...' : 'Entrar'}
-              </button>
-            </div>
-          </form>
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                    Senha
+                  </label>
+                  <div className="mt-1">
+                    <PasswordInput
+                      id="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                      error={errors.password}
+                      className="appearance-none block w-full px-3 py-2 border rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#FF69B4] focus:border-[#FF69B4] sm:text-sm"
+                    />
+                    {errors.password && (
+                      <p className="mt-2 text-sm text-red-600">{errors.password}</p>
+                    )}
+                  </div>
+                </div>
 
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Ou continue com</span>
-              </div>
-            </div>
+                <div className="flex items-center justify-between">
+                  <div className="text-sm">
+                    <Link href="/forgot-password" className="font-medium text-[#FF69B4] hover:text-[#FF1493]">
+                      Esqueceu sua senha?
+                    </Link>
+                  </div>
+                </div>
 
-            <div className="mt-6">
-              <GoogleButton onClick={handleGoogleSignIn} />
-            </div>
-          </div>
+                {errors.form && (
+                  <div className="rounded-md bg-red-50 p-4">
+                    <div className="flex">
+                      <div className="ml-3">
+                        <p className="text-sm font-medium text-red-800">{errors.form}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#FF69B4] hover:bg-[#FF1493] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF69B4] disabled:opacity-50"
+                  >
+                    {loading ? 'Entrando...' : 'Entrar'}
+                  </button>
+                </div>
+              </form>
+
+              <div className="mt-6">
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-300" />
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-2 bg-white text-gray-500">Ou continue com</span>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <GoogleButton onClick={handleGoogleSignIn} />
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

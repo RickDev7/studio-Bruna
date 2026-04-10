@@ -1,8 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 
-const envContent = `NEXT_PUBLIC_SUPABASE_URL=https://ddpfougnudxkirmzzsub.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkcGZvdWdudWR4a2lybXp6c3ViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgzNjE4MDcsImV4cCI6MjA2MzkzNzgwN30.MoBgeC2Tevc-t3JJLvU9VFtLABvi9inYPqt8jNyo4Io
+// NÃO coloques aqui URLs/chaves reais de projetos antigos — isto SOBRESCREVE o .env.local inteiro.
+// Preenche com os valores do teu projeto: Supabase → Settings → API
+const envContent = `# Supabase (substituir pelos teus)
+NEXT_PUBLIC_SUPABASE_URL=https://SEU_PROJECT_REF.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=cole_aqui_a_chave_anon
+
 EMAIL_USER=temp@email.com
 EMAIL_PASS=temp_password
 ADMIN_EMAIL=admin@email.com`;
