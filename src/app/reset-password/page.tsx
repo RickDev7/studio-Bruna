@@ -2,9 +2,13 @@
 
 import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/config/supabase-client'
-import { toast } from 'sonner'
+import { SupabaseAuthConfigBanner } from '@/components/SupabaseAuthConfigBanner'
 import { PasswordInput } from '@/components/PasswordInput'
+import {
+  createClient,
+  isSupabaseEnvConfigured,
+} from '@/config/supabase-client'
+import { toast } from 'sonner'
 
 export default function ResetPassword() {
   const router = useRouter()
@@ -45,8 +49,15 @@ export default function ResetPassword() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!validateForm()) return
+
+    if (!isSupabaseEnvConfigured()) {
+      toast.error(
+        'Configura NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY para usar o teu Supabase.'
+      )
+      return
+    }
 
     try {
       setLoading(true)
@@ -76,6 +87,7 @@ export default function ResetPassword() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <SupabaseAuthConfigBanner />
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">

@@ -1,20 +1,27 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { supabase } from '@/config/supabase'
+import { SupabaseAuthConfigBanner } from '@/components/SupabaseAuthConfigBanner'
+import {
+  createClient,
+  isSupabaseEnvConfigured,
+} from '@/config/supabase-client'
 import { toast } from 'sonner'
 
 export default function MagicLink() {
+  const supabase = useMemo(() => createClient(), [])
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
-    if (!supabase) {
-      toast.error('Erro ao conectar com o banco de dados')
+
+    if (!isSupabaseEnvConfigured()) {
+      toast.error(
+        'Configura NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY para usar o teu Supabase.'
+      )
       return
     }
 
@@ -84,6 +91,7 @@ export default function MagicLink() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <SupabaseAuthConfigBanner />
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">

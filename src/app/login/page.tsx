@@ -5,7 +5,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { GoogleButton } from '@/components/GoogleButton'
 import { PasswordInput } from '@/components/PasswordInput'
-import { createClient } from '@/config/supabase-client'
+import { SupabaseAuthConfigBanner } from '@/components/SupabaseAuthConfigBanner'
+import {
+  createClient,
+  isSupabaseEnvConfigured,
+} from '@/config/supabase-client'
 import { toast } from 'sonner'
 
 export default function LoginPage() {
@@ -59,6 +63,12 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!isSupabaseEnvConfigured()) {
+      toast.error(
+        'Configura NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY no .env.local ou na Vercel.'
+      )
+      return
+    }
     setLoading(true)
     setErrors({
       email: '',
@@ -135,6 +145,12 @@ export default function LoginPage() {
   }
 
   const handleGoogleSignIn = async () => {
+    if (!isSupabaseEnvConfigured()) {
+      toast.error(
+        'Configura NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY no .env.local ou na Vercel.'
+      )
+      return
+    }
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -187,6 +203,7 @@ export default function LoginPage() {
             </div>
           ) : (
             <>
+              <SupabaseAuthConfigBanner />
               <form className="space-y-6" onSubmit={handleLogin}>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">
