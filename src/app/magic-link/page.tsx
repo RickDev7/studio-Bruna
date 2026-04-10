@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { SupabaseAuthConfigBanner } from '@/components/SupabaseAuthConfigBanner'
 import {
@@ -10,7 +10,6 @@ import {
 import { toast } from 'sonner'
 
 export default function MagicLink() {
-  const supabase = useMemo(() => createClient(), [])
   const [loading, setLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [submitted, setSubmitted] = useState(false)
@@ -27,6 +26,7 @@ export default function MagicLink() {
 
     try {
       setLoading(true)
+      const supabase = createClient()
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {

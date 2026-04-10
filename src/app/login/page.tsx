@@ -14,7 +14,6 @@ import { toast } from 'sonner'
 
 export default function LoginPage() {
   const router = useRouter()
-  const supabase = createClient()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     email: '',
@@ -80,6 +79,8 @@ export default function LoginPage() {
       setLoading(false)
       return
     }
+
+    const supabase = createClient()
 
     try {
       const { error } = await supabase.auth.signInWithPassword({
@@ -152,6 +153,7 @@ export default function LoginPage() {
       return
     }
     try {
+      const supabase = createClient()
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {

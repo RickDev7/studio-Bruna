@@ -1,20 +1,15 @@
-import { createClient } from '@supabase/supabase-js';
-import type { Database } from '@/types/database.types';
-import { env } from '@/config/env';
+import { createClient } from '@supabase/supabase-js'
+import type { Database } from '@/types/database.types'
 
-// Verificar se as variáveis de ambiente estão definidas
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+/** Mesmos placeholders que `@/config/supabase-client` — evita falhar o build sem env. */
+const BUILD_PLACEHOLDER_URL = 'https://placeholder.supabase.co'
+const BUILD_PLACEHOLDER_ANON_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDI1OTUyMDAsImV4cCI6MTk1ODE3MTIwMH0.invalid'
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error(
-    'As variáveis de ambiente NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY são obrigatórias. ' +
-    'Adicione-as ao arquivo .env.local'
-  );
-}
+const url =
+  process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || BUILD_PLACEHOLDER_URL
+const key =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim() ||
+  BUILD_PLACEHOLDER_ANON_KEY
 
-// Criar e exportar o cliente Supabase
-export const supabase = createClient<Database>(
-  env.supabase.url,
-  env.supabase.anonKey
-); 
+export const supabase = createClient<Database>(url, key)

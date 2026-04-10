@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { SupabaseAuthConfigBanner } from '@/components/SupabaseAuthConfigBanner'
 import { PasswordInput } from '@/components/PasswordInput'
@@ -22,7 +22,6 @@ export default function ResetPassword() {
     confirmPassword: '',
     form: ''
   })
-  const supabase = useMemo(() => createClient(), [])
 
   const validateForm = () => {
     const newErrors = {
@@ -61,6 +60,7 @@ export default function ResetPassword() {
 
     try {
       setLoading(true)
+      const supabase = createClient()
       const { error } = await supabase.auth.updateUser({
         password: formData.password
       })

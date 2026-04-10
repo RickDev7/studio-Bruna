@@ -13,17 +13,10 @@ export const env = {
     anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
   },
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
-} as const;
+} as const
 
-// Validação das variáveis de ambiente
-if (!env.supabase.url || !env.supabase.anonKey) {
-  throw new Error(
-    'Variáveis de ambiente do Supabase não encontradas. ' +
-    'Crie um arquivo .env.local na raiz do projeto com:\n\n' +
-    'NEXT_PUBLIC_SUPABASE_URL=sua_url_do_supabase\n' +
-    'NEXT_PUBLIC_SUPABASE_ANON_KEY=sua_chave_anonima_do_supabase'
-  );
-} 
+// Não lances aqui: importar este módulo não pode falhar o `next build` / prerender.
+// Usa `@/config/supabase-client` + `isSupabaseEnvConfigured()` para auth no browser.
 
 // Não injetar URL/chave Supabase por código — usa sempre .env.local (projeto certo).
 const setupEnv = () => {
