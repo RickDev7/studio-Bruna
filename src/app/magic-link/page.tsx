@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { SupabaseAuthConfigBanner } from '@/components/SupabaseAuthConfigBanner'
 import {
   createClient,
+  getAuthCallbackUrl,
   isSupabaseEnvConfigured,
 } from '@/config/supabase-client'
 import { toast } from 'sonner'
@@ -30,7 +31,7 @@ export default function MagicLink() {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/admin`,
+          emailRedirectTo: getAuthCallbackUrl('/admin'),
         },
       })
 

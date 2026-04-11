@@ -15,14 +15,23 @@ const playfair = Playfair_Display({
   style: ['normal', 'italic'],
 })
 
+function metadataBaseFromEnv(): URL | undefined {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim()
+  if (!raw) return undefined
+  const withProto = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`
+  try {
+    return new URL(withProto.endsWith('/') ? withProto.slice(0, -1) : withProto)
+  } catch {
+    return undefined
+  }
+}
+
+const metadataBase = metadataBaseFromEnv()
+
 export const metadata: Metadata = {
+  ...(metadataBase ? { metadataBase } : {}),
   title: 'Bruna Silva - Aesthetic & Nails | Cuxhaven',
   description: 'Professionelle Schönheitsbehandlungen und Nagelpflege in Cuxhaven. Termine über Fresha buchen.',
-  icons: {
-    icon: [{ url: '/favicon.png', type: 'image/png' }],
-    shortcut: '/favicon.png',
-    apple: '/apple-touch-icon.png',
-  },
 }
 
 export default function RootLayout({
@@ -34,8 +43,6 @@ export default function RootLayout({
     <html lang="de" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" type="image/png" href="/favicon.png" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className={`${inter.variable} ${playfair.variable} ${inter.className}`} suppressHydrationWarning>
         <div id="app" className="min-h-screen bg-gray-50">

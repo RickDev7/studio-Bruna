@@ -30,7 +30,10 @@ export function sumServiceRevenueInMonth(
   return roundMoney(s)
 }
 
-/** Receitas em cash_flow classificadas como serviço (evita duplicar outras categorias). */
+/**
+ * Receitas em cash_flow classificadas como serviço.
+ * Ignora linhas com `service_log_id`: já contam em `service_logs.total_revenue` (entrada de receitas).
+ */
 export function sumCashFlowServiceIncomeInMonth(
   rows: CashFlowMonthSlice[],
   month: Date
@@ -39,6 +42,7 @@ export function sumCashFlowServiceIncomeInMonth(
   const end = endOfMonth(month)
   let s = 0
   for (const r of rows) {
+    if (r.service_log_id) continue
     if (
       r.type !== 'income' ||
       !(

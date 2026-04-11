@@ -39,6 +39,7 @@ export function RevenueEntryPage() {
   const [history, setHistory] = useState<ServiceLogRow[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [deletingLogId, setDeletingLogId] = useState<string | null>(null)
 
   const [clientName, setClientName] = useState('')
   const [serviceId, setServiceId] = useState('')
@@ -255,6 +256,7 @@ export function RevenueEntryPage() {
           category: 'service_advance',
           amount: advance,
           description: `Pagamento sinal (online) — ${name}`,
+          service_log_id: newId,
         })
       }
       if (remaining > 0) {
@@ -263,6 +265,7 @@ export function RevenueEntryPage() {
           category: 'service_payment',
           amount: remaining,
           description: `Pagamento final (loja) — ${name}`,
+          service_log_id: newId,
         })
       }
 
@@ -281,6 +284,28 @@ export function RevenueEntryPage() {
       toast.error(formatSupabaseError(err))
     } finally {
       setSaving(false)
+    }
+  }
+
+  const handleDeleteServiceLog = async (row: ServiceLogRow) => {
+    const label = row.client_name ?? 'este registo'
+    if (
+      !window.confirm(
+        `Eliminar o faturamento de ${label}?\n\nRemove o serviço e as linhas de fluxo de caixa ligadas (sinal / pagamento final).`
+      )
+    ) {
+      return
+    }
+    setDeletingLogId(row.id)
+    try {
+      const { error } = await supabase.from('service_logs').delete().eq('id', row.id)
+      if (error) throw error
+      toast.success('Faturamento eliminado.')
+      await loadCatalogAndHistory()
+    } catch (err) {
+      toast.error(formatSupabaseError(err))
+    } finally {
+      setDeletingLogId(null)
     }
   }
 
@@ -496,7 +521,7 @@ export function RevenueEntryPage() {
           </p>
         ) : (
           <div className="mt-4 overflow-x-auto rounded-2xl border border-[var(--border)]">
-            <table className="w-full min-w-[320px] text-left text-sm">
+            <table className="w-full min-w-[380px] text-left text-sm">
               <thead>
                 <tr className="border-b border-[var(--border)] bg-[var(--bg-soft)]/60 text-xs uppercase tracking-wide text-[var(--text-main)]/65">
                   <th className="px-4 py-3 font-medium">Cliente</th>
@@ -504,6 +529,7 @@ export function RevenueEntryPage() {
                   <th className="px-4 py-3 font-medium">Sinal</th>
                   <th className="px-4 py-3 font-medium">Saldo</th>
                   <th className="px-4 py-3 font-medium">Data</th>
+                  <th className="px-4 py-3 text-right font-medium">Ações</th>
                 </tr>
               </thead>
               <tbody>
@@ -529,6 +555,16 @@ export function RevenueEntryPage() {
                         dateStyle: 'short',
                         timeStyle: 'short',
                       }).format(new Date(row.created_at))}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <button
+                        type="button"
+                        onClick={() => void handleDeleteServiceLog(row)}
+                        disabled={deletingLogId === row.id}
+                        className="rounded-lg border border-[var(--border)] bg-transparent px-2.5 py-1 text-xs font-medium text-[#a85c5c] transition-all duration-300 hover:bg-[var(--highlight)] disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {deletingLogId === row.id ? 'A remover…' : 'Eliminar'}
+                      </button>
                     </td>
                   </tr>
                 ))}

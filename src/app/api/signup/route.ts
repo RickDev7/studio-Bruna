@@ -8,6 +8,31 @@ import {
   parseSupabaseUrlRef,
 } from '@/lib/supabaseEnvDebug'
 
+const PROFILE_UPSERT_ATTEMPTS = 6
+const PROFILE_UPSERT_DELAY_MS = 500
+
+async function upsertProfileWithRetry(
+  client: ReturnType<typeof createClient<Database>>,
+  row: {
+    id: string
+    email: string
+    full_name: string | null
+    phone: string | null
+    role: string
+  }
+): Promise<{ error: PostgrestError | null }> {
+  let last: PostgrestError | null = null
+  for (let attempt = 1; attempt <= PROFILE_UPSERT_ATTEMPTS; attempt++) {
+    const { error } = await client.from('profiles').upsert(row, { onConflict: 'id' })
+    if (!error) return { error: null }
+    last = error
+    const retryable = error.code === '23503' && attempt < PROFILE_UPSERT_ATTEMPTS
+    if (!retryable) return { error }
+    await new Promise((r) => setTimeout(r, PROFILE_UPSERT_DELAY_MS))
+  }
+  return { error: last }
+}
+
 export const dynamic = 'force-dynamic'
 
 function explainProfileError(err: PostgrestError): string {
@@ -45,6 +70,13 @@ function explainProfileError(err: PostgrestError): string {
   }
   if (err.code === '23505' || msg.includes('duplicate key')) {
     return 'Este email ou utilizador já está registado. Tenta fazer login ou usa outro email.'
+  }
+  if (err.code === '23503' || msg.includes('profiles_id_fkey')) {
+    return (
+      'O perfil não pôde ser associado ao utilizador (referência inválida). ' +
+      'Causas frequentes: (1) `SUPABASE_SERVICE_ROLE_KEY` no `.env.local` é de **outro** projeto Supabase que a URL/anon key — corrige em Settings → API; ' +
+      '(2) falta `SUPABASE_SERVICE_ROLE_KEY` com confirmação de email ativa — adiciona a chave **service_role** do mesmo projeto ou desativa confirmação de email temporariamente.'
+    )
   }
   return msg
 }
@@ -169,33 +201,65 @@ export async function POST(request: Request) {
       )
     }
 
-    if (!data.user) {
+    if (!data.user?.id) {
       return NextResponse.json({ error: 'Registo incompleto' }, { status: 400 })
     }
 
-    let profileClient = supabase
-    if (data.session) {
-      await supabase.auth.setSession({
+    const serviceKey = serviceKeyFromEnv
+    const urlRef = parseSupabaseUrlRef(url)
+    const anonRef = parseSupabaseAnonJwtRef(key)
+    if (urlRef && anonRef && urlRef !== anonRef) {
+      return NextResponse.json(
+        {
+          error:
+            `NEXT_PUBLIC_SUPABASE_URL aponta ao projeto "${urlRef}" mas a chave anon é do "${anonRef}". Corrige o .env.local para o mesmo projeto.`,
+          code: 'project_mismatch',
+        },
+        { status: 500 }
+      )
+    }
+
+    let profileClient: ReturnType<typeof createClient<Database>>
+
+    if (serviceKey) {
+      const svcRef = parseSupabaseAnonJwtRef(serviceKey)
+      if (urlRef && svcRef && urlRef !== svcRef) {
+        return NextResponse.json(
+          {
+            error:
+              `SUPABASE_SERVICE_ROLE_KEY é do projeto "${svcRef}" mas a URL é "${urlRef}". Usa a service_role do mesmo projeto (Settings → API).`,
+            code: 'service_project_mismatch',
+          },
+          { status: 500 }
+        )
+      }
+      profileClient = createClient<Database>(url, serviceKey)
+    } else if (data.session) {
+      profileClient = createClient<Database>(url, key)
+      await profileClient.auth.setSession({
         access_token: data.session.access_token,
         refresh_token: data.session.refresh_token,
       })
     } else {
-      const serviceKey = serviceKeyFromEnv
-      if (serviceKey) {
-        profileClient = createClient<Database>(url, serviceKey)
-      }
+      return NextResponse.json(
+        {
+          error:
+            'O registo foi criado no Auth mas não há sessão (confirmação de email ativa). ' +
+            'Adiciona `SUPABASE_SERVICE_ROLE_KEY` do **mesmo** projeto ao `.env.local` e reinicia o servidor, ' +
+            'ou desativa temporariamente a confirmação de email em Authentication → Providers → Email.',
+          code: 'needs_service_role',
+        },
+        { status: 400 }
+      )
     }
 
-    const { error: profileError } = await profileClient.from('profiles').upsert(
-      {
-        id: data.user.id,
-        email,
-        full_name: fullName || null,
-        phone: phone || null,
-        role: 'user',
-      },
-      { onConflict: 'id' }
-    )
+    const { error: profileError } = await upsertProfileWithRetry(profileClient, {
+      id: data.user.id,
+      email,
+      full_name: fullName || null,
+      phone: phone || null,
+      role: 'user',
+    })
 
     if (profileError) {
       const explained = explainProfileError(profileError)

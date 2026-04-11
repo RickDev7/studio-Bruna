@@ -59,7 +59,11 @@ export default async function AdminLayout({
     .eq('id', user.id)
     .maybeSingle()
 
-  const role = String(profile?.role ?? '')
+  if (!profile) {
+    redirect('/login?reason=no_profile')
+  }
+
+  const role = String(profile.role ?? '')
     .trim()
     .toLowerCase()
   if (role !== 'admin') {

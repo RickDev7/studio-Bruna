@@ -59,16 +59,25 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
+  const cookieSecure = request.nextUrl.protocol === 'https:'
+
   const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       get(name) {
         return request.cookies.get(name)?.value
       },
       set(name, value, options) {
-        response.cookies.set(name, value, options)
+        response.cookies.set(name, value, {
+          ...options,
+          ...(cookieSecure ? { secure: true } : {}),
+        })
       },
       remove(name, options) {
-        response.cookies.set(name, '', { ...options, maxAge: 0 })
+        response.cookies.set(name, '', {
+          ...options,
+          maxAge: 0,
+          ...(cookieSecure ? { secure: true } : {}),
+        })
       },
     },
   })

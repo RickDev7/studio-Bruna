@@ -8,7 +8,9 @@ import { PasswordInput } from '@/components/PasswordInput'
 import { SupabaseAuthConfigBanner } from '@/components/SupabaseAuthConfigBanner'
 import {
   createClient,
+  getAuthCallbackUrl,
   isSupabaseEnvConfigured,
+  isUnreachableLegacySupabaseUrl,
 } from '@/config/supabase-client'
 import { toast } from 'sonner'
 
@@ -33,9 +35,33 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    const reason = new URLSearchParams(window.location.search).get('reason')
+    const params = new URLSearchParams(window.location.search)
+    const reason = params.get('reason')
+    const err = params.get('error')
     if (reason === 'admin_only') {
-      toast.error('Acesso reservado a administradores.')
+      toast.error(
+        'Acesso reservado a administradores. No Supabase, define role = admin na tabela profiles para o teu utilizador.'
+      )
+    }
+    if (reason === 'no_profile') {
+      toast.error(
+        'Não existe linha em profiles para esta conta. Confirma o trigger handle_new_user / migrações no Supabase.'
+      )
+    }
+    if (params.get('reset') === 'success') {
+      toast.success('Senha atualizada com sucesso. Faça login novamente.')
+    }
+    if (err === 'auth') {
+      const msg = params.get('message')
+      toast.error(
+        msg
+          ? `Sessão não iniciada: ${decodeURIComponent(msg)}`
+          : 'Falha ao confirmar o email ou o link (OAuth / recuperação). Tenta de novo.'
+      )
+    } else if (err === 'missing_code') {
+      toast.error('Link de autenticação incompleto. Abre o link diretamente do email.')
+    } else if (err === 'server_config') {
+      toast.error('Servidor sem NEXT_PUBLIC_SUPABASE_URL / ANON_KEY configuradas.')
     }
   }, [])
 
@@ -65,6 +91,12 @@ export default function LoginPage() {
     if (!isSupabaseEnvConfigured()) {
       toast.error(
         'Configura NEXT_PUBLIC_SUPABASE_URL e NEXT_PUBLIC_SUPABASE_ANON_KEY no .env.local ou na Vercel.'
+      )
+      return
+    }
+    if (isUnreachableLegacySupabaseUrl()) {
+      toast.error(
+        'NEXT_PUBLIC_SUPABASE_URL aponta para um projeto Supabase antigo (ddpf…) que já não existe. Atualiza no Dashboard → API e na Vercel, depois redeploy.'
       )
       return
     }
@@ -132,13 +164,18 @@ export default function LoginPage() {
         return
       }
 
-      router.push('/admin')
-      router.refresh()
+      // Navegação completa: garante que os cookies da sessão (chunked) chegam ao servidor antes do layout /admin.
+      window.location.assign('/admin')
     } catch (error) {
       console.error('Erro de login:', error)
-      setErrors(prev => ({
+      const isNetwork =
+        error instanceof TypeError &&
+        /fetch|network|Failed to fetch/i.test(String(error.message))
+      setErrors((prev) => ({
         ...prev,
-        form: 'Erro ao fazer login. Verifique suas credenciais.'
+        form: isNetwork
+          ? 'Sem ligação ao servidor Supabase (URL errada ou projeto inexistente). Confirma NEXT_PUBLIC_SUPABASE_URL na Vercel e faz redeploy.'
+          : 'Erro ao fazer login. Verifique suas credenciais.',
       }))
     } finally {
       setLoading(false)
@@ -152,12 +189,18 @@ export default function LoginPage() {
       )
       return
     }
+    if (isUnreachableLegacySupabaseUrl()) {
+      toast.error(
+        'Atualiza NEXT_PUBLIC_SUPABASE_URL na Vercel (projeto ddpf… já não existe) e faz redeploy.'
+      )
+      return
+    }
     try {
       const supabase = createClient()
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/admin`,
+          redirectTo: getAuthCallbackUrl('/admin'),
           queryParams: {
             access_type: 'offline',
             prompt: 'consent'

@@ -10,6 +10,8 @@ export type CashFlowMonthSlice = {
   type: 'income' | 'expense'
   amount: number
   created_at: string
+  /** Ligado a `service_logs`: não duplicar na previsão de faturação de serviço. */
+  service_log_id?: string | null
   category?:
     | 'stock'
     | 'service'

@@ -75,7 +75,7 @@ export function RevenueForecast({
           <p className="mt-2 text-sm text-[var(--text-main)]/75">
             Soma <span className="font-medium">receita em service_logs</span> e
             receitas de <span className="font-medium">serviço</span> no fluxo de
-            caixa. Mês:{' '}
+            caixa (linhas ligadas ao mesmo serviço não duplicam). Mês:{' '}
             <span className="capitalize font-medium">{monthLabel}</span> (dia{' '}
             {f.currentDay}/{f.daysInMonth}).
           </p>

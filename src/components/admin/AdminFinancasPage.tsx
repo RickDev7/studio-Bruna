@@ -209,7 +209,7 @@ export function AdminFinancasPage() {
           .order('name'),
         supabase
           .from('cash_flow')
-          .select('type, amount, category, created_at')
+          .select('type, amount, category, created_at, service_log_id')
           .gte('created_at', windowIso),
         supabase
           .from('service_logs')
@@ -351,7 +351,24 @@ export function AdminFinancasPage() {
     }
   }, [sessionReady, supabase, refreshData])
 
+  useEffect(() => {
+    if (!sessionReady) return
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void refreshData()
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible)
+    }
+  }, [sessionReady, refreshData])
+
   const handleDeleteCashFlow = async (row: CashFlowRow) => {
+    if (row.service_log_id) {
+      toast.error(
+        'Esta linha está ligada a um registo em Entrada de receitas. Remove o serviço lá para anular o faturamento e atualizar a previsão.'
+      )
+      return
+    }
     const detail = row.stock_movement_id
       ? 'O movimento de stock no histórico mantém-se; só esta linha do fluxo de caixa é removida.'
       : row.payment_id

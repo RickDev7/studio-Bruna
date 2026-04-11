@@ -1,15 +1,57 @@
 'use client'
 
-import { isSupabaseEnvConfigured } from '@/config/supabase-client'
+import {
+  isSupabaseEnvConfigured,
+  isUnreachableLegacySupabaseUrl,
+  LEGACY_UNREACHABLE_SUPABASE_PROJECT_REF,
+} from '@/config/supabase-client'
 
 /**
  * Mostra instruções quando NEXT_PUBLIC_SUPABASE_* não estão definidas.
  * Com as variáveis corretas (.env.local ou Vercel), o login/recuperação usam o teu projeto.
  */
 export function SupabaseAuthConfigBanner() {
-  if (isSupabaseEnvConfigured()) return null
+  const legacy = isUnreachableLegacySupabaseUrl()
+  const missing = !isSupabaseEnvConfigured()
+
+  if (!legacy && !missing) return null
 
   return (
+    <>
+      {legacy ? (
+        <div
+          className="mb-6 rounded-lg border border-red-400/90 bg-red-50 p-4 text-left text-sm text-red-950 shadow-sm"
+          role="alert"
+        >
+          <p className="font-semibold text-red-900">URL do Supabase inválida ou projeto antigo</p>
+          <p className="mt-2 leading-relaxed">
+            A variável <code className="rounded bg-red-100/90 px-1 text-xs">NEXT_PUBLIC_SUPABASE_URL</code>{' '}
+            está a apontar para o projeto <code className="text-xs">{LEGACY_UNREACHABLE_SUPABASE_PROJECT_REF}</code>
+            , que <strong>já não resolve no DNS</strong> (projeto removido ou pausado). Por isso vês{' '}
+            <code className="text-xs">ERR_NAME_NOT_RESOLVED</code> / Failed to fetch.
+          </p>
+          <p className="mt-2 text-sm">
+            No{' '}
+            <a
+              href="https://supabase.com/dashboard"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-red-800 underline underline-offset-2"
+            >
+              Supabase Dashboard
+            </a>
+            , abre o teu <strong>projeto atual</strong> → <strong>Settings → API</strong> e copia a{' '}
+            <strong>Project URL</strong> nova (ex. <code className="text-xs">https://abcdefgh.supabase.co</code>) e a
+            chave <strong>anon public</strong>.
+          </p>
+          <p className="mt-2 text-xs text-red-900/85">
+            Atualiza <strong>.env.local</strong> (local) e <strong>Vercel → Environment Variables</strong> (produção),
+            depois <strong>redeploy</strong> — o URL fica &quot;congelado&quot; no build do Next.
+          </p>
+        </div>
+      ) : null}
+
+      {missing ? (
     <div
       className="mb-6 rounded-lg border border-amber-400/80 bg-amber-50 p-4 text-left text-sm text-amber-950 shadow-sm"
       role="alert"
@@ -55,10 +97,14 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJI...`}
       </ol>
       <p className="mt-3 text-xs text-amber-800/80">
         No Supabase, em <strong>Authentication → URL Configuration</strong>,
-        inclui o URL do site em <strong>Redirect URLs</strong> (ex.{' '}
-        <code className="rounded bg-amber-100/80 px-1">https://teu-dominio.pt/**</code>
-        ).
+        em <strong>Redirect URLs</strong> inclui o domínio e o callback PKCE (ex.{' '}
+        <code className="rounded bg-amber-100/80 px-1">
+          https://teu-dominio.pt/auth/callback
+        </code>
+        , ou <code className="rounded bg-amber-100/80 px-1">.../**</code>).
       </p>
     </div>
+      ) : null}
+    </>
   )
 }

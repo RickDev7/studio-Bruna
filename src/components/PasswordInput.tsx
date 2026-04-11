@@ -11,6 +11,7 @@ interface PasswordInputProps {
   className?: string
   placeholder?: string
   error?: string
+  disabled?: boolean
 }
 
 export function PasswordInput({ 
@@ -20,7 +21,8 @@ export function PasswordInput({
   onChange,
   className = "appearance-none block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm",
   placeholder = "Senha",
-  error
+  error,
+  disabled = false,
 }: PasswordInputProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [mounted, setMounted] = useState(false)
@@ -42,6 +44,7 @@ export function PasswordInput({
         type={showPassword ? 'text' : 'password'}
         value={value}
         onChange={onChange}
+        disabled={disabled}
         autoComplete={name === 'confirmPassword' ? 'new-password' : 'current-password'}
         required
         placeholder={placeholder}
@@ -50,7 +53,8 @@ export function PasswordInput({
       <button
         type="button"
         onClick={() => setShowPassword(!showPassword)}
-        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-500"
+        disabled={disabled}
+        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-500 disabled:opacity-40"
         tabIndex={-1}
       >
         <span className="sr-only">{showPassword ? 'Ocultar senha' : 'Mostrar senha'}</span>

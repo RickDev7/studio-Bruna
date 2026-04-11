@@ -282,6 +282,7 @@ export interface Database {
           description: string
           stock_movement_id: string | null
           payment_id: string | null
+          service_log_id: string | null
           created_at: string
         }
         Insert: {
@@ -299,6 +300,7 @@ export interface Database {
           description: string
           stock_movement_id?: string | null
           payment_id?: string | null
+          service_log_id?: string | null
           created_at?: string
         }
         Update: {
@@ -316,6 +318,7 @@ export interface Database {
           description?: string
           stock_movement_id?: string | null
           payment_id?: string | null
+          service_log_id?: string | null
           created_at?: string
         }
       }
