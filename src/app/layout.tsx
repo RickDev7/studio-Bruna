@@ -32,6 +32,13 @@ export const metadata: Metadata = {
   ...(metadataBase ? { metadataBase } : {}),
   title: 'Bruna Silva - Aesthetic & Nails | Cuxhaven',
   description: 'Professionelle Schönheitsbehandlungen und Nagelpflege in Cuxhaven. Termine über Fresha buchen.',
+  icons: {
+    icon: [
+      { url: '/icon.png', type: 'image/png', sizes: `${48}x${48}` },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    apple: [{ url: '/apple-icon.png', sizes: `${180}x${180}`, type: 'image/png' }],
+  },
 }
 
 export default function RootLayout({
