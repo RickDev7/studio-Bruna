@@ -9,6 +9,7 @@
     "lint": "next lint",
     "test:email": "ts-node -r tsconfig-paths/register src/scripts/test-email.ts",
     "icons": "node scripts/generate-icons.js",
+    "favicon:banner": "node scripts/generate-favicon-from-banner.js",
     "clean": "rimraf .next node_modules"
   },
   "dependencies": {
@@ -46,7 +47,9 @@
     "eslint": "8.56.0",
     "eslint-config-next": "^15.4.1",
     "postcss": "8.4.32",
+    "sharp": "^0.33.5",
     "tailwindcss": "3.3.6",
+    "to-ico": "^1.1.5",
     "typescript": "^5.3.3"
   }
 }
