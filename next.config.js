@@ -52,6 +52,10 @@ applySupabaseFromEnvLocal()
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  /** Rewrite: o browser pede /favicon.ico; servimos o PNG sem redirect (melhor no Vercel). */
+  async rewrites() {
+    return [{ source: '/favicon.ico', destination: '/favicon-32.png' }]
+  },
   images: {
     domains: [],
     unoptimized: true

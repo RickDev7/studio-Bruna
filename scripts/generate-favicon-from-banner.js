@@ -1,28 +1,30 @@
 /**
- * Gera ícones a partir de public/branding-favicon-source.png
+ * Gera ícones em PNG a partir de public/branding-favicon-source.png
  *
- * - Master quadrado 512 px (mesmo recorte para tudo): mais detalhe antes
- *   de reduzir a tamanhos minúsculos.
- * - Redimensionamento progressivo (passos ~50%): evita o “blur” de
- *   saltar 512→16 num único passo.
- * - PNG em cor verdadeira (palette: false).
- * - Saídas: apple-icon.png (180), icon.png (48, para tabs modernos),
- *   favicon.ico (várias camadas).
+ * Tudo em public/ (exceto apple-icon): o Vercel/browser serve ficheiros
+ * estáticos sem passar pela rota mágica app/icon.png do Next (que por
+ * vezes falha ou mostra ícone por defeito em produção).
+ *
+ * Saídas:
+ * - public/favicon-16.png, public/favicon-32.png, public/icon.png (48)
+ * - src/app/apple-icon.png (180, convenção Next)
  */
 const fs = require('fs')
 const path = require('path')
 const sharp = require('sharp')
-const toIco = require('to-ico')
 
 const SOURCE = path.join(__dirname, '../public/branding-favicon-source.png')
-const OUT_ICO = path.join(__dirname, '../src/app/favicon.ico')
 const OUT_APPLE = path.join(__dirname, '../src/app/apple-icon.png')
-const OUT_ICON_PNG = path.join(__dirname, '../src/app/icon.png')
+const PUBLIC_DIR = path.join(__dirname, '../public')
+const OUT_ICON_PUBLIC = path.join(PUBLIC_DIR, 'icon.png')
 
 const MASTER = 512
 const APPLE = 180
 const TAB_ICON = 48
-const ICO_SIZES = [16, 24, 32, 48, 64, 128, 256]
+const PUBLIC_SIZES = [
+  { size: 16, name: 'favicon-16.png' },
+  { size: 32, name: 'favicon-32.png' },
+]
 
 const pngOptions = {
   compressionLevel: 4,
@@ -42,9 +44,6 @@ async function buildMaster512() {
     .toBuffer()
 }
 
-/**
- * Reduz para (target x target) em passos (nunca > ~2x por passo).
- */
 async function progressiveSquare(buf, target) {
   let current = buf
   let w = (await sharp(current).metadata()).width
@@ -87,13 +86,18 @@ async function main() {
   console.log('OK:', OUT_APPLE, `(${APPLE} px)`)
 
   const tabBuf = await progressiveSquare(master, TAB_ICON)
-  fs.writeFileSync(OUT_ICON_PNG, tabBuf)
-  console.log('OK:', OUT_ICON_PNG, `(${TAB_ICON} px, preferir em browsers)`)
+  fs.writeFileSync(OUT_ICON_PUBLIC, tabBuf)
+  console.log('OK:', OUT_ICON_PUBLIC, `(${TAB_ICON} px)`)
 
-  const buffers = await Promise.all(ICO_SIZES.map((size) => progressiveSquare(master, size)))
-  const buf = await toIco(buffers)
-  fs.writeFileSync(OUT_ICO, buf)
-  console.log('OK:', OUT_ICO, `(${ICO_SIZES.join(', ')} px, master ${MASTER})`)
+  for (const { size, name } of PUBLIC_SIZES) {
+    const buf = await progressiveSquare(master, size)
+    const file = path.join(PUBLIC_DIR, name)
+    fs.writeFileSync(file, buf)
+    console.log('OK:', file)
+  }
+
+  console.log('')
+  console.log('URLs: /favicon.ico (rewrite→32), /favicon-16.png, /favicon-32.png, /icon.png, /apple-icon.png')
 }
 
 main().catch((e) => {

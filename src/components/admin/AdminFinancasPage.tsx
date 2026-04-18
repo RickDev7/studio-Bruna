@@ -88,6 +88,9 @@ export function AdminFinancasPage() {
   const [deletingCashFlowId, setDeletingCashFlowId] = useState<string | null>(
     null
   )
+  const [deletingFinancialLogId, setDeletingFinancialLogId] = useState<
+    string | null
+  >(null)
   const [metricsAt, setMetricsAt] = useState(() => new Date())
 
   const accumulatedEmergency = useMemo(
@@ -362,6 +365,31 @@ export function AdminFinancasPage() {
     }
   }, [sessionReady, refreshData])
 
+  const handleDeleteFinancialLog = async (row: FinancialLogRow) => {
+    if (
+      !window.confirm(
+        'Eliminar este registo dos logs financeiros?\n\nDeixa de contar para o fundo de emergência acumulado e para a distribuição (S/I/E) neste ecrã.'
+      )
+    ) {
+      return
+    }
+    setDeletingFinancialLogId(row.id)
+    try {
+      const { error } = await supabase
+        .from('financial_logs')
+        .delete()
+        .eq('id', row.id)
+      if (error) throw error
+      toast.success('Registo financeiro eliminado.')
+      await refreshData()
+      router.refresh()
+    } catch (e) {
+      toast.error(formatSupabaseError(e))
+    } finally {
+      setDeletingFinancialLogId(null)
+    }
+  }
+
   const handleDeleteCashFlow = async (row: CashFlowRow) => {
     if (row.service_log_id) {
       toast.error(
@@ -532,6 +560,8 @@ export function AdminFinancasPage() {
         stockMovements={[]}
         loading={loading}
         showStockMovements={false}
+        onDeleteFinancialLog={handleDeleteFinancialLog}
+        deletingFinancialLogId={deletingFinancialLogId}
       />
     </div>
   )

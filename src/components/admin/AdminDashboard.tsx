@@ -30,6 +30,9 @@ export function AdminDashboard() {
   const [stockMovements, setStockMovements] = useState<MovementWithProduct[]>([])
   const [loading, setLoading] = useState(true)
   const [deletingMovementId, setDeletingMovementId] = useState<string | null>(null)
+  const [deletingFinancialLogId, setDeletingFinancialLogId] = useState<
+    string | null
+  >(null)
 
   const refreshData = useCallback(async () => {
     setLoading(true)
@@ -311,6 +314,31 @@ export function AdminDashboard() {
     await refreshData()
   }
 
+  const handleDeleteFinancialLog = async (row: FinancialLogRow) => {
+    if (
+      !window.confirm(
+        'Eliminar este registo dos logs financeiros?\n\nDeixa de contar para o fundo de emergência acumulado e para a distribuição (S/I/E) neste ecrã.'
+      )
+    ) {
+      return
+    }
+    setDeletingFinancialLogId(row.id)
+    try {
+      const { error } = await supabase
+        .from('financial_logs')
+        .delete()
+        .eq('id', row.id)
+      if (error) throw error
+      toast.success('Registo financeiro eliminado.')
+      await refreshData()
+      router.refresh()
+    } catch (e) {
+      toast.error(formatSupabaseError(e))
+    } finally {
+      setDeletingFinancialLogId(null)
+    }
+  }
+
   const handleDeleteStockMovement = async (row: MovementWithProduct) => {
     const ok = window.confirm(
       'Remover este movimento do histórico e ajustar o stock do produto (reverter entrada/saída)?'
@@ -454,6 +482,8 @@ export function AdminDashboard() {
         loading={loading}
         onDeleteStockMovement={handleDeleteStockMovement}
         deletingMovementId={deletingMovementId}
+        onDeleteFinancialLog={handleDeleteFinancialLog}
+        deletingFinancialLogId={deletingFinancialLogId}
       />
     </div>
   )

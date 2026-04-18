@@ -1,5 +1,6 @@
 'use client'
 
+import { Trash2 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import type { Database } from '@/types/database.types'
 import { stockUnitLabel } from '@/lib/admin/stockUnits'
@@ -18,6 +19,8 @@ type Props = {
   showStockMovements?: boolean
   onDeleteStockMovement?: (row: StockMovement) => void | Promise<void>
   deletingMovementId?: string | null
+  onDeleteFinancialLog?: (row: FinancialLog) => void | Promise<void>
+  deletingFinancialLogId?: string | null
 }
 
 function formatDate(iso: string) {
@@ -34,6 +37,8 @@ export function AdminHistorySection({
   showStockMovements = true,
   onDeleteStockMovement,
   deletingMovementId,
+  onDeleteFinancialLog,
+  deletingFinancialLogId,
 }: Props) {
   return (
     <Card className="admin-card overflow-hidden !shadow-none">
@@ -72,6 +77,11 @@ export function AdminHistorySection({
                         <th className="px-4 py-3 font-medium">Total</th>
                         <th className="px-4 py-3 font-medium">Líq.</th>
                         <th className="px-4 py-3 font-medium">S / I / E</th>
+                        {onDeleteFinancialLog ? (
+                          <th className="sticky right-0 z-[1] border-l border-[var(--border)] bg-[var(--bg-soft)]/95 px-3 py-3 text-right text-xs font-medium shadow-[-6px_0_12px_rgba(138,92,74,0.06)]">
+                            Ações
+                          </th>
+                        ) : null}
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[var(--border)] bg-[var(--bg-main)]/30">
@@ -94,6 +104,22 @@ export function AdminHistorySection({
                             {formatEUR(Number(row.investment))} ·{' '}
                             {formatEUR(Number(row.emergency))}
                           </td>
+                          {onDeleteFinancialLog ? (
+                            <td className="sticky right-0 z-[1] border-l border-[var(--border)] bg-[var(--bg-card)]/95 px-2 py-2 text-right shadow-[-6px_0_12px_rgba(138,92,74,0.06)]">
+                              <button
+                                type="button"
+                                title="Eliminar este registo financeiro"
+                                onClick={() => void onDeleteFinancialLog(row)}
+                                disabled={deletingFinancialLogId === row.id}
+                                className="inline-flex items-center gap-1 rounded-lg border border-[#c48080]/45 bg-[var(--highlight)]/35 px-2 py-1.5 text-xs font-semibold text-[#8a3c3c] transition-colors hover:bg-[#c48080]/12 disabled:cursor-not-allowed disabled:opacity-50"
+                              >
+                                <Trash2 className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                                {deletingFinancialLogId === row.id
+                                  ? '…'
+                                  : 'Excluir'}
+                              </button>
+                            </td>
+                          ) : null}
                         </tr>
                       ))}
                     </tbody>

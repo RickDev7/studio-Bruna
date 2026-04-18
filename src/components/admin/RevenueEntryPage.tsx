@@ -11,6 +11,7 @@ import { formatSupabaseError } from '@/lib/admin/supabaseErrors'
 import type { Database } from '@/types/database.types'
 import { toast } from 'sonner'
 import { formatEUR } from '@/components/admin/dashboard/format'
+import { Trash2 } from 'lucide-react'
 
 type ServiceRow = Pick<
   Database['public']['Tables']['services']['Row'],
@@ -291,17 +292,28 @@ export function RevenueEntryPage() {
     const label = row.client_name ?? 'este registo'
     if (
       !window.confirm(
-        `Eliminar o faturamento de ${label}?\n\nRemove o serviço e as linhas de fluxo de caixa ligadas (sinal / pagamento final).`
+        `Eliminar o faturamento de ${label}?\n\nRemove as receitas (sinal / saldo) do fluxo de caixa e o registo do serviço. Os totais em Finanças e previsões atualizam-se em seguida.`
       )
     ) {
       return
     }
     setDeletingLogId(row.id)
     try {
-      const { error } = await supabase.from('service_logs').delete().eq('id', row.id)
-      if (error) throw error
-      toast.success('Faturamento eliminado.')
+      const { error: cfErr } = await supabase
+        .from('cash_flow')
+        .delete()
+        .eq('service_log_id', row.id)
+      if (cfErr) throw cfErr
+
+      const { error: logErr } = await supabase
+        .from('service_logs')
+        .delete()
+        .eq('id', row.id)
+      if (logErr) throw logErr
+
+      toast.success('Lançamento eliminado. Fluxo de caixa atualizado.')
       await loadCatalogAndHistory()
+      router.refresh()
     } catch (err) {
       toast.error(formatSupabaseError(err))
     } finally {
@@ -520,8 +532,12 @@ export function RevenueEntryPage() {
             Ainda não há entradas com cliente associado.
           </p>
         ) : (
-          <div className="mt-4 overflow-x-auto rounded-2xl border border-[var(--border)]">
-            <table className="w-full min-w-[380px] text-left text-sm">
+          <>
+          <p className="mt-2 text-xs text-[var(--text-main)]/55 md:hidden">
+            Desliza a tabela para a direita para ver o botão de eliminar.
+          </p>
+          <div className="mt-2 overflow-x-auto rounded-2xl border border-[var(--border)]">
+            <table className="w-full min-w-[640px] text-left text-sm">
               <thead>
                 <tr className="border-b border-[var(--border)] bg-[var(--bg-soft)]/60 text-xs uppercase tracking-wide text-[var(--text-main)]/65">
                   <th className="px-4 py-3 font-medium">Cliente</th>
@@ -529,7 +545,9 @@ export function RevenueEntryPage() {
                   <th className="px-4 py-3 font-medium">Sinal</th>
                   <th className="px-4 py-3 font-medium">Saldo</th>
                   <th className="px-4 py-3 font-medium">Data</th>
-                  <th className="px-4 py-3 text-right font-medium">Ações</th>
+                  <th className="sticky right-0 z-[1] border-l border-[var(--border)] bg-[var(--bg-soft)]/95 px-4 py-3 text-right font-medium shadow-[-6px_0_14px_rgba(138,92,74,0.08)] backdrop-blur-sm">
+                    Ações
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -556,13 +574,15 @@ export function RevenueEntryPage() {
                         timeStyle: 'short',
                       }).format(new Date(row.created_at))}
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="sticky right-0 z-[1] border-l border-[var(--border)] bg-[var(--bg-card)]/95 px-3 py-2 text-right shadow-[-6px_0_14px_rgba(138,92,74,0.08)] backdrop-blur-sm">
                       <button
                         type="button"
                         onClick={() => void handleDeleteServiceLog(row)}
                         disabled={deletingLogId === row.id}
-                        className="rounded-lg border border-[var(--border)] bg-transparent px-2.5 py-1 text-xs font-medium text-[#a85c5c] transition-all duration-300 hover:bg-[var(--highlight)] disabled:cursor-not-allowed disabled:opacity-50"
+                        title="Eliminar este lançamento e linhas no fluxo de caixa"
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#c48080]/50 bg-[var(--highlight)]/40 px-3 py-2 text-xs font-semibold text-[#8a3c3c] transition-colors hover:bg-[#c48080]/15 disabled:cursor-not-allowed disabled:opacity-50"
                       >
+                        <Trash2 className="h-4 w-4 shrink-0" aria-hidden />
                         {deletingLogId === row.id ? 'A remover…' : 'Eliminar'}
                       </button>
                     </td>
@@ -571,6 +591,7 @@ export function RevenueEntryPage() {
               </tbody>
             </table>
           </div>
+          </>
         )}
       </div>
     </div>

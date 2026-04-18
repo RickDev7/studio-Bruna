@@ -15,6 +15,7 @@ const playfair = Playfair_Display({
   style: ['normal', 'italic'],
 })
 
+/** Domínio canónico (OG, etc.). Não usar VERCEL_URL aqui — em domínio próprio os absolutos ficariam errados. */
 function metadataBaseFromEnv(): URL | undefined {
   const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim()
   if (!raw) return undefined
@@ -34,9 +35,12 @@ export const metadata: Metadata = {
   description: 'Professionelle Schönheitsbehandlungen und Nagelpflege in Cuxhaven. Termine über Fresha buchen.',
   icons: {
     icon: [
-      { url: '/icon.png', type: 'image/png', sizes: `${48}x${48}` },
-      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.ico', type: 'image/png', sizes: '32x32' },
+      { url: '/favicon-16.png', type: 'image/png', sizes: '16x16' },
+      { url: '/favicon-32.png', type: 'image/png', sizes: '32x32' },
+      { url: '/icon.png', type: 'image/png', sizes: '48x48' },
     ],
+    shortcut: [{ url: '/favicon.ico', type: 'image/png' }],
     apple: [{ url: '/apple-icon.png', sizes: `${180}x${180}`, type: 'image/png' }],
   },
 }
@@ -50,6 +54,8 @@ export default function RootLayout({
     <html lang="de" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/icon.png" type="image/png" sizes="48x48" />
       </head>
       <body className={`${inter.variable} ${playfair.variable} ${inter.className}`} suppressHydrationWarning>
         <div id="app" className="min-h-screen bg-gray-50">
