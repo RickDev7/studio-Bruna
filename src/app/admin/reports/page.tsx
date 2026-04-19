@@ -22,11 +22,22 @@ import {
   YAxis,
 } from 'recharts'
 import { createClient } from '@/config/supabase-client'
+import { paymentMethodLabel } from '@/lib/admin/revenuePaymentLabels'
 import { formatSupabaseError } from '@/lib/admin/supabaseErrors'
 import type { Database } from '@/types/database.types'
 import { toast } from 'sonner'
 
 type CashFlowRow = Database['public']['Tables']['cash_flow']['Row']
+
+type RevenueEntryBrief = Pick<
+  Database['public']['Tables']['service_logs']['Row'],
+  'client_name' | 'service_name' | 'payment_method'
+>
+
+/** Linha de fluxo de caixa + dados da entrada de receitas (service_logs), quando existir ligação. */
+type CashFlowReportRow = CashFlowRow & {
+  revenueEntry?: RevenueEntryBrief | null
+}
 
 const EUR_DE = (n: number) =>
   new Intl.NumberFormat('de-DE', {
@@ -60,7 +71,7 @@ type MonthAgg = {
   net: number
 }
 
-function aggregateByCategory(rows: CashFlowRow[]): CategoryAgg[] {
+function aggregateByCategory(rows: CashFlowReportRow[]): CategoryAgg[] {
   const map = new Map<string, { income: number; expense: number }>()
   for (const r of rows) {
     const cat = String(r.category ?? 'other')
@@ -80,7 +91,7 @@ function aggregateByCategory(rows: CashFlowRow[]): CategoryAgg[] {
     .sort((a, b) => a.category.localeCompare(b.category))
 }
 
-function aggregateByMonth(rows: CashFlowRow[]): MonthAgg[] {
+function aggregateByMonth(rows: CashFlowReportRow[]): MonthAgg[] {
   const map = new Map<string, { income: number; expense: number }>()
   for (const r of rows) {
     const key = format(parseISO(r.created_at), 'yyyy-MM')
@@ -102,10 +113,23 @@ function aggregateByMonth(rows: CashFlowRow[]): MonthAgg[] {
     }))
 }
 
-type DayGroup = { dayKey: string; display: string; rows: CashFlowRow[] }
+type DayGroup = { dayKey: string; display: string; rows: CashFlowReportRow[] }
 
-function groupRowsByDaySorted(rows: CashFlowRow[]): DayGroup[] {
-  const m = new Map<string, CashFlowRow[]>()
+function cashFlowCategoryLabelDE(cat: string): string {
+  const m: Record<string, string> = {
+    stock: 'Lager',
+    service: 'Service',
+    service_advance: 'Service (Anzahlung)',
+    service_payment: 'Service (Restzahlung)',
+    other: 'Sonstiges',
+    product_sale: 'Produktverkauf',
+    fixed_cost: 'Fixkosten',
+  }
+  return m[cat] ?? cat
+}
+
+function groupRowsByDaySorted(rows: CashFlowReportRow[]): DayGroup[] {
+  const m = new Map<string, CashFlowReportRow[]>()
   for (const r of rows) {
     const dayKey = format(parseISO(r.created_at), 'yyyy-MM-dd')
     const list = m.get(dayKey) ?? []
@@ -287,7 +311,7 @@ export default function AdminFinancialReportsPage() {
   const reportRef = useRef<HTMLDivElement>(null)
 
   const [sessionReady, setSessionReady] = useState(false)
-  const [rows, setRows] = useState<CashFlowRow[]>([])
+  const [rows, setRows] = useState<CashFlowReportRow[]>([])
   const [loading, setLoading] = useState(true)
   const [exporting, setExporting] = useState(false)
 
@@ -305,7 +329,7 @@ export default function AdminFinancialReportsPage() {
     try {
       const start = startOfDay(parseISO(startDate)).toISOString()
       const end = endOfDay(parseISO(endDate)).toISOString()
-      const { data, error } = await supabase
+      const { data: cfData, error } = await supabase
         .from('cash_flow')
         .select('*')
         .gte('created_at', start)
@@ -313,7 +337,34 @@ export default function AdminFinancialReportsPage() {
         .order('created_at', { ascending: false })
 
       if (error) throw error
-      setRows((data as CashFlowRow[]) ?? [])
+      const cf = (cfData ?? []) as CashFlowRow[]
+      const ids = [
+        ...new Set(
+          cf.map((r) => r.service_log_id).filter((id): id is string => Boolean(id))
+        ),
+      ]
+      const entryById = new Map<string, RevenueEntryBrief>()
+      if (ids.length > 0) {
+        const { data: logs, error: logErr } = await supabase
+          .from('service_logs')
+          .select('id, client_name, service_name, payment_method')
+          .in('id', ids)
+        if (logErr) throw logErr
+        for (const L of logs ?? []) {
+          entryById.set(L.id, {
+            client_name: L.client_name,
+            service_name: L.service_name,
+            payment_method: L.payment_method,
+          })
+        }
+      }
+      const enriched: CashFlowReportRow[] = cf.map((r) => ({
+        ...r,
+        revenueEntry: r.service_log_id
+          ? entryById.get(r.service_log_id) ?? null
+          : null,
+      }))
+      setRows(enriched)
     } catch (e) {
       toast.error(formatSupabaseError(e))
       setRows([])
@@ -413,7 +464,7 @@ export default function AdminFinancialReportsPage() {
   const chartData = useMemo(
     () =>
       categoryData.map((c) => ({
-        name: c.category,
+        name: cashFlowCategoryLabelDE(c.category),
         Einnahmen: c.income,
         Ausgaben: c.expense,
       })),
@@ -667,7 +718,9 @@ export default function AdminFinancialReportsPage() {
                 ) : (
                   categoryData.map((c) => (
                     <tr key={c.category} className="border-b border-neutral-200">
-                      <td className="px-3 py-2 text-neutral-900">{c.category}</td>
+                      <td className="px-3 py-2 text-neutral-900">
+                        {cashFlowCategoryLabelDE(c.category)}
+                      </td>
                       <td className="px-3 py-2 tabular-nums text-neutral-900">
                         {EUR_DE(c.income)}
                       </td>
@@ -787,6 +840,15 @@ export default function AdminFinancialReportsPage() {
                           Datum
                         </th>
                         <th className="px-2 py-2 font-semibold text-neutral-900">
+                          Kunde
+                        </th>
+                        <th className="px-2 py-2 font-semibold text-neutral-900">
+                          Leistung
+                        </th>
+                        <th className="px-2 py-2 font-semibold text-neutral-900">
+                          Zahlungsmethode
+                        </th>
+                        <th className="px-2 py-2 font-semibold text-neutral-900">
                           Beschreibung
                         </th>
                         <th className="px-2 py-2 font-semibold text-neutral-900">
@@ -806,11 +868,24 @@ export default function AdminFinancialReportsPage() {
                           <td className="px-2 py-2 tabular-nums text-neutral-800">
                             {formatDateTimeDE(r.created_at)}
                           </td>
-                          <td className="px-2 py-2 text-neutral-900">
+                          <td className="max-w-[9rem] px-2 py-2 text-neutral-900">
+                            {r.revenueEntry?.client_name?.trim() || '—'}
+                          </td>
+                          <td className="max-w-[10rem] px-2 py-2 text-neutral-900">
+                            <span className="line-clamp-2 block break-words">
+                              {r.revenueEntry?.service_name?.trim() || '—'}
+                            </span>
+                          </td>
+                          <td className="whitespace-nowrap px-2 py-2 text-neutral-900">
+                            {r.revenueEntry
+                              ? paymentMethodLabel(r.revenueEntry.payment_method)
+                              : '—'}
+                          </td>
+                          <td className="max-w-[14rem] px-2 py-2 text-neutral-900">
                             {r.description}
                           </td>
                           <td className="px-2 py-2 text-neutral-900">
-                            {r.category}
+                            {cashFlowCategoryLabelDE(r.category)}
                           </td>
                           <td className="px-2 py-2 text-neutral-900">
                             {r.type === 'income' ? 'Einnahme' : 'Ausgabe'}

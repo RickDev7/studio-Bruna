@@ -66,7 +66,7 @@ export function ServiceForm({ services, loading, onLogged }: Props) {
         total_price: amounts.total_revenue,
         advance_paid: 0,
         remaining_paid: amounts.total_revenue,
-        payment_method: 'mixed',
+        payment_method: 'fresha',
       })
       if (error) throw error
       toast.success('Serviço registado.')

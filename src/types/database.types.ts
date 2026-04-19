@@ -90,7 +90,13 @@ export interface Database {
           total_price: number
           advance_paid: number
           remaining_paid: number
-          payment_method: 'cash' | 'card' | 'mixed'
+          payment_method:
+            | 'fresha'
+            | 'paypal'
+            | 'numerario'
+            | 'transferencia_bancaria'
+          advance_paid_on: string | null
+          remaining_paid_on: string | null
         }
         Insert: {
           id?: string
@@ -105,7 +111,13 @@ export interface Database {
           total_price: number
           advance_paid?: number
           remaining_paid?: number
-          payment_method?: 'cash' | 'card' | 'mixed'
+          advance_paid_on?: string | null
+          remaining_paid_on?: string | null
+          payment_method?:
+            | 'fresha'
+            | 'paypal'
+            | 'numerario'
+            | 'transferencia_bancaria'
         }
         Update: {
           id?: string
@@ -120,7 +132,13 @@ export interface Database {
           total_price?: number
           advance_paid?: number
           remaining_paid?: number
-          payment_method?: 'cash' | 'card' | 'mixed'
+          advance_paid_on?: string | null
+          remaining_paid_on?: string | null
+          payment_method?:
+            | 'fresha'
+            | 'paypal'
+            | 'numerario'
+            | 'transferencia_bancaria'
         }
       }
       appointments: {

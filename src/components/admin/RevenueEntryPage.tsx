@@ -11,12 +11,12 @@ import { formatSupabaseError } from '@/lib/admin/supabaseErrors'
 import type { Database } from '@/types/database.types'
 import { toast } from 'sonner'
 import { formatEUR } from '@/components/admin/dashboard/format'
+import {
+  paymentMethodLabel,
+  REVENUE_PAYMENT_OPTIONS,
+  type RevenuePaymentMethod,
+} from '@/lib/admin/revenuePaymentLabels'
 import { Trash2 } from 'lucide-react'
-
-type ServiceRow = Pick<
-  Database['public']['Tables']['services']['Row'],
-  'id' | 'name' | 'price' | 'estimated_cost'
->
 
 type ServiceLogRow = Database['public']['Tables']['service_logs']['Row']
 
@@ -31,58 +31,108 @@ function formatEuroInput(n: number): string {
   return s.replace('.', ',')
 }
 
+function todayYmd(): string {
+  const d = new Date()
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
+/** `YYYY-MM-DD` (input date) → ISO para `cash_flow.created_at` (meio-dia hora local). */
+function dateStrToCashFlowTimestamp(dateStr: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr.trim())
+  if (!m) throw new Error('Formato de data inválido.')
+  const y = Number(m[1])
+  const mo = Number(m[2])
+  const da = Number(m[3])
+  const local = new Date(y, mo - 1, da, 12, 0, 0, 0)
+  return local.toISOString()
+}
+
+function formatPtDateOnly(isoDate: string | null | undefined): string {
+  if (!isoDate) return '—'
+  const parts = isoDate.slice(0, 10).split('-').map(Number)
+  const [y, mo, da] = parts
+  if (!y || !mo || !da) return '—'
+  return new Intl.DateTimeFormat('pt-PT', { dateStyle: 'short' }).format(
+    new Date(y, mo - 1, da)
+  )
+}
+
+type ServiceLogInsert = Database['public']['Tables']['service_logs']['Insert']
+
+/** Remove colunas de data (se a BD remota ainda não as tiver). */
+function stripPaymentDateFields(p: ServiceLogInsert): ServiceLogInsert {
+  const { advance_paid_on: _a, remaining_paid_on: _r, ...rest } = p
+  return rest
+}
+
+/**
+ * Inserts com vários “degraus” para BD antiga (sem colunas de data ou com enum antigo).
+ */
+async function insertServiceLogResilient(
+  supabase: ReturnType<typeof createClient>,
+  full: ServiceLogInsert
+): Promise<{ id: string; degraded: boolean }> {
+  const attempts: ServiceLogInsert[] = [
+    full,
+    { ...full, payment_method: 'mixed' } as ServiceLogInsert,
+    stripPaymentDateFields(full),
+    { ...stripPaymentDateFields(full), payment_method: 'mixed' } as ServiceLogInsert,
+    { ...stripPaymentDateFields(full), payment_method: 'fresha' } as ServiceLogInsert,
+  ]
+
+  let lastErr: unknown
+  for (let i = 0; i < attempts.length; i++) {
+    const res = await supabase
+      .from('service_logs')
+      .insert(attempts[i])
+      .select('id')
+      .single()
+    if (!res.error && res.data?.id) {
+      return { id: res.data.id, degraded: i > 0 }
+    }
+    lastErr = res.error
+  }
+  throw lastErr ?? new Error('Insert em service_logs falhou.')
+}
+
 export function RevenueEntryPage() {
   const router = useRouter()
   const supabase = useMemo(() => createClient(), [])
 
   const [sessionReady, setSessionReady] = useState(false)
-  const [services, setServices] = useState<ServiceRow[]>([])
   const [history, setHistory] = useState<ServiceLogRow[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [deletingLogId, setDeletingLogId] = useState<string | null>(null)
 
   const [clientName, setClientName] = useState('')
-  const [serviceId, setServiceId] = useState('')
   const [serviceNameManual, setServiceNameManual] = useState('')
   const [totalStr, setTotalStr] = useState('')
   const [advanceStr, setAdvanceStr] = useState('')
   const [remainingStr, setRemainingStr] = useState('')
-  const [paymentMethod, setPaymentMethod] = useState<
-    'cash' | 'card' | 'mixed'
-  >('mixed')
-
-  const selectedService = useMemo(
-    () => services.find((s) => s.id === serviceId),
-    [services, serviceId]
-  )
+  const [paymentMethod, setPaymentMethod] =
+    useState<RevenuePaymentMethod>('fresha')
+  const [advancePaidOnStr, setAdvancePaidOnStr] = useState(todayYmd)
+  const [remainingPaidOnStr, setRemainingPaidOnStr] = useState(todayYmd)
 
   const totalPreview = roundMoney(parseEuro(totalStr))
   const advancePreview = roundMoney(parseEuro(advanceStr))
   const remainingPreview = roundMoney(parseEuro(remainingStr))
 
-  const loadCatalogAndHistory = useCallback(async () => {
+  const loadHistory = useCallback(async () => {
     setLoading(true)
     try {
-      const [svcRes, histRes] = await Promise.all([
-        supabase
-          .from('services')
-          .select('id, name, price, estimated_cost')
-          .or('active.eq.true,active.is.null')
-          .order('name'),
-        supabase
-          .from('service_logs')
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(60),
-      ])
-      if (svcRes.error) {
-        toast.error(formatSupabaseError(svcRes.error))
-      }
+      const histRes = await supabase
+        .from('service_logs')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(60)
       if (histRes.error) {
         toast.error(formatSupabaseError(histRes.error))
       }
-      setServices((svcRes.data as ServiceRow[]) ?? [])
       const raw = (histRes.data as ServiceLogRow[]) ?? []
       setHistory(
         raw.filter(
@@ -109,12 +159,12 @@ export function RevenueEntryPage() {
         return
       }
       setSessionReady(true)
-      await loadCatalogAndHistory()
+      await loadHistory()
     })()
     return () => {
       cancelled = true
     }
-  }, [supabase, router, loadCatalogAndHistory])
+  }, [supabase, router, loadHistory])
 
   useEffect(() => {
     if (!sessionReady) return
@@ -124,14 +174,14 @@ export function RevenueEntryPage() {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'service_logs' },
         () => {
-          void loadCatalogAndHistory()
+          void loadHistory()
         }
       )
       .subscribe()
     return () => {
       void supabase.removeChannel(channel)
     }
-  }, [sessionReady, supabase, loadCatalogAndHistory])
+  }, [sessionReady, supabase, loadHistory])
 
   const applyTotalSplit = useCallback((total: number) => {
     const t = roundMoney(total)
@@ -169,24 +219,15 @@ export function RevenueEntryPage() {
     }
   }
 
-  const handleServicePick = (id: string) => {
-    setServiceId(id)
-    const s = services.find((x) => x.id === id)
-    if (s) {
-      const p = roundMoney(Number(s.price))
-      setTotalStr(formatEuroInput(p))
-      applyTotalSplit(p)
-    }
-  }
-
   const resetForm = () => {
     setClientName('')
-    setServiceId('')
     setServiceNameManual('')
     setTotalStr('')
     setAdvanceStr('')
     setRemainingStr('')
-    setPaymentMethod('mixed')
+    setPaymentMethod('fresha')
+    setAdvancePaidOnStr(todayYmd())
+    setRemainingPaidOnStr(todayYmd())
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -215,17 +256,32 @@ export function RevenueEntryPage() {
       return
     }
 
-    const est = selectedService
-      ? roundMoney(Number(selectedService.estimated_cost ?? 0))
-      : 0
-    const profit = roundMoney(total - est)
-    const displayServiceName =
-      selectedService?.name?.trim() ||
-      serviceNameManual.trim() ||
-      null
+    if (advance > 0 && !/^\d{4}-\d{2}-\d{2}$/.test(advancePaidOnStr.trim())) {
+      toast.error('Indica a data em que o sinal foi pago.')
+      return
+    }
+    if (remaining > 0 && !/^\d{4}-\d{2}-\d{2}$/.test(remainingPaidOnStr.trim())) {
+      toast.error('Indica a data em que o saldo foi pago na loja.')
+      return
+    }
 
-    const logPayload: Database['public']['Tables']['service_logs']['Insert'] = {
-      service_id: serviceId || null,
+    let advanceTs = ''
+    let remainingTs = ''
+    try {
+      if (advance > 0) advanceTs = dateStrToCashFlowTimestamp(advancePaidOnStr)
+      if (remaining > 0)
+        remainingTs = dateStrToCashFlowTimestamp(remainingPaidOnStr)
+    } catch {
+      toast.error('Datas de pagamento inválidas.')
+      return
+    }
+
+    const est = 0
+    const profit = roundMoney(total - est)
+    const displayServiceName = serviceNameManual.trim() || null
+
+    const logPayload: ServiceLogInsert = {
+      service_id: null,
       quantity: 1,
       total_revenue: total,
       total_cost: est,
@@ -236,19 +292,22 @@ export function RevenueEntryPage() {
       advance_paid: advance,
       remaining_paid: remaining,
       payment_method: paymentMethod,
+      advance_paid_on: advance > 0 ? advancePaidOnStr.trim() : null,
+      remaining_paid_on: remaining > 0 ? remainingPaidOnStr.trim() : null,
     }
 
     setSaving(true)
     try {
-      const { data: inserted, error: logErr } = await supabase
-        .from('service_logs')
-        .insert(logPayload)
-        .select('id')
-        .single()
-
-      if (logErr) throw logErr
-      const newId = inserted?.id
-      if (!newId) throw new Error('Registo sem id.')
+      const { id: newId, degraded } = await insertServiceLogResilient(
+        supabase,
+        logPayload
+      )
+      if (degraded) {
+        toast.warning(
+          'Registo guardado em modo compatível. Corre o SQL em supabase/apply_revenue_migrations_on_remote.sql no Supabase (Editor SQL) para alinhar a base com a app.',
+          { duration: 9000 }
+        )
+      }
 
       const flows: Database['public']['Tables']['cash_flow']['Insert'][] = []
       if (advance > 0) {
@@ -258,6 +317,7 @@ export function RevenueEntryPage() {
           amount: advance,
           description: `Pagamento sinal (online) — ${name}`,
           service_log_id: newId,
+          created_at: advanceTs,
         })
       }
       if (remaining > 0) {
@@ -267,6 +327,7 @@ export function RevenueEntryPage() {
           amount: remaining,
           description: `Pagamento final (loja) — ${name}`,
           service_log_id: newId,
+          created_at: remainingTs,
         })
       }
 
@@ -280,7 +341,7 @@ export function RevenueEntryPage() {
 
       toast.success('Receita registada e fluxo de caixa atualizado.')
       resetForm()
-      await loadCatalogAndHistory()
+      await loadHistory()
     } catch (err) {
       toast.error(formatSupabaseError(err))
     } finally {
@@ -312,7 +373,7 @@ export function RevenueEntryPage() {
       if (logErr) throw logErr
 
       toast.success('Lançamento eliminado. Fluxo de caixa atualizado.')
-      await loadCatalogAndHistory()
+      await loadHistory()
       router.refresh()
     } catch (err) {
       toast.error(formatSupabaseError(err))
@@ -340,7 +401,9 @@ export function RevenueEntryPage() {
             Regista serviços concluídos: o registo vai para{' '}
             <span className="font-medium">service_logs</span> e o pagamento
             divide-se em duas receitas no{' '}
-            <span className="font-medium">fluxo de caixa</span> (sinal + final).{' '}
+            <span className="font-medium">fluxo de caixa</span> (sinal + final). Podes
+            indicar a <span className="font-medium">data de cada pagamento</span>{' '}
+            (ex.: sinal num mês e saldo noutro).{' '}
             <Link
               href="/admin/financas"
               className="font-medium text-[var(--gold)] underline decoration-[var(--border)] underline-offset-2 hover:decoration-[var(--gold)]"
@@ -371,43 +434,20 @@ export function RevenueEntryPage() {
               />
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-1">
-              <div className="space-y-2">
-                <label
-                  htmlFor="rev-service-cat"
-                  className="text-sm font-medium text-[var(--text-main)]"
-                >
-                  Serviço (catálogo, opcional)
-                </label>
-                <select
-                  id="rev-service-cat"
-                  value={serviceId}
-                  onChange={(e) => handleServicePick(e.target.value)}
-                  className="min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base text-[var(--text-main)] outline-none focus:border-[var(--gold)]"
-                >
-                  <option value="">— Sem catálogo —</option>
-                  {services.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.name} ({formatEUR(Number(s.price))})
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="space-y-2">
-                <label
-                  htmlFor="rev-service-manual"
-                  className="text-sm font-medium text-[var(--text-main)]"
-                >
-                  Nome do serviço (texto livre)
-                </label>
-                <input
-                  id="rev-service-manual"
-                  value={serviceNameManual}
-                  onChange={(e) => setServiceNameManual(e.target.value)}
-                  className="min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base text-[var(--text-main)] outline-none focus:border-[var(--gold)]"
-                  placeholder="Ex.: Manicure gel"
-                />
-              </div>
+            <div className="space-y-2">
+              <label
+                htmlFor="rev-service-manual"
+                className="text-sm font-medium text-[var(--text-main)]"
+              >
+                Nome do serviço
+              </label>
+              <input
+                id="rev-service-manual"
+                value={serviceNameManual}
+                onChange={(e) => setServiceNameManual(e.target.value)}
+                className="min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base text-[var(--text-main)] outline-none focus:border-[var(--gold)]"
+                placeholder="Ex.: Manicure gel"
+              />
             </div>
 
             <div className="space-y-2">
@@ -462,6 +502,47 @@ export function RevenueEntryPage() {
               </div>
             </div>
 
+            <div className="grid gap-6 sm:grid-cols-2">
+              <div className="space-y-2">
+                <label
+                  htmlFor="rev-adv-date"
+                  className="text-sm font-medium text-[var(--text-main)]"
+                >
+                  Data do pagamento do sinal
+                </label>
+                <input
+                  id="rev-adv-date"
+                  type="date"
+                  value={advancePaidOnStr}
+                  onChange={(e) => setAdvancePaidOnStr(e.target.value)}
+                  disabled={advancePreview <= 0}
+                  className={`min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base text-[var(--text-main)] outline-none focus:border-[var(--gold)] disabled:cursor-not-allowed disabled:opacity-50`}
+                />
+                <p className="text-xs text-[var(--text-main)]/55">
+                  O sinal entra no fluxo de caixa nesta data.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="rev-rem-date"
+                  className="text-sm font-medium text-[var(--text-main)]"
+                >
+                  Data do pagamento do saldo (loja)
+                </label>
+                <input
+                  id="rev-rem-date"
+                  type="date"
+                  value={remainingPaidOnStr}
+                  onChange={(e) => setRemainingPaidOnStr(e.target.value)}
+                  disabled={remainingPreview <= 0}
+                  className={`min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base text-[var(--text-main)] outline-none focus:border-[var(--gold)] disabled:cursor-not-allowed disabled:opacity-50`}
+                />
+                <p className="text-xs text-[var(--text-main)]/55">
+                  O saldo entra no fluxo de caixa nesta data.
+                </p>
+              </div>
+            </div>
+
             <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-soft)]/50 px-4 py-3 text-sm">
               <p className="text-[var(--text-main)]/70">Pré-visualização</p>
               <p className="mt-1 text-[var(--gold)]">
@@ -478,16 +559,10 @@ export function RevenueEntryPage() {
 
             <fieldset className="space-y-3">
               <legend className="text-sm font-medium text-[var(--text-main)]">
-                Meio de pagamento
+                Método de pagamento
               </legend>
               <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                {(
-                  [
-                    ['cash', 'Numerário'],
-                    ['card', 'Cartão'],
-                    ['mixed', 'Misto'],
-                  ] as const
-                ).map(([val, label]) => (
+                {REVENUE_PAYMENT_OPTIONS.map(([val, label]) => (
                   <label
                     key={val}
                     className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-base ${
@@ -537,14 +612,28 @@ export function RevenueEntryPage() {
             Desliza a tabela para a direita para ver o botão de eliminar.
           </p>
           <div className="mt-2 overflow-x-auto rounded-2xl border border-[var(--border)]">
-            <table className="w-full min-w-[640px] text-left text-sm">
+            <table className="w-full min-w-[1120px] text-left text-sm">
               <thead>
                 <tr className="border-b border-[var(--border)] bg-[var(--bg-soft)]/60 text-xs uppercase tracking-wide text-[var(--text-main)]/65">
                   <th className="px-4 py-3 font-medium">Cliente</th>
+                  <th className="max-w-[14rem] px-4 py-3 font-medium">
+                    Descrição
+                  </th>
                   <th className="px-4 py-3 font-medium">Total</th>
                   <th className="px-4 py-3 font-medium">Sinal</th>
                   <th className="px-4 py-3 font-medium">Saldo</th>
-                  <th className="px-4 py-3 font-medium">Data</th>
+                  <th className="whitespace-nowrap px-4 py-3 font-medium">
+                    Método de pagamento
+                  </th>
+                  <th className="whitespace-nowrap px-4 py-3 font-medium">
+                    Data sinal
+                  </th>
+                  <th className="whitespace-nowrap px-4 py-3 font-medium">
+                    Data saldo
+                  </th>
+                  <th className="whitespace-nowrap px-4 py-3 font-medium">
+                    Registado
+                  </th>
                   <th className="sticky right-0 z-[1] border-l border-[var(--border)] bg-[var(--bg-soft)]/95 px-4 py-3 text-right font-medium shadow-[-6px_0_14px_rgba(138,92,74,0.08)] backdrop-blur-sm">
                     Ações
                   </th>
@@ -559,6 +648,18 @@ export function RevenueEntryPage() {
                     <td className="px-4 py-3 font-medium text-[var(--text-main)]">
                       {row.client_name}
                     </td>
+                    <td className="max-w-[14rem] px-4 py-3 text-[var(--text-main)]/85">
+                      <span
+                        className="line-clamp-2 block break-words"
+                        title={
+                          row.service_name?.trim()
+                            ? row.service_name.trim()
+                            : undefined
+                        }
+                      >
+                        {row.service_name?.trim() ? row.service_name.trim() : '—'}
+                      </span>
+                    </td>
                     <td className="px-4 py-3 tabular-nums text-[var(--gold)]">
                       {formatEUR(Number(row.total_price))}
                     </td>
@@ -568,7 +669,20 @@ export function RevenueEntryPage() {
                     <td className="px-4 py-3 tabular-nums text-[var(--text-main)]">
                       {formatEUR(Number(row.remaining_paid))}
                     </td>
-                    <td className="px-4 py-3 text-[var(--text-main)]/70">
+                    <td className="whitespace-nowrap px-4 py-3 text-[var(--text-main)]/85">
+                      {paymentMethodLabel(row.payment_method)}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-3 text-[var(--text-main)]/80">
+                      {Number(row.advance_paid) > 0
+                        ? formatPtDateOnly(row.advance_paid_on)
+                        : '—'}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-3 text-[var(--text-main)]/80">
+                      {Number(row.remaining_paid) > 0
+                        ? formatPtDateOnly(row.remaining_paid_on)
+                        : '—'}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-3 text-[var(--text-main)]/55">
                       {new Intl.DateTimeFormat('pt-PT', {
                         dateStyle: 'short',
                         timeStyle: 'short',
