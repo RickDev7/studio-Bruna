@@ -43,18 +43,12 @@ import { FinanceAlerts } from '@/components/admin/FinanceAlerts'
 import { FinanceChart } from '@/components/admin/FinanceChart'
 import { FinanceSummary } from '@/components/admin/FinanceSummary'
 import { MonthlyProfit } from '@/components/admin/MonthlyProfit'
-import { ServiceForm } from '@/components/admin/ServiceForm'
 import { SmartInsights } from '@/components/admin/SmartInsights'
 import { RevenueForecast } from '@/components/admin/RevenueForecast'
 
 type FinancialLogRow = Database['public']['Tables']['financial_logs']['Row']
 type CashFlowRow = Database['public']['Tables']['cash_flow']['Row']
 type PaymentRow = Database['public']['Tables']['payments']['Row']
-type ServiceCatalogRow = Pick<
-  Database['public']['Tables']['services']['Row'],
-  'id' | 'name' | 'price' | 'estimated_cost'
->
-
 function parseBalanceInput(raw: string): number {
   const n = parseFloat(raw.replace(',', '.').replace(/\s/g, ''))
   return Number.isFinite(n) ? n : 0
@@ -70,9 +64,6 @@ export function AdminFinancasPage() {
   const [cashFlows, setCashFlows] = useState<CashFlowRow[]>([])
   const [cashFlowsSeries, setCashFlowsSeries] = useState<CashFlowRow[]>([])
   const [pendingPayments, setPendingPayments] = useState<PaymentRow[]>([])
-  const [servicesCatalog, setServicesCatalog] = useState<ServiceCatalogRow[]>(
-    []
-  )
   const [cashFlowWindowRows, setCashFlowWindowRows] = useState<
     CashFlowMonthSlice[]
   >([])
@@ -184,7 +175,6 @@ export function AdminFinancasPage() {
         cfAggRes,
         cfSeriesRes,
         pendingRes,
-        servicesRes,
         cfWindowRes,
         serviceLogsRes,
       ] = await Promise.all([
@@ -205,11 +195,6 @@ export function AdminFinancasPage() {
           .order('created_at', { ascending: true })
           .limit(2500),
         supabase.from('payments').select('*').eq('status', 'pending'),
-        supabase
-          .from('services')
-          .select('id, name, price, estimated_cost')
-          .or('active.eq.true,active.is.null')
-          .order('name'),
         supabase
           .from('cash_flow')
           .select('type, amount, category, created_at, service_log_id')
@@ -237,9 +222,6 @@ export function AdminFinancasPage() {
           `Contas a pagar: ${formatSupabaseError(pendingRes.error)}`
         )
       }
-      if (servicesRes.error) {
-        problems.push(`Serviços: ${formatSupabaseError(servicesRes.error)}`)
-      }
       if (serviceLogsRes.error) {
         problems.push(
           `Registos de serviço: ${formatSupabaseError(serviceLogsRes.error)}`
@@ -250,7 +232,6 @@ export function AdminFinancasPage() {
       setCashFlows((cfListRes.data as CashFlowRow[]) ?? [])
       setCashFlowsSeries((cfSeriesRes.data as CashFlowRow[]) ?? [])
       setPendingPayments((pendingRes.data as PaymentRow[]) ?? [])
-      setServicesCatalog((servicesRes.data as ServiceCatalogRow[]) ?? [])
       setCashFlowWindowRows(
         (cfWindowRes.data as CashFlowMonthSlice[]) ?? []
       )
@@ -538,11 +519,6 @@ export function AdminFinancasPage() {
           cashFlowRows={cashFlowWindowRows}
           loading={loading}
           referenceDate={metricsAt}
-        />
-        <ServiceForm
-          services={servicesCatalog}
-          loading={loading}
-          onLogged={refreshData}
         />
         <SmartInsights insights={smartInsightList} loading={loading} />
       </div>
