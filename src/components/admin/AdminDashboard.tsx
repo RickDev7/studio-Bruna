@@ -44,11 +44,16 @@ export function AdminDashboard() {
           .order('created_at', { ascending: false })
           .limit(50),
         supabase.from('products').select('*').order('name'),
-        supabase
-          .from('stock_movements')
-          .select('*, products(name)')
-          .order('created_at', { ascending: false })
-          .limit(80),
+        (() => {
+          const since = new Date()
+          since.setMonth(since.getMonth() - 24)
+          return supabase
+            .from('stock_movements')
+            .select('*, products(name)')
+            .gte('created_at', since.toISOString())
+            .order('created_at', { ascending: false })
+            .limit(10000)
+        })(),
       ])
 
       const problems: string[] = []
@@ -468,6 +473,7 @@ export function AdminDashboard() {
 
       <AdminStockCard
         products={products}
+        stockMovements={stockMovements}
         loading={loading}
         onAddProduct={handleAddProduct}
         onUpdateProductCost={handleUpdateProductCost}
