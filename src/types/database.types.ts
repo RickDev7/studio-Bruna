@@ -95,6 +95,8 @@ export interface Database {
             | 'paypal'
             | 'numerario'
             | 'transferencia_bancaria'
+          advance_payment_method: string | null
+          remaining_payment_method: string | null
           advance_paid_on: string | null
           remaining_paid_on: string | null
         }
@@ -113,6 +115,8 @@ export interface Database {
           remaining_paid?: number
           advance_paid_on?: string | null
           remaining_paid_on?: string | null
+          advance_payment_method?: string | null
+          remaining_payment_method?: string | null
           payment_method?:
             | 'fresha'
             | 'paypal'
@@ -134,6 +138,8 @@ export interface Database {
           remaining_paid?: number
           advance_paid_on?: string | null
           remaining_paid_on?: string | null
+          advance_payment_method?: string | null
+          remaining_payment_method?: string | null
           payment_method?:
             | 'fresha'
             | 'paypal'

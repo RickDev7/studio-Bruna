@@ -62,9 +62,15 @@ function formatPtDateOnly(isoDate: string | null | undefined): string {
 
 type ServiceLogInsert = Database['public']['Tables']['service_logs']['Insert']
 
-/** Remove colunas de data (se a BD remota ainda não as tiver). */
-function stripPaymentDateFields(p: ServiceLogInsert): ServiceLogInsert {
-  const { advance_paid_on: _a, remaining_paid_on: _r, ...rest } = p
+/** Remove datas e métodos split (BD antiga só com payment_method único). */
+function stripLegacyOptionalColumns(p: ServiceLogInsert): ServiceLogInsert {
+  const {
+    advance_paid_on: _a,
+    remaining_paid_on: _r,
+    advance_payment_method: _am,
+    remaining_payment_method: _rm,
+    ...rest
+  } = p
   return rest
 }
 
@@ -78,9 +84,15 @@ async function insertServiceLogResilient(
   const attempts: ServiceLogInsert[] = [
     full,
     { ...full, payment_method: 'mixed' } as ServiceLogInsert,
-    stripPaymentDateFields(full),
-    { ...stripPaymentDateFields(full), payment_method: 'mixed' } as ServiceLogInsert,
-    { ...stripPaymentDateFields(full), payment_method: 'fresha' } as ServiceLogInsert,
+    stripLegacyOptionalColumns(full),
+    {
+      ...stripLegacyOptionalColumns(full),
+      payment_method: 'mixed',
+    } as ServiceLogInsert,
+    {
+      ...stripLegacyOptionalColumns(full),
+      payment_method: 'fresha',
+    } as ServiceLogInsert,
   ]
 
   let lastErr: unknown
@@ -113,7 +125,9 @@ export function RevenueEntryPage() {
   const [totalStr, setTotalStr] = useState('')
   const [advanceStr, setAdvanceStr] = useState('')
   const [remainingStr, setRemainingStr] = useState('')
-  const [paymentMethod, setPaymentMethod] =
+  const [advancePaymentMethod, setAdvancePaymentMethod] =
+    useState<RevenuePaymentMethod>('fresha')
+  const [remainingPaymentMethod, setRemainingPaymentMethod] =
     useState<RevenuePaymentMethod>('fresha')
   const [advancePaidOnStr, setAdvancePaidOnStr] = useState(todayYmd)
   const [remainingPaidOnStr, setRemainingPaidOnStr] = useState(todayYmd)
@@ -225,7 +239,8 @@ export function RevenueEntryPage() {
     setTotalStr('')
     setAdvanceStr('')
     setRemainingStr('')
-    setPaymentMethod('fresha')
+    setAdvancePaymentMethod('fresha')
+    setRemainingPaymentMethod('fresha')
     setAdvancePaidOnStr(todayYmd())
     setRemainingPaidOnStr(todayYmd())
   }
@@ -264,6 +279,14 @@ export function RevenueEntryPage() {
       toast.error('Indica a data em que o saldo foi pago na loja.')
       return
     }
+    if (advance > 0 && !advancePaymentMethod) {
+      toast.error('Escolhe o método de pagamento do sinal.')
+      return
+    }
+    if (remaining > 0 && !remainingPaymentMethod) {
+      toast.error('Escolhe o método de pagamento do saldo.')
+      return
+    }
 
     let advanceTs = ''
     let remainingTs = ''
@@ -280,6 +303,10 @@ export function RevenueEntryPage() {
     const profit = roundMoney(total - est)
     const displayServiceName = serviceNameManual.trim() || null
 
+    /** Coluna única legacy: prioriza método do saldo se existir. */
+    const legacySingleMethod: RevenuePaymentMethod =
+      remaining > 0 ? remainingPaymentMethod : advancePaymentMethod
+
     const logPayload: ServiceLogInsert = {
       service_id: null,
       quantity: 1,
@@ -291,7 +318,9 @@ export function RevenueEntryPage() {
       total_price: total,
       advance_paid: advance,
       remaining_paid: remaining,
-      payment_method: paymentMethod,
+      payment_method: legacySingleMethod,
+      advance_payment_method: advance > 0 ? advancePaymentMethod : null,
+      remaining_payment_method: remaining > 0 ? remainingPaymentMethod : null,
       advance_paid_on: advance > 0 ? advancePaidOnStr.trim() : null,
       remaining_paid_on: remaining > 0 ? remainingPaidOnStr.trim() : null,
     }
@@ -467,79 +496,135 @@ export function RevenueEntryPage() {
               />
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-2">
-              <div className="space-y-2">
-                <label
-                  htmlFor="rev-adv"
-                  className="text-sm font-medium text-[var(--text-main)]"
-                >
-                  Sinal pago (30% sugerido)
-                </label>
-                <input
-                  id="rev-adv"
-                  inputMode="decimal"
-                  value={advanceStr}
-                  onChange={(e) => handleAdvanceChange(e.target.value)}
-                  className="min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base tabular-nums text-[var(--text-main)] outline-none focus:border-[var(--gold)]"
-                  placeholder="0,00"
-                />
+            <div className="grid gap-6 lg:grid-cols-2">
+              <div className="space-y-4 rounded-2xl border border-[var(--border)] bg-[var(--bg-soft)]/40 p-4 md:p-5">
+                <p className="text-sm font-semibold text-[var(--text-main)]">
+                  Sinal
+                </p>
+                <div className="space-y-2">
+                  <label
+                    htmlFor="rev-adv"
+                    className="text-xs font-medium text-[var(--text-main)]/80"
+                  >
+                    Valor (30% sugerido)
+                  </label>
+                  <input
+                    id="rev-adv"
+                    inputMode="decimal"
+                    value={advanceStr}
+                    onChange={(e) => handleAdvanceChange(e.target.value)}
+                    className="min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base tabular-nums text-[var(--text-main)] outline-none focus:border-[var(--gold)]"
+                    placeholder="0,00"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label
+                    htmlFor="rev-adv-pay"
+                    className="text-xs font-medium text-[var(--text-main)]/80"
+                  >
+                    Método de pagamento do sinal
+                  </label>
+                  <select
+                    id="rev-adv-pay"
+                    value={advancePaymentMethod}
+                    onChange={(e) =>
+                      setAdvancePaymentMethod(e.target.value as RevenuePaymentMethod)
+                    }
+                    disabled={advancePreview <= 0}
+                    className="min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base text-[var(--text-main)] outline-none focus:border-[var(--gold)] disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {REVENUE_PAYMENT_OPTIONS.map(([val, label]) => (
+                      <option key={val} value={val}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label
+                    htmlFor="rev-adv-date"
+                    className="text-xs font-medium text-[var(--text-main)]/80"
+                  >
+                    Data do pagamento do sinal
+                  </label>
+                  <input
+                    id="rev-adv-date"
+                    type="date"
+                    value={advancePaidOnStr}
+                    onChange={(e) => setAdvancePaidOnStr(e.target.value)}
+                    disabled={advancePreview <= 0}
+                    className="min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base text-[var(--text-main)] outline-none focus:border-[var(--gold)] disabled:cursor-not-allowed disabled:opacity-50"
+                  />
+                  <p className="text-xs text-[var(--text-main)]/55">
+                    O sinal entra no fluxo de caixa nesta data.
+                  </p>
+                </div>
               </div>
-              <div className="space-y-2">
-                <label
-                  htmlFor="rev-rem"
-                  className="text-sm font-medium text-[var(--text-main)]"
-                >
-                  Saldo pago na loja
-                </label>
-                <input
-                  id="rev-rem"
-                  inputMode="decimal"
-                  value={remainingStr}
-                  onChange={(e) => handleRemainingChange(e.target.value)}
-                  className="min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base tabular-nums text-[var(--text-main)] outline-none focus:border-[var(--gold)]"
-                  placeholder="0,00"
-                />
-              </div>
-            </div>
 
-            <div className="grid gap-6 sm:grid-cols-2">
-              <div className="space-y-2">
-                <label
-                  htmlFor="rev-adv-date"
-                  className="text-sm font-medium text-[var(--text-main)]"
-                >
-                  Data do pagamento do sinal
-                </label>
-                <input
-                  id="rev-adv-date"
-                  type="date"
-                  value={advancePaidOnStr}
-                  onChange={(e) => setAdvancePaidOnStr(e.target.value)}
-                  disabled={advancePreview <= 0}
-                  className={`min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base text-[var(--text-main)] outline-none focus:border-[var(--gold)] disabled:cursor-not-allowed disabled:opacity-50`}
-                />
-                <p className="text-xs text-[var(--text-main)]/55">
-                  O sinal entra no fluxo de caixa nesta data.
+              <div className="space-y-4 rounded-2xl border border-[var(--border)] bg-[var(--bg-soft)]/40 p-4 md:p-5">
+                <p className="text-sm font-semibold text-[var(--text-main)]">
+                  Saldo na loja
                 </p>
-              </div>
-              <div className="space-y-2">
-                <label
-                  htmlFor="rev-rem-date"
-                  className="text-sm font-medium text-[var(--text-main)]"
-                >
-                  Data do pagamento do saldo (loja)
-                </label>
-                <input
-                  id="rev-rem-date"
-                  type="date"
-                  value={remainingPaidOnStr}
-                  onChange={(e) => setRemainingPaidOnStr(e.target.value)}
-                  disabled={remainingPreview <= 0}
-                  className={`min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base text-[var(--text-main)] outline-none focus:border-[var(--gold)] disabled:cursor-not-allowed disabled:opacity-50`}
-                />
-                <p className="text-xs text-[var(--text-main)]/55">
-                  O saldo entra no fluxo de caixa nesta data.
-                </p>
+                <div className="space-y-2">
+                  <label
+                    htmlFor="rev-rem"
+                    className="text-xs font-medium text-[var(--text-main)]/80"
+                  >
+                    Valor
+                  </label>
+                  <input
+                    id="rev-rem"
+                    inputMode="decimal"
+                    value={remainingStr}
+                    onChange={(e) => handleRemainingChange(e.target.value)}
+                    className="min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base tabular-nums text-[var(--text-main)] outline-none focus:border-[var(--gold)]"
+                    placeholder="0,00"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label
+                    htmlFor="rev-rem-pay"
+                    className="text-xs font-medium text-[var(--text-main)]/80"
+                  >
+                    Método de pagamento do saldo
+                  </label>
+                  <select
+                    id="rev-rem-pay"
+                    value={remainingPaymentMethod}
+                    onChange={(e) =>
+                      setRemainingPaymentMethod(
+                        e.target.value as RevenuePaymentMethod
+                      )
+                    }
+                    disabled={remainingPreview <= 0}
+                    className="min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base text-[var(--text-main)] outline-none focus:border-[var(--gold)] disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {REVENUE_PAYMENT_OPTIONS.map(([val, label]) => (
+                      <option key={val} value={val}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label
+                    htmlFor="rev-rem-date"
+                    className="text-xs font-medium text-[var(--text-main)]/80"
+                  >
+                    Data do pagamento do saldo (loja)
+                  </label>
+                  <input
+                    id="rev-rem-date"
+                    type="date"
+                    value={remainingPaidOnStr}
+                    onChange={(e) => setRemainingPaidOnStr(e.target.value)}
+                    disabled={remainingPreview <= 0}
+                    className="min-h-12 w-full rounded-xl border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 text-base text-[var(--text-main)] outline-none focus:border-[var(--gold)] disabled:cursor-not-allowed disabled:opacity-50"
+                  />
+                  <p className="text-xs text-[var(--text-main)]/55">
+                    O saldo entra no fluxo de caixa nesta data.
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -552,38 +637,24 @@ export function RevenueEntryPage() {
                 </span>
               </p>
               <p className="text-[#6b9b7a]">
-                Sinal: {formatEUR(advancePreview)} · Saldo:{' '}
-                {formatEUR(remainingPreview)}
+                Sinal: {formatEUR(advancePreview)}
+                {advancePreview > 0 ? (
+                  <>
+                    {' '}
+                    ·{' '}
+                    {paymentMethodLabel(advancePaymentMethod)}
+                  </>
+                ) : null}{' '}
+                · Saldo: {formatEUR(remainingPreview)}
+                {remainingPreview > 0 ? (
+                  <>
+                    {' '}
+                    ·{' '}
+                    {paymentMethodLabel(remainingPaymentMethod)}
+                  </>
+                ) : null}
               </p>
             </div>
-
-            <fieldset className="space-y-3">
-              <legend className="text-sm font-medium text-[var(--text-main)]">
-                Método de pagamento
-              </legend>
-              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                {REVENUE_PAYMENT_OPTIONS.map(([val, label]) => (
-                  <label
-                    key={val}
-                    className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-base ${
-                      paymentMethod === val
-                        ? 'border-[var(--gold)] bg-[var(--highlight)]/50'
-                        : 'border-[var(--border)] bg-[var(--bg-card)]'
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="pay"
-                      value={val}
-                      checked={paymentMethod === val}
-                      onChange={() => setPaymentMethod(val)}
-                      className="h-4 w-4 accent-[var(--gold)]"
-                    />
-                    {label}
-                  </label>
-                ))}
-              </div>
-            </fieldset>
 
             <Button
               type="submit"
@@ -612,7 +683,7 @@ export function RevenueEntryPage() {
             Desliza a tabela para a direita para ver o botão de eliminar.
           </p>
           <div className="mt-2 overflow-x-auto rounded-2xl border border-[var(--border)]">
-            <table className="w-full min-w-[1120px] text-left text-sm">
+            <table className="w-full min-w-[1240px] text-left text-sm">
               <thead>
                 <tr className="border-b border-[var(--border)] bg-[var(--bg-soft)]/60 text-xs uppercase tracking-wide text-[var(--text-main)]/65">
                   <th className="px-4 py-3 font-medium">Cliente</th>
@@ -623,7 +694,10 @@ export function RevenueEntryPage() {
                   <th className="px-4 py-3 font-medium">Sinal</th>
                   <th className="px-4 py-3 font-medium">Saldo</th>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
-                    Método de pagamento
+                    Método sinal
+                  </th>
+                  <th className="whitespace-nowrap px-4 py-3 font-medium">
+                    Método saldo
                   </th>
                   <th className="whitespace-nowrap px-4 py-3 font-medium">
                     Data sinal
@@ -670,7 +744,18 @@ export function RevenueEntryPage() {
                       {formatEUR(Number(row.remaining_paid))}
                     </td>
                     <td className="whitespace-nowrap px-4 py-3 text-[var(--text-main)]/85">
-                      {paymentMethodLabel(row.payment_method)}
+                      {Number(row.advance_paid) > 0
+                        ? paymentMethodLabel(
+                            row.advance_payment_method ?? row.payment_method
+                          )
+                        : '—'}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-3 text-[var(--text-main)]/85">
+                      {Number(row.remaining_paid) > 0
+                        ? paymentMethodLabel(
+                            row.remaining_payment_method ?? row.payment_method
+                          )
+                        : '—'}
                     </td>
                     <td className="whitespace-nowrap px-4 py-3 text-[var(--text-main)]/80">
                       {Number(row.advance_paid) > 0

@@ -31,7 +31,11 @@ type CashFlowRow = Database['public']['Tables']['cash_flow']['Row']
 
 type RevenueEntryBrief = Pick<
   Database['public']['Tables']['service_logs']['Row'],
-  'client_name' | 'service_name' | 'payment_method'
+  | 'client_name'
+  | 'service_name'
+  | 'payment_method'
+  | 'advance_payment_method'
+  | 'remaining_payment_method'
 >
 
 /** Linha de fluxo de caixa + dados da entrada de receitas (service_logs), quando existir ligação. */
@@ -114,6 +118,20 @@ function aggregateByMonth(rows: CashFlowReportRow[]): MonthAgg[] {
 }
 
 type DayGroup = { dayKey: string; display: string; rows: CashFlowReportRow[] }
+
+/** Método adequado por linha de fluxo (sinal vs saldo vs outro). */
+function journalPaymentLabel(row: CashFlowReportRow): string {
+  const e = row.revenueEntry
+  if (!e) return '—'
+  const cat = row.category
+  if (cat === 'service_advance') {
+    return paymentMethodLabel(e.advance_payment_method ?? e.payment_method)
+  }
+  if (cat === 'service_payment') {
+    return paymentMethodLabel(e.remaining_payment_method ?? e.payment_method)
+  }
+  return paymentMethodLabel(e.payment_method)
+}
 
 function cashFlowCategoryLabelDE(cat: string): string {
   const m: Record<string, string> = {
@@ -347,7 +365,9 @@ export default function AdminFinancialReportsPage() {
       if (ids.length > 0) {
         const { data: logs, error: logErr } = await supabase
           .from('service_logs')
-          .select('id, client_name, service_name, payment_method')
+          .select(
+            'id, client_name, service_name, payment_method, advance_payment_method, remaining_payment_method'
+          )
           .in('id', ids)
         if (logErr) throw logErr
         for (const L of logs ?? []) {
@@ -355,6 +375,8 @@ export default function AdminFinancialReportsPage() {
             client_name: L.client_name,
             service_name: L.service_name,
             payment_method: L.payment_method,
+            advance_payment_method: L.advance_payment_method,
+            remaining_payment_method: L.remaining_payment_method,
           })
         }
       }
@@ -877,9 +899,7 @@ export default function AdminFinancialReportsPage() {
                             </span>
                           </td>
                           <td className="whitespace-nowrap px-2 py-2 text-neutral-900">
-                            {r.revenueEntry
-                              ? paymentMethodLabel(r.revenueEntry.payment_method)
-                              : '—'}
+                            {journalPaymentLabel(r)}
                           </td>
                           <td className="max-w-[14rem] px-2 py-2 text-neutral-900">
                             {r.description}
