@@ -102,6 +102,7 @@ export function FinanceChart({ data, loading }: Props) {
                   }}
                 />
                 <YAxis
+                  reversed
                   tickFormatter={(v) =>
                     new Intl.NumberFormat('pt-PT', {
                       notation: 'compact',
