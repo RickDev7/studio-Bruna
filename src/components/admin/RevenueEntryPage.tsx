@@ -427,11 +427,10 @@ export function RevenueEntryPage() {
             Entrada de receitas
           </h1>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--text-main)]/70">
-            Regista serviços concluídos: o registo vai para{' '}
-            <span className="font-medium">service_logs</span> e o pagamento
-            divide-se em duas receitas no{' '}
-            <span className="font-medium">fluxo de caixa</span> (sinal + final). Podes
-            indicar a <span className="font-medium">data de cada pagamento</span>{' '}
+            Regista serviços concluídos: o pagamento divide-se em duas receitas
+            no <span className="font-medium">fluxo de caixa</span> (sinal + final).
+            Podes indicar a{' '}
+            <span className="font-medium">data de cada pagamento</span>{' '}
             (ex.: sinal num mês e saldo noutro).{' '}
             <Link
               href="/admin/financas"

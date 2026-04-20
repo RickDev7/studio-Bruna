@@ -73,9 +73,10 @@ export function RevenueForecast({
             Previsão de faturação (serviços)
           </h2>
           <p className="mt-2 text-sm text-[var(--text-main)]/75">
-            Soma <span className="font-medium">receita em service_logs</span> e
-            receitas de <span className="font-medium">serviço</span> no fluxo de
-            caixa (linhas ligadas ao mesmo serviço não duplicam). Mês:{' '}
+            Soma receitas de serviços registadas nas{' '}
+            <span className="font-medium">entradas de receitas</span> e no{' '}
+            <span className="font-medium">fluxo de caixa</span> (linhas ligadas
+            ao mesmo serviço não duplicam). Mês:{' '}
             <span className="capitalize font-medium">{monthLabel}</span> (dia{' '}
             {f.currentDay}/{f.daysInMonth}).
           </p>
